@@ -202,9 +202,17 @@ new Chart("LTC_Result_Chart",{
     },
     scales: {
       xAxes: [{
-            offset: false
+            offset: false,
+	    scaleLabel: {
+            	display: true,
+                labelString: 'Iterations'
+            }	      
         }],
       yAxes: [{
+	scaleLabel: {
+        	display: true,
+                labelString: 'Quantity'
+        },
         id: 'y',
         type: 'linear',
         position: 'left',
