@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Newsvendor Simulation</title>
+</head>
+<body>
+
+<script>
+
+function randn_bm() {
+  let u = 0, v = 0;
+  while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+  while(v === 0) v = Math.random();
+  let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+  //num = num / 10.0 + 0.5; // Translate to 0 -> 1
+  if (num > 1 || num < -1) return randn_bm() // resample between 0 and 1
+  return num
+};
+
+function handleCreateSimulation(){
+
+var wsp=document.getElementById("wsp").value;
+var rp=document.getElementById("rp").value;
+var salp=document.getElementById("salp").value;
+var mean=document.getElementById("mean").value;
+var sd=document.getElementById("sd").value;
+var numIt=document.getElementById("numIt").value;
+var orderQty=document.getElementById("orderQty").value;
+
+if(wsp.length <1 || rp.length <1 || salp.length <1 || mean.length <1 || sd.length <1 || numIt.length <1 ){
+alert("One of the parameters is missing");
+}
+
+var rowData = [];
+//var columnData=[];
+
+var cumDemand=0;
+var cumRevenue=0;
+var cumCost=0;
+var cumProLoss=0;
+var cumFulQty=0;
+var cumLostSales=0
+var cumExcessInv=0;
+var cumSalRevenue=0;
+
+
+rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order Quantity", "Lost Sales", "Excess Inventory", "Revenue", "Salvage Revenue", "Cost", "Profit/Loss"];
+for (let i = 1; i <= numIt; i++) {
+
+var demand = (parseInt((parseFloat(mean) + parseFloat(randn_bm()*sd)),10));
+var fulQty=Math.min(parseFloat(demand),parseFloat(orderQty));
+
+var lostSales=0;
+var excessInv=0;
+var salRevenue=0;
+if(fulQty<demand){
+lostSales=demand-fulQty;
+}
+if(orderQty>demand){
+excessInv=parseFloat(orderQty)-parseFloat(demand);
+salRevenue=parseFloat(excessInv)*parseFloat(salp);
+}
+
+var revenue = parseFloat((rp*fulQty));
+var cost=parseFloat((orderQty*wsp));
+var proLoss=parseFloat(revenue)+parseFloat(salRevenue)-parseFloat(cost);
+rowData[i] = [i, demand,fulQty,lostSales,excessInv,revenue ,salRevenue, cost,proLoss];
+
+cumDemand = cumDemand+demand;
+cumCost=cumCost+cost;
+cumRevenue=cumRevenue+revenue;
+cumProLoss=cumProLoss+proLoss;
+cumFulQty=cumFulQty+fulQty;
+cumLostSales=cumLostSales+lostSales;
+cumExcessInv=cumExcessInv+excessInv;
+cumSalRevenue=cumSalRevenue+salRevenue;
+}
+rowData[numIt+1] = ["Total",(Math.round((cumDemand+ Number.EPSILON) * 100) / 100),(Math.round((cumFulQty+ Number.EPSILON) * 100) / 100),(Math.round((cumLostSales+ Number.EPSILON) * 100) / 100),(Math.round((cumExcessInv+ Number.EPSILON) * 100) / 100),(Math.round((cumRevenue+ Number.EPSILON) * 100) / 100),(Math.round((cumSalRevenue+ Number.EPSILON) * 100) / 100),(Math.round((cumCost+ Number.EPSILON) * 100) / 100),(Math.round((cumProLoss+ Number.EPSILON) * 100) / 100)];
+
+rowData[numIt+2] = ["Average",(Math.round((cumDemand/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumFulQty/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumLostSales/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumExcessInv/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumRevenue/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumSalRevenue/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumCost/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumProLoss/numIt+ Number.EPSILON) * 100) / 100)];
+//alert(demandList);
+//document.getElementById("result").innerHTML = "Hello JavaScript!";
+createTable(rowData,document.getElementById("result"));
+
+
+
+};
+
+
+function createTable(tableData,resultDiv) {
+  var table = document.createElement('table');
+  var tableBody = document.createElement('tbody');
+
+  tableData.forEach(function(rowData) {
+    var row = document.createElement('tr');
+
+    rowData.forEach(function(cellData) {
+      var cell = document.createElement('td');
+      cell.appendChild(document.createTextNode(cellData));
+      row.appendChild(cell);
+    });
+
+    tableBody.appendChild(row);
+  });
+
+  table.appendChild(tableBody);
+  resultDiv.innerHTML="";
+  resultDiv.appendChild(table);
+  
+  document.getElementById("resultBody").style.display = 'block';
+};
+</script>
+
+<style>
+table, th, td {
+  border: 1px solid black;
+  margin: auto;
+text-align: center;
+}
+
+.center{
+margin: auto;
+text-align: center;
+}
+  fieldset{
+            background-color: #f1f1f1;
+            border: none;
+            border-radius: 2px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            padding: 0 .625em;
+        }
+
+label{
+            cursor: pointer;
+            display: inline-block;
+            padding: 3px 6px;
+            text-align: right;
+            width: 300px;
+            vertical-align: top;
+        }
+
+        input{
+            font-size: inherit;
+        }
+
+</style>
+
+<div class="center">
+	<h1 class="center"> Newsvendor Simulation </h1>
+	<br/>
+	<br/>
+	<h4 class="center"> Please enter the following info and start the Simulation</h4>
+	<br/>
+	<div class="center">
+		<label for="wsp">Enter Wholesale Price:</label>
+		<input type="text" id="wsp" align="left"/>
+	</div>
+	<br/>
+	<div class="center">
+		<label for="rp">Enter Retail Price:</label>
+		<input type="text" id="rp" align="left"/>
+	</div>
+	<br/>
+	<div class="center">
+		<label for="salp"> Enter Salvage Price:</label>
+		<input type="text" id="salp" align="left"/>
+	</div>
+	<br/>
+	<div class="center">
+		<label for="mean">Enter Mean quantity:</label>
+		<input type="text" id="mean" align="left"/>
+	</div>
+	<br/>
+	<div class="center">
+		<label for="sd">  Enter Standard Deviation:</label>
+		<input type="text" id="sd" align="left"/>
+	</div>
+	<br/>
+	<div class="center">
+		<label for="orderQty">Enter Order Quantity:</label>
+		<input type="text" id="orderQty" align="left"/>
+	</div>
+	<br/>
+	<div class="center">
+		<label for="numIt"> Enter Number of Iterations to be performed:</label>
+		<input type="text" id="numIt" align="left"/>
+	</div>
+	<br/>
+	<input type="button" value='Run Simulation' onClick="handleCreateSimulation()"/>
+	<br/>
+	<div id="resultBody" hidden class="center">
+		<h4>Result of the Simulation<h4>
+				<br/>
+				<div id="result" class="center">
+</div>
+			</div>
+		</div>
+</body>
+</html>
