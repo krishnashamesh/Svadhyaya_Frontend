@@ -4,20 +4,102 @@
 <title>Newsvendor Simulation</title>
 </head>
 <body>
+  
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
 
 <script>
-
-function randn_bm() {
+<!-- Utility Functions starts here -->
+function random_sample_std_normal_dist() {
   let u = 0, v = 0;
   while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
   while(v === 0) v = Math.random();
   let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
-  //num = num / 10.0 + 0.5; // Translate to 0 -> 1
-  if (num > 1 || num < -1) return randn_bm() // resample between 0 and 1
+  if (num > 1 || num < -1) return random_sample_std_normal_dist() // resample between 0 and 1
   return num
 };
 
-function handleCreateSimulation(){
+function random_sample_std_normal_dist_postive() {
+  let u = 0, v = 0;
+  while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+  while(v === 0) v = Math.random();
+  let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+  num = num / 10.0 + 0.5; // Translate to 0 -> 1
+  if (num > 1 || num < -1) return random_sample_std_normal_dist() // resample between 0 and 1
+  return num
+};
+
+function createTable(tableData,resultDiv,tableId) {
+  var table = document.createElement('table');
+  table.setAttribute('id',tableId);
+  var tableBody = document.createElement('tbody');
+
+  tableData.forEach(function(rowData) {
+    var row = document.createElement('tr');
+
+    rowData.forEach(function(cellData) {
+      var cell = document.createElement('td');
+      cell.appendChild(document.createTextNode(cellData));
+      row.appendChild(cell);
+    });
+
+    tableBody.appendChild(row);
+  });
+
+  table.appendChild(tableBody);
+  resultDiv.innerHTML="";
+  resultDiv.appendChild(table);
+  
+  document.getElementById("resultBody").style.display = 'block';
+};
+
+//Source: https://stackoverflow.com/questions/15547198/export-html-table-to-csv
+// Quick and simple export target #table_id into a csv
+function download_table_as_csv(table_id, separator = ',') {
+    // Select rows from table_id
+    var rows = document.querySelectorAll('table#' + table_id + ' tr');
+    // Construct csv
+    var csv = [];
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll('td, th');
+        for (var j = 0; j < cols.length; j++) {
+            // Clean innertext to remove multiple spaces and jumpline (break csv)
+            var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
+            // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
+            data = data.replace(/"/g, '""');
+            // Push escaped string
+            row.push('"' + data + '"');
+        }
+        csv.push(row.join(separator));
+    }
+    var csv_string = csv.join('\n');
+    // Download it
+    var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
+    var link = document.createElement('a');
+    link.style.display = 'none';
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
+
+function resetCanvas(graphId){
+  var oldCanvas=document.getElementById(graphId) 
+  var newCanvas = oldCanvas.cloneNode(true);
+  oldCanvas.remove(); 
+  document.getElementById("chartContent").append(newCanvas);
+  canvas = document.getElementById(graphId);
+  ctx = canvas.getContext('2d');
+};
+
+<!-- Utility Functions ends here -->
+
+<!-- Long Term Contract Simulation Specific Functions starts here -->
+function handle_LTC_Simulation(){
 
 var wsp=document.getElementById("wsp").value;
 var rp=document.getElementById("rp").value;
@@ -29,10 +111,15 @@ var orderQty=document.getElementById("orderQty").value;
 
 if(wsp.length <1 || rp.length <1 || salp.length <1 || mean.length <1 || sd.length <1 || numIt.length <1 ){
 alert("One of the parameters is missing");
+return;
 }
 
 var rowData = [];
-//var columnData=[];
+var itrArr=[];
+var actualDemandArr= [];
+var fulOrderQtyArr=[];
+var lostSalesArr=[];
+var excInvArr=[];
 
 var cumDemand=0;
 var cumRevenue=0;
@@ -47,9 +134,10 @@ var cumSalRevenue=0;
 rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order Quantity", "Lost Sales", "Excess Inventory", "Revenue", "Salvage Revenue", "Cost", "Profit/Loss"];
 for (let i = 1; i <= numIt; i++) {
 
-var demand = (parseInt((parseFloat(mean) + parseFloat(randn_bm()*sd)),10));
-var fulQty=Math.min(parseFloat(demand),parseFloat(orderQty));
+var demand = (parseInt((parseFloat(mean) + parseFloat(random_sample_std_normal_dist()*sd)),10));
 
+var fulQty=Math.min(parseFloat(demand),parseFloat(orderQty));
+fulOrderQtyArr[i]=fulQty;
 var lostSales=0;
 var excessInv=0;
 var salRevenue=0;
@@ -74,41 +162,100 @@ cumFulQty=cumFulQty+fulQty;
 cumLostSales=cumLostSales+lostSales;
 cumExcessInv=cumExcessInv+excessInv;
 cumSalRevenue=cumSalRevenue+salRevenue;
+
+itrArr[i]=i;
+actualDemandArr[i]=demand;
+lostSalesArr[i]=lostSales;
+excInvArr[i]=excessInv;
+fulOrderQtyArr[i]=fulQty;
 }
 rowData[numIt+1] = ["Total",(Math.round((cumDemand+ Number.EPSILON) * 100) / 100),(Math.round((cumFulQty+ Number.EPSILON) * 100) / 100),(Math.round((cumLostSales+ Number.EPSILON) * 100) / 100),(Math.round((cumExcessInv+ Number.EPSILON) * 100) / 100),(Math.round((cumRevenue+ Number.EPSILON) * 100) / 100),(Math.round((cumSalRevenue+ Number.EPSILON) * 100) / 100),(Math.round((cumCost+ Number.EPSILON) * 100) / 100),(Math.round((cumProLoss+ Number.EPSILON) * 100) / 100)];
 
 rowData[numIt+2] = ["Average",(Math.round((cumDemand/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumFulQty/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumLostSales/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumExcessInv/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumRevenue/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumSalRevenue/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumCost/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumProLoss/numIt+ Number.EPSILON) * 100) / 100)];
-//alert(demandList);
-//document.getElementById("result").innerHTML = "Hello JavaScript!";
-createTable(rowData,document.getElementById("result"));
 
+//Remove the first undefined 
+itrArr.shift();
+actualDemandArr.shift();
+fulOrderQtyArr.shift();
+lostSalesArr.shift();
+excInvArr.shift();
 
+createTable(rowData,document.getElementById("result"),'LTC_Result_Table');
+
+resetCanvas('LTC_Result_Chart');
+
+new Chart("LTC_Result_Chart",{
+  backgroundColor: "transparent",
+  type: 'line',
+  options: {
+    responsive: true,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
+    stacked: false,
+    plugins: {
+      title: {
+        display: true,
+        text: 'Line Chart'
+      }
+    },
+    scales: {
+      xAxes: [{
+            offset: false
+        }],
+      yAxes: [{
+        id: 'y',
+        type: 'linear',
+        position: 'left',
+        display	: true,
+        title:'Quantity',
+        beginAtZero: false,
+        grid: {
+          drawOnChartArea: false, // only want the grid lines for one axis to show up
+        }
+       }]
+    }
+  },
+  data: {
+  labels: itrArr,
+  datasets: [
+    {
+      label: 'Actual Demand',
+      data: actualDemandArr,
+      backgroundColor: "rgba(0,0,0,0.0)",
+      borderColor: 'rgb(255, 99, 132)',
+      yAxisID: 'y',
+    },
+    {
+      label: 'Fulfilled Order Quantity',
+      data: fulOrderQtyArr,
+      backgroundColor: "rgba(0,0,0,0.0)",
+      borderColor: 'rgb(54, 162, 235)',
+      yAxisID: 'y',
+    },
+    {
+      label: 'Lost Sales',
+      data: lostSalesArr,
+      backgroundColor: "rgba(0,0,0,0.0)",
+      borderColor: 'rgb(255, 130, 99)',
+      yAxisID: 'y',
+    },
+    {
+      label: 'Excess Inventory',
+      data: excInvArr,
+      backgroundColor: "rgba(0,0,0,0.0)",
+      borderColor: 'rgb(54, 235, 162)',
+      yAxisID: 'y',
+    }
+  ]
+},
+});
 
 };
 
+<!-- Long Term Contract Simulation Specific Functions ends here -->
 
-function createTable(tableData,resultDiv) {
-  var table = document.createElement('table');
-  var tableBody = document.createElement('tbody');
-
-  tableData.forEach(function(rowData) {
-    var row = document.createElement('tr');
-
-    rowData.forEach(function(cellData) {
-      var cell = document.createElement('td');
-      cell.appendChild(document.createTextNode(cellData));
-      row.appendChild(cell);
-    });
-
-    tableBody.appendChild(row);
-  });
-
-  table.appendChild(tableBody);
-  resultDiv.innerHTML="";
-  resultDiv.appendChild(table);
-  
-  document.getElementById("resultBody").style.display = 'block';
-};
 </script>
 
 <style>
@@ -147,10 +294,10 @@ label{
 </style>
 
 <div class="center">
-	<h1 class="center"> Newsvendor Simulation </h1>
+	<h1 class="center"> Contracts Simulation </h1>
 	<br/>
 	<br/>
-	<h4 class="center"> Please enter the following info and start the Simulation</h4>
+	<h4 class="center"> Please enter the following information and start the Simulation</h4>
 	<br/>
 	<div class="center">
 		<label for="wsp">Enter Wholesale Price:</label>
@@ -187,14 +334,20 @@ label{
 		<input type="text" id="numIt" align="left"/>
 	</div>
 	<br/>
-	<input type="button" value='Run Simulation' onClick="handleCreateSimulation()"/>
+	<input type="button" value='Run Simulation' onClick="handle_LTC_Simulation()"/>
 	<br/>
 	<div id="resultBody" hidden class="center">
 		<h4>Result of the Simulation<h4>
 				<br/>
+        <a href="#" onclick="download_table_as_csv('LTC_Result_Table');">Download as CSV</a>
 				<div id="result" class="center">
 </div>
-			</div>
+
+  <div id="chartContent">
+  <canvas id="LTC_Result_Chart" style="width:100%"></canvas>
+  </div>
+
+</div>
 		</div>
 </body>
 </html>
