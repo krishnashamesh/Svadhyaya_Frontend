@@ -10,7 +10,7 @@
 </script>
 
 <script>
-<!-- Utility Functions starts here -->
+// Utility Functions starts here
 function random_sample_std_normal_dist() {
   let u = 0, v = 0;
   while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
@@ -87,27 +87,44 @@ function download_table_as_csv(table_id, separator = ',') {
 };
 
 
-function resetCanvas(graphId){
+function resetCanvas(graphId,chartContent){
   var oldCanvas=document.getElementById(graphId) 
   var newCanvas = oldCanvas.cloneNode(true);
   oldCanvas.remove(); 
-  document.getElementById("chartContent").append(newCanvas);
+  document.getElementById(chartContent).append(newCanvas);
   canvas = document.getElementById(graphId);
   ctx = canvas.getContext('2d');
 };
 
-<!-- Utility Functions ends here -->
+function openSimulationTab(evt, simulationName) {
+  var i, tabcontent, tablinks;
 
-<!-- Long Term Contract Simulation Specific Functions starts here -->
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  document.getElementById(simulationName).style.display = "block";
+  evt.currentTarget.className += " active";
+};
+
+// Utility Functions ends here
+
+// Long Term Contract Simulation Specific Functions starts here
 function handle_LTC_Simulation(){
 
-var wsp=document.getElementById("wsp").value;
-var rp=document.getElementById("rp").value;
-var salp=document.getElementById("salp").value;
-var mean=document.getElementById("mean").value;
-var sd=document.getElementById("sd").value;
-var numIt=document.getElementById("numIt").value;
-var orderQty=document.getElementById("orderQty").value;
+var wsp=document.getElementById("ltc_wsp").value;
+var rp=document.getElementById("ltc_rp").value;
+var salp=document.getElementById("ltc_salp").value;
+var mean=document.getElementById("ltc_mean").value;
+var sd=document.getElementById("ltc_sd").value;
+var numIt=document.getElementById("ltc_numIt").value;
+var orderQty=document.getElementById("ltc_orderQty").value;
 
 if(wsp.length <1 || rp.length <1 || salp.length <1 || mean.length <1 || sd.length <1 || numIt.length <1 ){
 alert("One of the parameters is missing");
@@ -120,6 +137,10 @@ var actualDemandArr= [];
 var fulOrderQtyArr=[];
 var lostSalesArr=[];
 var excInvArr=[];
+var salesRevenueArr=[];
+var salRevenueArr=[];
+var costArr=[];
+var profitOrLossArr=[];
 
 var cumDemand=0;
 var cumRevenue=0;
@@ -131,10 +152,10 @@ var cumExcessInv=0;
 var cumSalRevenue=0;
 
 
-rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order Quantity", "Lost Sales", "Excess Inventory", "Revenue", "Salvage Revenue", "Cost", "Profit/Loss"];
+rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order Quantity", "Lost Sales", "Excess Inventory", "Sales Revenue", "Salvage Revenue", "Cost", "Profit/Loss"];
 for (let i = 1; i <= numIt; i++) {
 
-var demand = (parseInt((parseFloat(mean) + parseFloat(random_sample_std_normal_dist()*sd)),10));
+var demand = Math.max((parseInt((parseFloat(mean) + parseFloat(random_sample_std_normal_dist()*sd)),10)),0);
 
 var fulQty=Math.min(parseFloat(demand),parseFloat(orderQty));
 fulOrderQtyArr[i]=fulQty;
@@ -168,6 +189,10 @@ actualDemandArr[i]=demand;
 lostSalesArr[i]=lostSales;
 excInvArr[i]=excessInv;
 fulOrderQtyArr[i]=fulQty;
+salesRevenueArr[i]=revenue;
+salRevenueArr[i]=salRevenue;
+costArr[i]=cost;
+profitOrLossArr[i]=proLoss;
 }
 rowData[numIt+1] = ["Total",(Math.round((cumDemand+ Number.EPSILON) * 100) / 100),(Math.round((cumFulQty+ Number.EPSILON) * 100) / 100),(Math.round((cumLostSales+ Number.EPSILON) * 100) / 100),(Math.round((cumExcessInv+ Number.EPSILON) * 100) / 100),(Math.round((cumRevenue+ Number.EPSILON) * 100) / 100),(Math.round((cumSalRevenue+ Number.EPSILON) * 100) / 100),(Math.round((cumCost+ Number.EPSILON) * 100) / 100),(Math.round((cumProLoss+ Number.EPSILON) * 100) / 100)];
 
@@ -179,12 +204,17 @@ actualDemandArr.shift();
 fulOrderQtyArr.shift();
 lostSalesArr.shift();
 excInvArr.shift();
+salesRevenueArr.shift();
+salRevenueArr.shift();
+costArr.shift();
+profitOrLossArr.shift();
 
-createTable(rowData,document.getElementById("result"),'LTC_Result_Table');
+createTable(rowData,document.getElementById("ltc_result"),'LTC_Result_Table');
 
-resetCanvas('LTC_Result_Chart');
+resetCanvas('LTC_Result_Quantity_Chart','ltc_chartContent');
+resetCanvas('LTC_Result_Monies_Chart','ltc_chartContent');
 
-new Chart("LTC_Result_Chart",{
+new Chart("LTC_Result_Quantity_Chart",{
   backgroundColor: "transparent",
   type: 'line',
   options: {
@@ -197,7 +227,7 @@ new Chart("LTC_Result_Chart",{
  
     title: {
         display: true,
-        text: 'Line Chart'
+        text: 'Quantity Chart for Long Term Contract'
     },
     
     scales: {
@@ -260,9 +290,86 @@ new Chart("LTC_Result_Chart",{
 },
 });
 
+new Chart("LTC_Result_Monies_Chart",{
+  backgroundColor: "transparent",
+  type: 'line',
+  options: {
+    responsive: true,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
+    stacked: false,
+ 
+    title: {
+        display: true,
+        text: 'Monies Chart for Long Term Contract'
+    },
+    
+    scales: {
+      xAxes: [{
+            offset: false,
+	    scaleLabel: {
+            	display: true,
+                labelString: 'Iterations'
+            }	      
+        }],
+      yAxes: [{
+	scaleLabel: {
+        	display: true,
+                labelString: 'in Rupees'
+        },
+        id: 'y',
+        type: 'linear',
+        position: 'left',
+        display	: true,
+        title:'in Rupees',
+        beginAtZero: false,
+        grid: {
+          drawOnChartArea: false, // only want the grid lines for one axis to show up
+        }
+       }]
+    }
+  },
+  data: {
+  labels: itrArr,
+  datasets: [
+    {
+      label: 'Cost',
+      data: costArr,
+      backgroundColor: "rgba(0,0,0,0.0)",
+      borderColor: 'rgb(255, 99, 132)',
+      yAxisID: 'y',
+    },
+    {
+      label: 'Profit or Loss',
+      data: profitOrLossArr,
+      backgroundColor: "rgba(0,0,0,0.0)",
+      borderColor: 'rgb(54, 162, 235)',
+      yAxisID: 'y',
+    },
+    {
+      label: 'Salvage Revenue',
+      data: salRevenueArr,
+      backgroundColor: "rgba(0,0,0,0.0)",
+      borderColor: 'rgb(255, 130, 99)',
+      yAxisID: 'y',
+    },
+    {
+      label: 'Sales Revenue',
+      data: salesRevenueArr,
+      backgroundColor: "rgba(0,0,0,0.0)",
+      borderColor: 'rgb(54, 235, 162)',
+      yAxisID: 'y',
+    }
+  ]
+},
+});
+
+
 };
 
-<!-- Long Term Contract Simulation Specific Functions ends here -->
+// Long Term Contract Simulation Specific Functions ends here
 
 </script>
 
@@ -299,47 +406,96 @@ label{
             font-size: inherit;
         }
 
+        /* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: 1 px;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+  animation: fadeEffect 1s;
+}
+
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
 </style>
 
 <div class="center">
 	<h1 class="center"> Contracts Simulation </h1>
 	<br/>
-	<br/>
+  <div class="tab">
+    <button class="tablinks" onclick="openSimulationTab(event, 'LTC')">Long Term Contract</button>
+    <button class="tablinks" onclick="openSimulationTab(event, 'Spot')">Spot</button>
+  </div>
+  <br/>
+
+  <!--LTC HTML starts here-->
+  <div id="LTC" class="tabcontent">
 	<h4 class="center"> Please enter the following information and start the Simulation</h4>
 	<br/>
 	<div class="center">
-		<label for="wsp">Enter Wholesale Price:</label>
-		<input type="text" id="wsp" align="left"/>
+		<label for="ltc_wsp">Enter Wholesale Price:</label>
+		<input type="text" id="ltc_wsp" align="left"/>
 	</div>
 	<br/>
 	<div class="center">
-		<label for="rp">Enter Retail Price:</label>
-		<input type="text" id="rp" align="left"/>
+		<label for="ltc_rp">Enter Retail Price:</label>
+		<input type="text" id="ltc_rp" align="left"/>
 	</div>
 	<br/>
 	<div class="center">
-		<label for="salp"> Enter Salvage Price:</label>
-		<input type="text" id="salp" align="left"/>
+		<label for="ltc_salp"> Enter Salvage Price:</label>
+		<input type="text" id="ltc_salp" align="left"/>
 	</div>
 	<br/>
 	<div class="center">
-		<label for="mean">Enter Mean quantity:</label>
-		<input type="text" id="mean" align="left"/>
+		<label for="ltc_mean">Enter Mean quantity:</label>
+		<input type="text" id="ltc_mean" align="left"/>
 	</div>
 	<br/>
 	<div class="center">
-		<label for="sd">  Enter Standard Deviation:</label>
-		<input type="text" id="sd" align="left"/>
+		<label for="ltc_sd">  Enter Standard Deviation:</label>
+		<input type="text" id="ltc_sd" align="left"/>
 	</div>
 	<br/>
 	<div class="center">
-		<label for="orderQty">Enter Order Quantity:</label>
-		<input type="text" id="orderQty" align="left"/>
+		<label for="ltc_orderQty">Enter Order Quantity:</label>
+		<input type="text" id="ltc_orderQty" align="left"/>
 	</div>
 	<br/>
 	<div class="center">
-		<label for="numIt"> Enter Number of Iterations to be performed:</label>
-		<input type="text" id="numIt" align="left"/>
+		<label for="ltc_numIt"> Enter Number of Iterations to be performed:</label>
+		<input type="text" id="ltc_numIt" align="left"/>
 	</div>
 	<br/>
 	<input type="button" value='Run Simulation' onClick="handle_LTC_Simulation()"/>
@@ -348,14 +504,76 @@ label{
 		<h4>Result of the Simulation<h4>
 				<br/>
         <a href="#" onclick="download_table_as_csv('LTC_Result_Table');">Download as CSV</a>
-				<div id="result" class="center">
+				<div id="ltc_result" class="center">
 </div>
 
-  <div id="chartContent">
-  <canvas id="LTC_Result_Chart" style="width:100%"></canvas>
+  <div id="ltc_chartContent">
+  <canvas id="LTC_Result_Quantity_Chart" style="width:100%"></canvas>
+  <canvas id="LTC_Result_Monies_Chart" style="width:100%"></canvas>
   </div>
 
 </div>
+</div>
+<!--LTC HTML ends here-->
+
+<!--Spot HTML starts here-->
+
+<div id="Spot" class="tabcontent">
+	<h4 class="center"> Please enter the following information and start the Simulation</h4>
+	<br/>
+	<div class="center">
+		<label for="spot_wsp">Enter Wholesale Price:</label>
+		<input type="text" id="spot_wsp" align="left"/>
+	</div>
+	<br/>
+	<div class="center">
+		<label for="spot_rp">Enter Retail Price:</label>
+		<input type="text" id="spot_rp" align="left"/>
+	</div>
+	<br/>
+	<div class="center">
+		<label for="spot_salp"> Enter Salvage Price:</label>
+		<input type="text" id="spot_salp" align="left"/>
+	</div>
+	<br/>
+	<div class="center">
+		<label for="spot_mean">Enter Mean quantity:</label>
+		<input type="text" id="spot_mean" align="left"/>
+	</div>
+	<br/>
+	<div class="center">
+		<label for="spot_sd">Enter Standard Deviation:</label>
+		<input type="text" id="spot_sd" align="left"/>
+	</div>
+	<br/>
+	<div class="center">
+		<label for="spot_orderQty">Enter Order Quantity:</label>
+		<input type="text" id="spot_orderQty" align="left"/>
+	</div>
+	<br/>
+	<div class="center">
+		<label for="spot_numIt"> Enter Number of Iterations to be performed:</label>
+		<input type="text" id="spot_numIt" align="left"/>
+	</div>
+	<br/>
+	<input type="button" value='Run Simulation' onClick="handle_spot_Simulation()"/>
+	<br/>
+	<div id="resultBody" hidden class="center">
+		<h4>Result of the Simulation<h4>
+				<br/>
+        <a href="#" onclick="download_table_as_csv('Spot_Result_Table');">Download as CSV</a>
+				<div id="spot_result" class="center">
+</div>
+
+  <div id="spot_chartContent">
+  <canvas id="Spot_Result_Quantity_Chart" style="width:100%"></canvas>
+  <canvas id="Spot_Result_Monies_Chart" style="width:100%"></canvas>
+  </div>
+
+</div>
+</div>
+<!--Spot HTML ends here-->
+
 		</div>
 </body>
 </html>
