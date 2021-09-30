@@ -447,9 +447,9 @@
 
         var demand = Math.max((parseInt((parseFloat(mean) + parseFloat(random_sample_std_normal_dist() * sd)), 10)), 0);
         var spotPrice = 0;
-        
-        while (spotPrice==0) {
-          spotPrice = Math.max((parseInt((parseFloat(rp) - parseFloat(random_sample_std_normal_dist_postive() * (Math.floor((Math.random() * 7 + 1) * 10)))), 10)), 0);          
+
+        while (spotPrice == 0) {
+          spotPrice = Math.max((parseInt((parseFloat(rp) - parseFloat(random_sample_std_normal_dist_postive() * (Math.floor((Math.random() * 7 + 1) * 10)))), 10)), 0);
         }
 
 
@@ -688,23 +688,23 @@
       var itrArr = [];
       var actualDemandArr = [];
       var fulOrderQtyArr = [];
-      var fulOrderSpotQtyArr=[];
+      var fulOrderSpotQtyArr = [];
       var excInvArr = [];
       var salesRevenueArr = [];
       var salRevenueArr = [];
       var costArr = [];
       var profitOrLossArr = [];
-      var spotPriceArr=[];
+      var spotPriceArr = [];
 
       var cumDemand = 0;
       var cumRevenue = 0;
       var cumCost = 0;
       var cumProLoss = 0;
       var cumFulQty = 0;
-      var cumFulSpotQty=0;
+      var cumFulSpotQty = 0;
       var cumExcessInv = 0;
       var cumSalRevenue = 0;
-      var cumSpotPrice=0;
+      var cumSpotPrice = 0;
 
 
       rowData[0] = ["Iteration Number", "Actual Demand", "Quantity fulfiled by Long Term Contract", "Quantity fulfiled by Spot Contract", "Spot Price", "Excess Inventory", "Sales Revenue", "Salvage Revenue", "Cost", "Profit/Loss"];
@@ -712,9 +712,9 @@
 
         var demand = Math.max((parseInt((parseFloat(mean) + parseFloat(random_sample_std_normal_dist() * sd)), 10)), 0);
         var spotPrice = 0;
-        
-        while (spotPrice==0) {
-          spotPrice = Math.max((parseInt((parseFloat(rp) - parseFloat(random_sample_std_normal_dist_postive() * (Math.floor((Math.random() * 7 + 1) * 10)))), 10)), 0);          
+
+        while (spotPrice == 0) {
+          spotPrice = Math.max((parseInt((parseFloat(rp) - parseFloat(random_sample_std_normal_dist_postive() * (Math.floor((Math.random() * 7 + 1) * 10)))), 10)), 0);
         }
 
 
@@ -732,16 +732,16 @@
         }
 
         var revenue = parseFloat((rp * demand));
-        var cost = parseFloat((orderQty * wsp)+(fulSpotQty*spotPrice));
+        var cost = parseFloat((orderQty * wsp) + (fulSpotQty * spotPrice));
         var proLoss = parseFloat(revenue) + parseFloat(salRevenue) - parseFloat(cost);
-        rowData[i] = [i, demand, fulQty, fulSpotQty,spotPrice, excessInv, revenue, salRevenue, cost, proLoss];
+        rowData[i] = [i, demand, fulQty, fulSpotQty, spotPrice, excessInv, revenue, salRevenue, cost, proLoss];
 
         cumDemand = cumDemand + demand;
         cumCost = cumCost + cost;
         cumRevenue = cumRevenue + revenue;
         cumProLoss = cumProLoss + proLoss;
         cumFulQty = cumFulQty + fulQty;
-        cumSpotPrice=cumSpotPrice+spotPrice;
+        cumSpotPrice = cumSpotPrice + spotPrice;
         cumFulSpotQty = cumFulSpotQty + fulSpotQty;
         cumExcessInv = cumExcessInv + excessInv;
         cumSalRevenue = cumSalRevenue + salRevenue;
@@ -753,13 +753,13 @@
         fulOrderQtyArr[i] = fulQty;
         salesRevenueArr[i] = revenue;
         salRevenueArr[i] = salRevenue;
-        spotPriceArr[i]=spotPrice;
+        spotPriceArr[i] = spotPrice;
         costArr[i] = cost;
         profitOrLossArr[i] = proLoss;
       }
-      rowData[numIt + 1] = ["Total", (Math.round((cumDemand + Number.EPSILON) * 100) / 100), (Math.round((cumFulQty + Number.EPSILON) * 100) / 100), (Math.round((cumFulSpotQty + Number.EPSILON) * 100) / 100),(Math.round((cumSpotPrice + Number.EPSILON) * 100) / 100), (Math.round((cumExcessInv + Number.EPSILON) * 100) / 100), (Math.round((cumRevenue + Number.EPSILON) * 100) / 100), (Math.round((cumSalRevenue + Number.EPSILON) * 100) / 100), (Math.round((cumCost + Number.EPSILON) * 100) / 100), (Math.round((cumProLoss + Number.EPSILON) * 100) / 100)];
+      rowData[numIt + 1] = ["Total", (Math.round((cumDemand + Number.EPSILON) * 100) / 100), (Math.round((cumFulQty + Number.EPSILON) * 100) / 100), (Math.round((cumFulSpotQty + Number.EPSILON) * 100) / 100), (Math.round((cumSpotPrice + Number.EPSILON) * 100) / 100), (Math.round((cumExcessInv + Number.EPSILON) * 100) / 100), (Math.round((cumRevenue + Number.EPSILON) * 100) / 100), (Math.round((cumSalRevenue + Number.EPSILON) * 100) / 100), (Math.round((cumCost + Number.EPSILON) * 100) / 100), (Math.round((cumProLoss + Number.EPSILON) * 100) / 100)];
 
-      rowData[numIt + 2] = ["Average", (Math.round((cumDemand / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumFulQty / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumFulSpotQty / numIt + Number.EPSILON) * 100) / 100),(Math.round((cumSpotPrice / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumExcessInv / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumRevenue / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumSalRevenue / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumCost / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumProLoss / numIt + Number.EPSILON) * 100) / 100)];
+      rowData[numIt + 2] = ["Average", (Math.round((cumDemand / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumFulQty / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumFulSpotQty / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumSpotPrice / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumExcessInv / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumRevenue / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumSalRevenue / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumCost / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumProLoss / numIt + Number.EPSILON) * 100) / 100)];
 
       //Remove the first undefined 
       itrArr.shift();
@@ -914,7 +914,7 @@
               borderColor: 'rgb(15, 235, 10)',
               yAxisID: 'y',
             },
-            
+
             {
               label: 'Profit or Loss',
               data: profitOrLossArr,
@@ -1102,13 +1102,17 @@
     <h1 class="center"> Contracts Simulation </h1>
     <br />
     <div class="tab">
+      <button class="tablinks" onclick="openSimulationTab(event, 'Instructions')">Instructions</button>
       <button class="tablinks" onclick="openSimulationTab(event, 'LTC')">Long Term Contract</button>
       <button class="tablinks" onclick="openSimulationTab(event, 'Spot')">Spot Contract</button>
       <button class="tablinks" onclick="openSimulationTab(event, 'LTC-Spot')">Long Term with Spot Contract</button>
       <button class="tablinks" onclick="openSimulationTab(event, 'Options')">Options Contract</button>
-      <button class="tablinks" onclick="openSimulationTab(event, 'LTC-Options')">Long Term with Options Contract</button>
-      <button class="tablinks" onclick="openSimulationTab(event, 'LTC-Options-Spot')">Long Term with Options and Spot Contract</button>
-      <button class="tablinks" onclick="openSimulationTab(event, 'LTC-Revenue Sharing')">Long Term with Revenue Sharing Contract</button>
+      <button class="tablinks" onclick="openSimulationTab(event, 'LTC-Options')">Long Term with Options
+        Contract</button>
+      <button class="tablinks" onclick="openSimulationTab(event, 'LTC-Options-Spot')">Long Term with Options and Spot
+        Contract</button>
+      <button class="tablinks" onclick="openSimulationTab(event, 'LTC-Revenue Sharing')">Long Term with Revenue Sharing
+        Contract</button>
     </div>
     <br />
     <!--LTC HTML starts here-->
