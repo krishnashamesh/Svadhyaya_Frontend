@@ -1,869 +1,1249 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Newsvendor Simulation</title>
+  <title>Newsvendor Simulation</title>
 </head>
+
 <body>
-  
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
-</script>
 
-<script>
-// Utility Functions starts here
-function random_sample_std_normal_dist() {
-  let u = 0, v = 0;
-  while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
-  while(v === 0) v = Math.random();
-  let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
-  if (num > 1 || num < -1) return random_sample_std_normal_dist() // resample between 0 and 1
-  return num
-};
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+  </script>
 
-function random_sample_std_normal_dist_postive() {
-  let u = 0, v = 0;
-  while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
-  while(v === 0) v = Math.random();
-  let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
-  num = num / 10.0 + 0.5; // Translate to 0 -> 1
-  if (num > 1 || num < -1) return random_sample_std_normal_dist() // resample between 0 and 1
-  return num
-};
+  <script>
+    // Utility Functions starts here
+    function random_sample_std_normal_dist() {
+      let u = 0, v = 0;
+      while (u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+      while (v === 0) v = Math.random();
+      let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+      if (num > 1 || num < -1) return random_sample_std_normal_dist() // resample between 0 and 1
+      return num
+    };
 
-function createTable(tableData,resultDiv,tableId) {
-  var table = document.createElement('table');
-  table.setAttribute('id',tableId);
-  var tableBody = document.createElement('tbody');
+    function random_sample_std_normal_dist_postive() {
+      let u = 0, v = 0;
+      while (u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+      while (v === 0) v = Math.random();
+      let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+      num = num / 10.0 + 0.5; // Translate to 0 -> 1
+      if (num > 1 || num < -1) return random_sample_std_normal_dist() // resample between 0 and 1
+      return num
+    };
 
-  tableData.forEach(function(rowData) {
-    var row = document.createElement('tr');
+    function createTable(tableData, resultDiv, tableId) {
+      var table = document.createElement('table');
+      table.setAttribute('id', tableId);
+      var tableBody = document.createElement('tbody');
 
-    rowData.forEach(function(cellData) {
-      var cell = document.createElement('td');
-      cell.appendChild(document.createTextNode(cellData));
-      row.appendChild(cell);
-    });
+      tableData.forEach(function (rowData) {
+        var row = document.createElement('tr');
 
-    tableBody.appendChild(row);
-  });
+        rowData.forEach(function (cellData) {
+          var cell = document.createElement('td');
+          cell.appendChild(document.createTextNode(cellData));
+          row.appendChild(cell);
+        });
 
-  table.appendChild(tableBody);
-  resultDiv.innerHTML="";
-  resultDiv.appendChild(table);
-};
+        tableBody.appendChild(row);
+      });
 
-//Source: https://stackoverflow.com/questions/15547198/export-html-table-to-csv
-// Quick and simple export target #table_id into a csv
-function download_table_as_csv(table_id, separator = ',') {
-    // Select rows from table_id
-    var rows = document.querySelectorAll('table#' + table_id + ' tr');
-    // Construct csv
-    var csv = [];
-    for (var i = 0; i < rows.length; i++) {
+      table.appendChild(tableBody);
+      resultDiv.innerHTML = "";
+      resultDiv.appendChild(table);
+    };
+
+    //Source: https://stackoverflow.com/questions/15547198/export-html-table-to-csv
+    // Quick and simple export target #table_id into a csv
+    function download_table_as_csv(table_id, separator = ',') {
+      // Select rows from table_id
+      var rows = document.querySelectorAll('table#' + table_id + ' tr');
+      // Construct csv
+      var csv = [];
+      for (var i = 0; i < rows.length; i++) {
         var row = [], cols = rows[i].querySelectorAll('td, th');
         for (var j = 0; j < cols.length; j++) {
-            // Clean innertext to remove multiple spaces and jumpline (break csv)
-            var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
-            // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
-            data = data.replace(/"/g, '""');
-            // Push escaped string
-            row.push('"' + data + '"');
+          // Clean innertext to remove multiple spaces and jumpline (break csv)
+          var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
+          // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
+          data = data.replace(/"/g, '""');
+          // Push escaped string
+          row.push('"' + data + '"');
         }
         csv.push(row.join(separator));
-    }
-    var csv_string = csv.join('\n');
-    // Download it
-    var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
-    var link = document.createElement('a');
-    link.style.display = 'none';
-    link.setAttribute('target', '_blank');
-    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
-    link.setAttribute('download', filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-};
+      }
+      var csv_string = csv.join('\n');
+      // Download it
+      var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
+      var link = document.createElement('a');
+      link.style.display = 'none';
+      link.setAttribute('target', '_blank');
+      link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
 
 
-function resetCanvas(graphId,chartContent){
-  var oldCanvas=document.getElementById(graphId) 
-  var newCanvas = oldCanvas.cloneNode(true);
-  oldCanvas.remove(); 
-  document.getElementById(chartContent).append(newCanvas);
-  canvas = document.getElementById(graphId);
-  ctx = canvas.getContext('2d');
-};
+    function resetCanvas(graphId, chartContent) {
+      var oldCanvas = document.getElementById(graphId)
+      var newCanvas = oldCanvas.cloneNode(true);
+      oldCanvas.remove();
+      document.getElementById(chartContent).append(newCanvas);
+      canvas = document.getElementById(graphId);
+      ctx = canvas.getContext('2d');
+    };
 
-function openSimulationTab(evt, simulationName) {
-  var i, tabcontent, tablinks;
+    function openSimulationTab(evt, simulationName) {
+      var i, tabcontent, tablinks;
 
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
 
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
 
-  document.getElementById(simulationName).style.display = "block";
-  evt.currentTarget.className += " active";
-};
+      document.getElementById(simulationName).style.display = "block";
+      evt.currentTarget.className += " active";
+    };
 
-// Utility Functions ends here
+    // Utility Functions ends here
 
-// Long Term Contract Simulation Specific Functions starts here
-function handle_LTC_Simulation(){
+    // Long Term Contract Simulation Specific Functions starts here
+    function handle_LTC_Simulation() {
 
-var wsp=document.getElementById("ltc_wsp").value;
-var rp=document.getElementById("ltc_rp").value;
-var salp=document.getElementById("ltc_salp").value;
-var mean=document.getElementById("ltc_mean").value;
-var sd=document.getElementById("ltc_sd").value;
-var numIt=document.getElementById("ltc_numIt").value;
-var orderQty=document.getElementById("ltc_orderQty").value;
+      var wsp = document.getElementById("ltc_wsp").value;
+      var rp = document.getElementById("ltc_rp").value;
+      var salp = document.getElementById("ltc_salp").value;
+      var mean = document.getElementById("ltc_mean").value;
+      var sd = document.getElementById("ltc_sd").value;
+      var numIt = document.getElementById("ltc_numIt").value;
+      var orderQty = document.getElementById("ltc_orderQty").value;
 
-if(wsp.length <1 || rp.length <1 || salp.length <1 || mean.length <1 || sd.length <1 || numIt.length <1 ){
-alert("One of the parameters is missing");
-return;
-}
+      if (wsp.length < 1 || rp.length < 1 || salp.length < 1 || mean.length < 1 || sd.length < 1 || numIt.length < 1) {
+        alert("One of the parameters is missing");
+        return;
+      }
 
-var rowData = [];
-var itrArr=[];
-var actualDemandArr= [];
-var fulOrderQtyArr=[];
-var lostSalesArr=[];
-var excInvArr=[];
-var salesRevenueArr=[];
-var salRevenueArr=[];
-var costArr=[];
-var profitOrLossArr=[];
+      var rowData = [];
+      var itrArr = [];
+      var actualDemandArr = [];
+      var fulOrderQtyArr = [];
+      var lostSalesArr = [];
+      var excInvArr = [];
+      var salesRevenueArr = [];
+      var salRevenueArr = [];
+      var costArr = [];
+      var profitOrLossArr = [];
 
-var cumDemand=0;
-var cumRevenue=0;
-var cumCost=0;
-var cumProLoss=0;
-var cumFulQty=0;
-var cumLostSales=0
-var cumExcessInv=0;
-var cumSalRevenue=0;
-
-
-rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order Quantity", "Lost Sales", "Excess Inventory", "Sales Revenue", "Salvage Revenue", "Cost", "Profit/Loss"];
-for (let i = 1; i <= numIt; i++) {
-
-var demand = Math.max((parseInt((parseFloat(mean) + parseFloat(random_sample_std_normal_dist()*sd)),10)),0);
-
-var fulQty=Math.min(parseFloat(demand),parseFloat(orderQty));
-fulOrderQtyArr[i]=fulQty;
-var lostSales=0;
-var excessInv=0;
-var salRevenue=0;
-if(fulQty<demand){
-lostSales=demand-fulQty;
-}
-if(orderQty>demand){
-excessInv=parseFloat(orderQty)-parseFloat(demand);
-salRevenue=parseFloat(excessInv)*parseFloat(salp);
-}
-
-var revenue = parseFloat((rp*fulQty));
-var cost=parseFloat((orderQty*wsp));
-var proLoss=parseFloat(revenue)+parseFloat(salRevenue)-parseFloat(cost);
-rowData[i] = [i, demand,fulQty,lostSales,excessInv,revenue ,salRevenue, cost,proLoss];
-
-cumDemand = cumDemand+demand;
-cumCost=cumCost+cost;
-cumRevenue=cumRevenue+revenue;
-cumProLoss=cumProLoss+proLoss;
-cumFulQty=cumFulQty+fulQty;
-cumLostSales=cumLostSales+lostSales;
-cumExcessInv=cumExcessInv+excessInv;
-cumSalRevenue=cumSalRevenue+salRevenue;
-
-itrArr[i]=i;
-actualDemandArr[i]=demand;
-lostSalesArr[i]=lostSales;
-excInvArr[i]=excessInv;
-fulOrderQtyArr[i]=fulQty;
-salesRevenueArr[i]=revenue;
-salRevenueArr[i]=salRevenue;
-costArr[i]=cost;
-profitOrLossArr[i]=proLoss;
-}
-rowData[numIt+1] = ["Total",(Math.round((cumDemand+ Number.EPSILON) * 100) / 100),(Math.round((cumFulQty+ Number.EPSILON) * 100) / 100),(Math.round((cumLostSales+ Number.EPSILON) * 100) / 100),(Math.round((cumExcessInv+ Number.EPSILON) * 100) / 100),(Math.round((cumRevenue+ Number.EPSILON) * 100) / 100),(Math.round((cumSalRevenue+ Number.EPSILON) * 100) / 100),(Math.round((cumCost+ Number.EPSILON) * 100) / 100),(Math.round((cumProLoss+ Number.EPSILON) * 100) / 100)];
-
-rowData[numIt+2] = ["Average",(Math.round((cumDemand/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumFulQty/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumLostSales/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumExcessInv/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumRevenue/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumSalRevenue/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumCost/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumProLoss/numIt+ Number.EPSILON) * 100) / 100)];
-
-//Remove the first undefined 
-itrArr.shift();
-actualDemandArr.shift();
-fulOrderQtyArr.shift();
-lostSalesArr.shift();
-excInvArr.shift();
-salesRevenueArr.shift();
-salRevenueArr.shift();
-costArr.shift();
-profitOrLossArr.shift();
-
-createTable(rowData,document.getElementById("ltc_result"),'LTC_Result_Table');
-document.getElementById("ltc_resultBody").style.display = 'block';
+      var cumDemand = 0;
+      var cumRevenue = 0;
+      var cumCost = 0;
+      var cumProLoss = 0;
+      var cumFulQty = 0;
+      var cumLostSales = 0
+      var cumExcessInv = 0;
+      var cumSalRevenue = 0;
 
 
-resetCanvas('LTC_Result_Quantity_Chart','ltc_chartContent');
-resetCanvas('LTC_Result_Monies_Chart','ltc_chartContent');
+      rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order Quantity", "Lost Sales", "Excess Inventory", "Sales Revenue", "Salvage Revenue", "Cost", "Profit/Loss"];
+      for (let i = 1; i <= numIt; i++) {
 
-new Chart("LTC_Result_Quantity_Chart",{
-  backgroundColor: "transparent",
-  type: 'line',
-  options: {
-    responsive: true,
-    interaction: {
-      mode: 'index',
-      intersect: false,
-    },
-    stacked: false,
- 
-    title: {
-        display: true,
-        text: 'Quantity Chart for Long Term Contract'
-    },
-    
-    scales: {
-      xAxes: [{
-            offset: false,
-	    scaleLabel: {
-            	display: true,
+        var demand = Math.max((parseInt((parseFloat(mean) + parseFloat(random_sample_std_normal_dist() * sd)), 10)), 0);
+
+        var fulQty = Math.min(parseFloat(demand), parseFloat(orderQty));
+        fulOrderQtyArr[i] = fulQty;
+        var lostSales = 0;
+        var excessInv = 0;
+        var salRevenue = 0;
+        if (fulQty < demand) {
+          lostSales = demand - fulQty;
+        }
+        if (orderQty > demand) {
+          excessInv = parseFloat(orderQty) - parseFloat(demand);
+          salRevenue = parseFloat(excessInv) * parseFloat(salp);
+        }
+
+        var revenue = parseFloat((rp * fulQty));
+        var cost = parseFloat((orderQty * wsp));
+        var proLoss = parseFloat(revenue) + parseFloat(salRevenue) - parseFloat(cost);
+        rowData[i] = [i, demand, fulQty, lostSales, excessInv, revenue, salRevenue, cost, proLoss];
+
+        cumDemand = cumDemand + demand;
+        cumCost = cumCost + cost;
+        cumRevenue = cumRevenue + revenue;
+        cumProLoss = cumProLoss + proLoss;
+        cumFulQty = cumFulQty + fulQty;
+        cumLostSales = cumLostSales + lostSales;
+        cumExcessInv = cumExcessInv + excessInv;
+        cumSalRevenue = cumSalRevenue + salRevenue;
+
+        itrArr[i] = i;
+        actualDemandArr[i] = demand;
+        lostSalesArr[i] = lostSales;
+        excInvArr[i] = excessInv;
+        fulOrderQtyArr[i] = fulQty;
+        salesRevenueArr[i] = revenue;
+        salRevenueArr[i] = salRevenue;
+        costArr[i] = cost;
+        profitOrLossArr[i] = proLoss;
+      }
+      rowData[numIt + 1] = ["Total", (Math.round((cumDemand + Number.EPSILON) * 100) / 100), (Math.round((cumFulQty + Number.EPSILON) * 100) / 100), (Math.round((cumLostSales + Number.EPSILON) * 100) / 100), (Math.round((cumExcessInv + Number.EPSILON) * 100) / 100), (Math.round((cumRevenue + Number.EPSILON) * 100) / 100), (Math.round((cumSalRevenue + Number.EPSILON) * 100) / 100), (Math.round((cumCost + Number.EPSILON) * 100) / 100), (Math.round((cumProLoss + Number.EPSILON) * 100) / 100)];
+
+      rowData[numIt + 2] = ["Average", (Math.round((cumDemand / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumFulQty / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumLostSales / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumExcessInv / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumRevenue / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumSalRevenue / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumCost / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumProLoss / numIt + Number.EPSILON) * 100) / 100)];
+
+      //Remove the first undefined 
+      itrArr.shift();
+      actualDemandArr.shift();
+      fulOrderQtyArr.shift();
+      lostSalesArr.shift();
+      excInvArr.shift();
+      salesRevenueArr.shift();
+      salRevenueArr.shift();
+      costArr.shift();
+      profitOrLossArr.shift();
+
+      createTable(rowData, document.getElementById("ltc_result"), 'LTC_Result_Table');
+      document.getElementById("ltc_resultBody").style.display = 'block';
+
+
+      resetCanvas('LTC_Result_Quantity_Chart', 'ltc_chartContent');
+      resetCanvas('LTC_Result_Monies_Chart', 'ltc_chartContent');
+
+      new Chart("LTC_Result_Quantity_Chart", {
+        backgroundColor: "transparent",
+        type: 'line',
+        options: {
+          responsive: true,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          stacked: false,
+
+          title: {
+            display: true,
+            text: 'Quantity Chart for Long Term Contract'
+          },
+
+          scales: {
+            xAxes: [{
+              offset: false,
+              scaleLabel: {
+                display: true,
                 labelString: 'Iterations'
-            }	      
-        }],
-      yAxes: [{
-	scaleLabel: {
-        	display: true,
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
                 labelString: 'Quantity'
+              },
+              id: 'y',
+              type: 'linear',
+              position: 'left',
+              display: true,
+              title: 'Quantity',
+              beginAtZero: false,
+              grid: {
+                drawOnChartArea: false, // only want the grid lines for one axis to show up
+              }
+            }]
+          }
         },
-        id: 'y',
-        type: 'linear',
-        position: 'left',
-        display	: true,
-        title:'Quantity',
-        beginAtZero: false,
-        grid: {
-          drawOnChartArea: false, // only want the grid lines for one axis to show up
-        }
-       }]
-    }
-  },
-  data: {
-  labels: itrArr,
-  datasets: [
-    {
-      label: 'Actual Demand',
-      data: actualDemandArr,
-      backgroundColor: "rgba(0,0,0,0.0)",
-      borderColor: 'rgb(255, 99, 132)',
-      yAxisID: 'y',
-    },
-    {
-      label: 'Fulfilled Order Quantity',
-      data: fulOrderQtyArr,
-      backgroundColor: "rgba(0,0,0,0.0)",
-      borderColor: 'rgb(54, 162, 235)',
-      yAxisID: 'y',
-    },
-    {
-      label: 'Lost Sales',
-      data: lostSalesArr,
-      backgroundColor: "rgba(0,0,0,0.0)",
-      borderColor: 'rgb(255, 130, 99)',
-      yAxisID: 'y',
-    },
-    {
-      label: 'Excess Inventory',
-      data: excInvArr,
-      backgroundColor: "rgba(0,0,0,0.0)",
-      borderColor: 'rgb(54, 235, 162)',
-      yAxisID: 'y',
-    }
-  ]
-},
-});
+        data: {
+          labels: itrArr,
+          datasets: [
+            {
+              label: 'Actual Demand',
+              data: actualDemandArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(255, 99, 132)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Fulfilled Order Quantity',
+              data: fulOrderQtyArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 162, 235)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Lost Sales',
+              data: lostSalesArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(255, 130, 99)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Excess Inventory',
+              data: excInvArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 235, 162)',
+              yAxisID: 'y',
+            }
+          ]
+        },
+      });
 
-new Chart("LTC_Result_Monies_Chart",{
-  backgroundColor: "transparent",
-  type: 'line',
-  options: {
-    responsive: true,
-    interaction: {
-      mode: 'index',
-      intersect: false,
-    },
-    stacked: false,
- 
-    title: {
-        display: true,
-        text: 'Monies Chart for Long Term Contract'
-    },
-    
-    scales: {
-      xAxes: [{
-            offset: false,
-	    scaleLabel: {
-            	display: true,
+      new Chart("LTC_Result_Monies_Chart", {
+        backgroundColor: "transparent",
+        type: 'line',
+        options: {
+          responsive: true,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          stacked: false,
+
+          title: {
+            display: true,
+            text: 'Monies Chart for Long Term Contract'
+          },
+
+          scales: {
+            xAxes: [{
+              offset: false,
+              scaleLabel: {
+                display: true,
                 labelString: 'Iterations'
-            }	      
-        }],
-      yAxes: [{
-	scaleLabel: {
-        	display: true,
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
                 labelString: 'in Rupees'
+              },
+              id: 'y',
+              type: 'linear',
+              position: 'left',
+              display: true,
+              title: 'in Rupees',
+              beginAtZero: false,
+              grid: {
+                drawOnChartArea: false, // only want the grid lines for one axis to show up
+              }
+            }]
+          }
         },
-        id: 'y',
-        type: 'linear',
-        position: 'left',
-        display	: true,
-        title:'in Rupees',
-        beginAtZero: false,
-        grid: {
-          drawOnChartArea: false, // only want the grid lines for one axis to show up
+        data: {
+          labels: itrArr,
+          datasets: [
+            {
+              label: 'Cost',
+              data: costArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(255, 99, 132)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Profit or Loss',
+              data: profitOrLossArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 162, 235)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Salvage Revenue',
+              data: salRevenueArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(255, 130, 99)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Sales Revenue',
+              data: salesRevenueArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 235, 162)',
+              yAxisID: 'y',
+            }
+          ]
+        },
+      });
+
+
+    };
+
+    // Long Term Contract Simulation Specific Functions ends here
+
+    //Spot Contract Simulation Specific Functions starts here
+
+    function handle_His_Spot_Prices(retailPrice) {
+
+      var rp = document.getElementById("spot_rp").value;
+
+      if (rp.length < 1) {
+        alert("Retail Price required for calculating historical prices");
+        return;
+      }
+
+      var rowData = [];
+      var sd = Math.floor((Math.random() * 7 + 1) * 10);
+      var cumHisSpotPrice = 0;
+      var numIt = 52;
+      for (let i = 1; i <= numIt; i++) {
+
+        rowData[0] = ["Week", "Historical Spot Prices"];
+
+        var hisSpotPrice = Math.max((parseInt((parseFloat(rp) - parseFloat(random_sample_std_normal_dist_postive() * sd)), 10)), 0);
+        cumHisSpotPrice = cumHisSpotPrice + hisSpotPrice;
+        rowData[i] = [i, hisSpotPrice];
+      }
+      rowData[numIt + 1] = ["Total", (Math.round((cumHisSpotPrice + Number.EPSILON) * 100) / 100)];
+
+      rowData[numIt + 2] = ["Average", (Math.round((cumHisSpotPrice / numIt + Number.EPSILON) * 100) / 100)];
+
+      createTable(rowData, document.getElementById("spot_history_result"), 'Spot_Historical_Result_Table');
+
+      var modal = document.getElementById("spot_history_result_modal");
+      modal.style.display = "block";
+
+      var span = document.getElementById("spot_close");
+      span.onclick = function () {
+        modal.style.display = "none";
+      }
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
         }
-       }]
-    }
-  },
-  data: {
-  labels: itrArr,
-  datasets: [
-    {
-      label: 'Cost',
-      data: costArr,
-      backgroundColor: "rgba(0,0,0,0.0)",
-      borderColor: 'rgb(255, 99, 132)',
-      yAxisID: 'y',
-    },
-    {
-      label: 'Profit or Loss',
-      data: profitOrLossArr,
-      backgroundColor: "rgba(0,0,0,0.0)",
-      borderColor: 'rgb(54, 162, 235)',
-      yAxisID: 'y',
-    },
-    {
-      label: 'Salvage Revenue',
-      data: salRevenueArr,
-      backgroundColor: "rgba(0,0,0,0.0)",
-      borderColor: 'rgb(255, 130, 99)',
-      yAxisID: 'y',
-    },
-    {
-      label: 'Sales Revenue',
-      data: salesRevenueArr,
-      backgroundColor: "rgba(0,0,0,0.0)",
-      borderColor: 'rgb(54, 235, 162)',
-      yAxisID: 'y',
-    }
-  ]
-},
-});
+      }
+    };
+
+    function handle_spot_Simulation() {
+
+      var rp = document.getElementById("spot_rp").value;
+      var mean = document.getElementById("spot_mean").value;
+      var sd = document.getElementById("spot_sd").value;
+      var numIt = document.getElementById("spot_numIt").value;
+
+      if (rp.length < 1 || mean.length < 1 || sd.length < 1 || numIt.length < 1) {
+        alert("One of the parameters is missing");
+        return;
+      }
+
+      var rowData = [];
+      var itrArr = [];
+      var actualDemandArr = [];
+      var salesRevenueArr = [];
+      var costArr = [];
+      var profitOrLossArr = [];
+      var spotPriceArr = [];
+
+      var cumDemand = 0;
+      var cumRevenue = 0;
+      var cumCost = 0;
+      var cumProLoss = 0;
+      var cumSpotPrice = 0;
 
 
-};
+      rowData[0] = ["Iteration Number", "Actual Demand", "Spot Price", "Sales Revenue", "Cost", "Profit/Loss"];
+      for (let i = 1; i <= numIt; i++) {
 
-// Long Term Contract Simulation Specific Functions ends here
+        var demand = Math.max((parseInt((parseFloat(mean) + parseFloat(random_sample_std_normal_dist() * sd)), 10)), 0);
+        var spotPrice = Math.max((parseInt((parseFloat(rp) - parseFloat(random_sample_std_normal_dist_postive() * sd)), 10)), 0);
 
-//Spot Contract Simulation Specific Functions starts here
+        var revenue = parseFloat((rp * demand));
+        var cost = parseFloat((demand * spotPrice));
+        var proLoss = parseFloat(revenue) - parseFloat(cost);
+        rowData[i] = [i, demand, spotPrice, revenue, cost, proLoss];
 
-function handle_His_Spot_Prices(retailPrice){
+        cumDemand = cumDemand + demand;
+        cumCost = cumCost + cost;
+        cumRevenue = cumRevenue + revenue;
+        cumProLoss = cumProLoss + proLoss;
+        cumSpotPrice = cumSpotPrice + spotPrice;
 
-  var rp=document.getElementById("spot_rp").value;
+        itrArr[i] = i;
+        actualDemandArr[i] = demand;
+        salesRevenueArr[i] = revenue;
+        costArr[i] = cost;
+        profitOrLossArr[i] = proLoss;
+        spotPriceArr[i] = spotPrice;
+      }
+      rowData[numIt + 1] = ["Total", (Math.round((cumDemand + Number.EPSILON) * 100) / 100), (Math.round((cumSpotPrice + Number.EPSILON) * 100) / 100), (Math.round((cumRevenue + Number.EPSILON) * 100) / 100), (Math.round((cumCost + Number.EPSILON) * 100) / 100), (Math.round((cumProLoss + Number.EPSILON) * 100) / 100)];
 
-if(rp.length <1 ){
-alert("Retail Price required for calculating historical prices");
-return;
-}
+      rowData[numIt + 2] = ["Average", (Math.round((cumDemand / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumSpotPrice / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumRevenue / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumCost / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumProLoss / numIt + Number.EPSILON) * 100) / 100)];
 
-var rowData = [];
-var sd=Math.floor((Math.random() * 7 + 1)*10);
-var cumHisSpotPrice=0;
-var numIt=52;
-for (let i = 1; i <= numIt; i++) {
+      //Remove the first undefined 
+      itrArr.shift();
+      actualDemandArr.shift();
+      salesRevenueArr.shift();
+      costArr.shift();
+      profitOrLossArr.shift();
+      spotPriceArr.shift();
 
-rowData[0] = ["Week", "Historical Spot Prices"];
-
-var hisSpotPrice = Math.max((parseInt((parseFloat(rp) - parseFloat(random_sample_std_normal_dist_postive()*sd)),10)),0);
-cumHisSpotPrice = cumHisSpotPrice+hisSpotPrice;
-rowData[i]=[i,hisSpotPrice];
-}
-rowData[numIt+1] = ["Total",(Math.round((cumHisSpotPrice+ Number.EPSILON) * 100) / 100)];
-
-rowData[numIt+2] = ["Average",(Math.round((cumHisSpotPrice/numIt+ Number.EPSILON) * 100) / 100)];
-
-createTable(rowData,document.getElementById("spot_history_result"),'Spot_Historical_Result_Table');
-
-var modal = document.getElementById("spot_history_result_modal");
-modal.style.display = "block";
-
-var span = document.getElementsByClassName("close")[0];
-span.onclick = function() {
-  modal.style.display = "none";
-}
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-};
-
-function handle_spot_Simulation(){
-
-var rp=document.getElementById("spot_rp").value;
-var mean=document.getElementById("spot_mean").value;
-var sd=document.getElementById("spot_sd").value;
-var numIt=document.getElementById("spot_numIt").value;
-
-if(rp.length <1 || mean.length <1 || sd.length <1 || numIt.length <1 ){
-alert("One of the parameters is missing");
-return;
-}
-
-var rowData = [];
-var itrArr=[];
-var actualDemandArr= [];
-var salesRevenueArr=[];
-var costArr=[];
-var profitOrLossArr=[];
-var spotPriceArr=[];
-
-var cumDemand=0;
-var cumRevenue=0;
-var cumCost=0;
-var cumProLoss=0;
-var cumSpotPrice=0;
+      createTable(rowData, document.getElementById("spot_result"), 'Spot_Result_Table');
+      document.getElementById("spot_resultBody").style.display = 'block';
 
 
-rowData[0] = ["Iteration Number", "Actual Demand", "Spot Price", "Sales Revenue", "Cost", "Profit/Loss"];
-for (let i = 1; i <= numIt; i++) {
+      resetCanvas('Spot_Result_Quantity_Chart', 'spot_chartContent');
+      resetCanvas('Spot_Result_Monies_Chart', 'spot_chartContent');
 
-var demand = Math.max((parseInt((parseFloat(mean) + parseFloat(random_sample_std_normal_dist()*sd)),10)),0);
-var spotPrice = Math.max((parseInt((parseFloat(rp) - parseFloat(random_sample_std_normal_dist_postive()*sd)),10)),0);
+      new Chart("Spot_Result_Quantity_Chart", {
+        backgroundColor: "transparent",
+        type: 'line',
+        options: {
+          responsive: true,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          stacked: false,
 
-var revenue = parseFloat((rp*demand));
-var cost=parseFloat((demand*spotPrice));
-var proLoss=parseFloat(revenue)-parseFloat(cost);
-rowData[i] = [i, demand,spotPrice,revenue,cost,proLoss];
+          title: {
+            display: true,
+            text: 'Quantity Chart for Spot Contract'
+          },
 
-cumDemand = cumDemand+demand;
-cumCost=cumCost+cost;
-cumRevenue=cumRevenue+revenue;
-cumProLoss=cumProLoss+proLoss;
-cumSpotPrice=cumSpotPrice+spotPrice;
-
-itrArr[i]=i;
-actualDemandArr[i]=demand;
-salesRevenueArr[i]=revenue;
-costArr[i]=cost;
-profitOrLossArr[i]=proLoss;
-spotPriceArr[i]=spotPrice;
-}
-rowData[numIt+1] = ["Total",(Math.round((cumDemand+ Number.EPSILON) * 100) / 100),(Math.round((cumSpotPrice+ Number.EPSILON) * 100) / 100), (Math.round((cumRevenue+ Number.EPSILON) * 100) / 100),(Math.round((cumCost+ Number.EPSILON) * 100) / 100),(Math.round((cumProLoss+ Number.EPSILON) * 100) / 100)];
-
-rowData[numIt+2] = ["Average",(Math.round((cumDemand/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumSpotPrice/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumRevenue/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumCost/numIt+ Number.EPSILON) * 100) / 100),(Math.round((cumProLoss/numIt+ Number.EPSILON) * 100) / 100)];
-
-//Remove the first undefined 
-itrArr.shift();
-actualDemandArr.shift();
-salesRevenueArr.shift();
-costArr.shift();
-profitOrLossArr.shift();
-spotPriceArr.shift();
-
-createTable(rowData,document.getElementById("spot_result"),'Spot_Result_Table');
-document.getElementById("spot_resultBody").style.display = 'block';
-
-
-resetCanvas('Spot_Result_Quantity_Chart','spot_chartContent');
-resetCanvas('Spot_Result_Monies_Chart','spot_chartContent');
-
-new Chart("Spot_Result_Quantity_Chart",{
-  backgroundColor: "transparent",
-  type: 'line',
-  options: {
-    responsive: true,
-    interaction: {
-      mode: 'index',
-      intersect: false,
-    },
-    stacked: false,
- 
-    title: {
-        display: true,
-        text: 'Quantity Chart for Spot Contract'
-    },
-    
-    scales: {
-      xAxes: [{
-            offset: false,
-	    scaleLabel: {
-            	display: true,
+          scales: {
+            xAxes: [{
+              offset: false,
+              scaleLabel: {
+                display: true,
                 labelString: 'Iterations'
-            }	      
-        }],
-      yAxes: [{
-	scaleLabel: {
-        	display: true,
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
                 labelString: 'Quantity'
+              },
+              id: 'y',
+              type: 'linear',
+              position: 'left',
+              display: true,
+              title: 'Quantity',
+              beginAtZero: false,
+              grid: {
+                drawOnChartArea: false, // only want the grid lines for one axis to show up
+              }
+            }]
+          }
         },
-        id: 'y',
-        type: 'linear',
-        position: 'left',
-        display	: true,
-        title:'Quantity',
-        beginAtZero: false,
-        grid: {
-          drawOnChartArea: false, // only want the grid lines for one axis to show up
-        }
-       }]
-    }
-  },
-  data: {
-  labels: itrArr,
-  datasets: [
-    {
-      label: 'Actual Demand',
-      data: actualDemandArr,
-      backgroundColor: "rgba(0,0,0,0.0)",
-      borderColor: 'rgb(255, 99, 132)',
-      yAxisID: 'y',
-    }
-  ]
-},
-});
+        data: {
+          labels: itrArr,
+          datasets: [
+            {
+              label: 'Actual Demand',
+              data: actualDemandArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(255, 99, 132)',
+              yAxisID: 'y',
+            }
+          ]
+        },
+      });
 
-new Chart("Spot_Result_Monies_Chart",{
-  backgroundColor: "transparent",
-  type: 'line',
-  options: {
-    responsive: true,
-    interaction: {
-      mode: 'index',
-      intersect: false,
-    },
-    stacked: false,
- 
-    title: {
-        display: true,
-        text: 'Monies Chart for Spot Contract'
-    },
-    
-    scales: {
-      xAxes: [{
-            offset: false,
-	    scaleLabel: {
-            	display: true,
+      new Chart("Spot_Result_Monies_Chart", {
+        backgroundColor: "transparent",
+        type: 'line',
+        options: {
+          responsive: true,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          stacked: false,
+
+          title: {
+            display: true,
+            text: 'Monies Chart for Spot Contract'
+          },
+
+          scales: {
+            xAxes: [{
+              offset: false,
+              scaleLabel: {
+                display: true,
                 labelString: 'Iterations'
-            }	      
-        }],
-      yAxes: [{
-	scaleLabel: {
-        	display: true,
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
                 labelString: 'in Rupees'
+              },
+              id: 'y',
+              type: 'linear',
+              position: 'left',
+              display: true,
+              title: 'in Rupees',
+              beginAtZero: false,
+              grid: {
+                drawOnChartArea: false, // only want the grid lines for one axis to show up
+              }
+            }]
+          }
         },
-        id: 'y',
-        type: 'linear',
-        position: 'left',
-        display	: true,
-        title:'in Rupees',
-        beginAtZero: false,
-        grid: {
-          drawOnChartArea: false, // only want the grid lines for one axis to show up
+        data: {
+          labels: itrArr,
+          datasets: [
+            {
+              label: 'Cost',
+              data: costArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(255, 99, 132)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Profit or Loss',
+              data: profitOrLossArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 162, 235)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Spot Price',
+              data: spotPriceArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(0, 200, 150)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Sales Revenue',
+              data: salesRevenueArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 235, 162)',
+              yAxisID: 'y',
+            }
+          ]
+        },
+      });
+
+
+    };
+
+    //Spot Contract Simulation Specific Functions ends here
+
+    // Long Term with Spot Contract Simulation Specific Functions starts here
+    function handle_His_ltc_Spot_Prices(retailPrice) {
+
+      var rp = document.getElementById("ltc_spot_rp").value;
+
+      if (rp.length < 1) {
+        alert("Retail Price required for calculating historical prices");
+        return;
+      }
+
+      var rowData = [];
+      var sd = Math.floor((Math.random() * 7 + 1) * 10);
+      var cumHisSpotPrice = 0;
+      var numIt = 52;
+      for (let i = 1; i <= numIt; i++) {
+
+        rowData[0] = ["Week", "Historical Spot Prices"];
+
+        var hisSpotPrice = Math.max((parseInt((parseFloat(rp) - parseFloat(random_sample_std_normal_dist_postive() * sd)), 10)), 0);
+        cumHisSpotPrice = cumHisSpotPrice + hisSpotPrice;
+        rowData[i] = [i, hisSpotPrice];
+      }
+      rowData[numIt + 1] = ["Total", (Math.round((cumHisSpotPrice + Number.EPSILON) * 100) / 100)];
+
+      rowData[numIt + 2] = ["Average", (Math.round((cumHisSpotPrice / numIt + Number.EPSILON) * 100) / 100)];
+
+      createTable(rowData, document.getElementById("ltc_spot_history_result"), 'LTC_Spot_Historical_Result_Table');
+
+      var modal = document.getElementById("ltc_spot_history_result_modal");
+      modal.style.display = "block";
+
+      var span = document.getElementById("ltc_spot_close");
+      span.onclick = function () {
+        modal.style.display = "none";
+      }
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
         }
-       }]
+      }
+    };
+
+
+    function handle_LTC_Spot_Simulation() {
+
+      var wsp = document.getElementById("ltc_spot_wsp").value;
+      var rp = document.getElementById("ltc_spot_rp").value;
+      var salp = document.getElementById("ltc_spot_salp").value;
+      var mean = document.getElementById("ltc_spot_mean").value;
+      var sd = document.getElementById("ltc_spot_sd").value;
+      var numIt = document.getElementById("ltc_spot_numIt").value;
+      var orderQty = document.getElementById("ltc_spot_orderQty").value;
+
+      if (wsp.length < 1 || rp.length < 1 || salp.length < 1 || mean.length < 1 || sd.length < 1 || numIt.length < 1) {
+        alert("One of the parameters is missing");
+        return;
+      }
+
+      var rowData = [];
+      var itrArr = [];
+      var actualDemandArr = [];
+      var fulOrderQtyArr = [];
+      var lostSalesArr = [];
+      var excInvArr = [];
+      var salesRevenueArr = [];
+      var salRevenueArr = [];
+      var costArr = [];
+      var profitOrLossArr = [];
+
+      var cumDemand = 0;
+      var cumRevenue = 0;
+      var cumCost = 0;
+      var cumProLoss = 0;
+      var cumFulQty = 0;
+      var cumLostSales = 0
+      var cumExcessInv = 0;
+      var cumSalRevenue = 0;
+
+
+      rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order Quantity", "Lost Sales", "Excess Inventory", "Sales Revenue", "Salvage Revenue", "Cost", "Profit/Loss"];
+      for (let i = 1; i <= numIt; i++) {
+
+        var demand = Math.max((parseInt((parseFloat(mean) + parseFloat(random_sample_std_normal_dist() * sd)), 10)), 0);
+
+        var fulQty = Math.min(parseFloat(demand), parseFloat(orderQty));
+        fulOrderQtyArr[i] = fulQty;
+        var lostSales = 0;
+        var excessInv = 0;
+        var salRevenue = 0;
+        if (fulQty < demand) {
+          lostSales = demand - fulQty;
+        }
+        if (orderQty > demand) {
+          excessInv = parseFloat(orderQty) - parseFloat(demand);
+          salRevenue = parseFloat(excessInv) * parseFloat(salp);
+        }
+
+        var revenue = parseFloat((rp * fulQty));
+        var cost = parseFloat((orderQty * wsp));
+        var proLoss = parseFloat(revenue) + parseFloat(salRevenue) - parseFloat(cost);
+        rowData[i] = [i, demand, fulQty, lostSales, excessInv, revenue, salRevenue, cost, proLoss];
+
+        cumDemand = cumDemand + demand;
+        cumCost = cumCost + cost;
+        cumRevenue = cumRevenue + revenue;
+        cumProLoss = cumProLoss + proLoss;
+        cumFulQty = cumFulQty + fulQty;
+        cumLostSales = cumLostSales + lostSales;
+        cumExcessInv = cumExcessInv + excessInv;
+        cumSalRevenue = cumSalRevenue + salRevenue;
+
+        itrArr[i] = i;
+        actualDemandArr[i] = demand;
+        lostSalesArr[i] = lostSales;
+        excInvArr[i] = excessInv;
+        fulOrderQtyArr[i] = fulQty;
+        salesRevenueArr[i] = revenue;
+        salRevenueArr[i] = salRevenue;
+        costArr[i] = cost;
+        profitOrLossArr[i] = proLoss;
+      }
+      rowData[numIt + 1] = ["Total", (Math.round((cumDemand + Number.EPSILON) * 100) / 100), (Math.round((cumFulQty + Number.EPSILON) * 100) / 100), (Math.round((cumLostSales + Number.EPSILON) * 100) / 100), (Math.round((cumExcessInv + Number.EPSILON) * 100) / 100), (Math.round((cumRevenue + Number.EPSILON) * 100) / 100), (Math.round((cumSalRevenue + Number.EPSILON) * 100) / 100), (Math.round((cumCost + Number.EPSILON) * 100) / 100), (Math.round((cumProLoss + Number.EPSILON) * 100) / 100)];
+
+      rowData[numIt + 2] = ["Average", (Math.round((cumDemand / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumFulQty / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumLostSales / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumExcessInv / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumRevenue / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumSalRevenue / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumCost / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumProLoss / numIt + Number.EPSILON) * 100) / 100)];
+
+      //Remove the first undefined 
+      itrArr.shift();
+      actualDemandArr.shift();
+      fulOrderQtyArr.shift();
+      lostSalesArr.shift();
+      excInvArr.shift();
+      salesRevenueArr.shift();
+      salRevenueArr.shift();
+      costArr.shift();
+      profitOrLossArr.shift();
+
+      createTable(rowData, document.getElementById("ltc_spot_result"), 'LTC_Spot_Result_Table');
+      document.getElementById("ltc_spot_resultBody").style.display = 'block';
+
+
+      resetCanvas('LTC_Spot_Result_Quantity_Chart', 'ltc_spot_chartContent');
+      resetCanvas('LTC_Spot_Result_Monies_Chart', 'ltc_spot_chartContent');
+
+      new Chart("LTC_Spot_Result_Quantity_Chart", {
+        backgroundColor: "transparent",
+        type: 'line',
+        options: {
+          responsive: true,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          stacked: false,
+
+          title: {
+            display: true,
+            text: 'Quantity Chart for Long Term with Spot Contract'
+          },
+
+          scales: {
+            xAxes: [{
+              offset: false,
+              scaleLabel: {
+                display: true,
+                labelString: 'Iterations'
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Quantity'
+              },
+              id: 'y',
+              type: 'linear',
+              position: 'left',
+              display: true,
+              title: 'Quantity',
+              beginAtZero: false,
+              grid: {
+                drawOnChartArea: false, // only want the grid lines for one axis to show up
+              }
+            }]
+          }
+        },
+        data: {
+          labels: itrArr,
+          datasets: [
+            {
+              label: 'Actual Demand',
+              data: actualDemandArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(255, 99, 132)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Fulfilled Order Quantity',
+              data: fulOrderQtyArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 162, 235)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Lost Sales',
+              data: lostSalesArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(255, 130, 99)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Excess Inventory',
+              data: excInvArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 235, 162)',
+              yAxisID: 'y',
+            }
+          ]
+        },
+      });
+
+      new Chart("LTC_Spot_Result_Monies_Chart", {
+        backgroundColor: "transparent",
+        type: 'line',
+        options: {
+          responsive: true,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          stacked: false,
+
+          title: {
+            display: true,
+            text: 'Monies Chart for Long Term with Spot Contract'
+          },
+
+          scales: {
+            xAxes: [{
+              offset: false,
+              scaleLabel: {
+                display: true,
+                labelString: 'Iterations'
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'in Rupees'
+              },
+              id: 'y',
+              type: 'linear',
+              position: 'left',
+              display: true,
+              title: 'in Rupees',
+              beginAtZero: false,
+              grid: {
+                drawOnChartArea: false, // only want the grid lines for one axis to show up
+              }
+            }]
+          }
+        },
+        data: {
+          labels: itrArr,
+          datasets: [
+            {
+              label: 'Cost',
+              data: costArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(255, 99, 132)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Profit or Loss',
+              data: profitOrLossArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 162, 235)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Salvage Revenue',
+              data: salRevenueArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(255, 130, 99)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Sales Revenue',
+              data: salesRevenueArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 235, 162)',
+              yAxisID: 'y',
+            }
+          ]
+        },
+      });
+
+
+    };
+
+
+// Long Term with Spot Contract Simulation Specific Functions ends here
+
+  </script>
+
+  <style>
+    table,
+    th,
+    td {
+      border: 1px solid black;
+      margin: auto;
+      text-align: center;
     }
-  },
-  data: {
-  labels: itrArr,
-  datasets: [
-    {
-      label: 'Cost',
-      data: costArr,
-      backgroundColor: "rgba(0,0,0,0.0)",
-      borderColor: 'rgb(255, 99, 132)',
-      yAxisID: 'y',
-    },
-    {
-      label: 'Profit or Loss',
-      data: profitOrLossArr,
-      backgroundColor: "rgba(0,0,0,0.0)",
-      borderColor: 'rgb(54, 162, 235)',
-      yAxisID: 'y',
-    },
-    {
-      label: 'Spot Price',
-      data: spotPriceArr,
-      backgroundColor: "rgba(0,0,0,0.0)",
-      borderColor: 'rgb(0, 200, 150)',
-      yAxisID: 'y',
-    },
-    {
-      label: 'Sales Revenue',
-      data: salesRevenueArr,
-      backgroundColor: "rgba(0,0,0,0.0)",
-      borderColor: 'rgb(54, 235, 162)',
-      yAxisID: 'y',
+
+    .center {
+      margin: auto;
+      text-align: center;
     }
-  ]
-},
-});
 
+    fieldset {
+      background-color: #f1f1f1;
+      border: none;
+      border-radius: 2px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      padding: 0 .625em;
+    }
 
-};
+    label {
+      cursor: pointer;
+      display: inline-block;
+      padding: 3px 6px;
+      text-align: right;
+      width: 300px;
+      vertical-align: top;
+    }
 
-//Spot Contract Simulation Specific Functions ends here
+    input {
+      font-size: inherit;
+    }
 
-</script>
+    /* Style the tab */
+    .tab {
+      overflow: hidden;
+      border: 1px solid #ccc;
+      background-color: #f1f1f1;
+    }
 
-<style>
-table, th, td {
-  border: 1px solid black;
-  margin: auto;
-text-align: center;
-}
+    /* Style the buttons that are used to open the tab content */
+    .tab button {
+      background-color: inherit;
+      float: left;
+      border: 1 px;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+    }
 
-.center{
-margin: auto;
-text-align: center;
-}
-  fieldset{
-            background-color: #f1f1f1;
-            border: none;
-            border-radius: 2px;
-            margin-bottom: 12px;
-            overflow: hidden;
-            padding: 0 .625em;
-        }
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+      background-color: #ddd;
+    }
 
-label{
-            cursor: pointer;
-            display: inline-block;
-            padding: 3px 6px;
-            text-align: right;
-            width: 300px;
-            vertical-align: top;
-        }
+    /* Create an active/current tablink class */
+    .tab button.active {
+      background-color: #ccc;
+    }
 
-        input{
-            font-size: inherit;
-        }
+    /* Style the tab content */
+    .tabcontent {
+      display: none;
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-top: none;
+      animation: fadeEffect 1s;
+    }
 
-        /* Style the tab */
-.tab {
-  overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-}
+    @keyframes fadeEffect {
+      from {
+        opacity: 0;
+      }
 
-/* Style the buttons that are used to open the tab content */
-.tab button {
-  background-color: inherit;
-  float: left;
-  border: 1 px;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-}
+      to {
+        opacity: 1;
+      }
+    }
 
-/* Change background color of buttons on hover */
-.tab button:hover {
-  background-color: #ddd;
-}
-
-/* Create an active/current tablink class */
-.tab button.active {
-  background-color: #ccc;
-}
-
-/* Style the tab content */
-.tabcontent {
-  display: none;
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  border-top: none;
-  animation: fadeEffect 1s;
-}
-
-@keyframes fadeEffect {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  /* right: 25%;
+    /* The Modal (background) */
+    .modal {
+      display: none;
+      /* Hidden by default */
+      position: fixed;
+      /* Stay in place */
+      z-index: 1;
+      /* Sit on top */
+      /* right: 25%;
   top: 25%;
   left: 25%;
   bottom: 25%; */
-  width: 50%; /* Full width */
-  height: 50%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(10, 229, 236); /* Fallback color */
-  background-color: rgba(10, 229, 236,1); /* Black w/ opacity */
-}
+      width: 50%;
+      /* Full width */
+      height: 50%;
+      /* Full height */
+      overflow: auto;
+      /* Enable scroll if needed */
+      background-color: rgb(10, 229, 236);
+      /* Fallback color */
+      background-color: rgba(10, 229, 236, 1);
+      /* Black w/ opacity */
+    }
 
-/* Modal Content/Box */
-.modal-content {
-  background-color: #e01865;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-  animation-name: animatetop;
-  animation-duration: 0.4s
-}
+    /* Modal Content/Box */
+    .modal-content {
+      background-color: #e01865;
+      margin: 15% auto;
+      /* 15% from the top and centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      /* Could be more or less, depending on screen size */
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      animation-name: animatetop;
+      animation-duration: 0.4s
+    }
 
-/* Add Animation */
-@keyframes animatetop {
-  from {top: -300px; opacity: 0}
-  to {top: 0; opacity: 1}
-}
+    /* Add Animation */
+    @keyframes animatetop {
+      from {
+        top: -300px;
+        opacity: 0
+      }
 
-/* The Close Button */
-.close {
-  color: rgb(0, 0, 0);
-  float: right;
-  font-size: 32px;
-  font-weight: bold;
-}
+      to {
+        top: 0;
+        opacity: 1
+      }
+    }
 
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
+    /* The Close Button */
+    .close {
+      color: rgb(0, 0, 0);
+      float: right;
+      font-size: 32px;
+      font-weight: bold;
+    }
 
-</style>
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
 
-<div class="center">
-	<h1 class="center"> Contracts Simulation </h1>
-	<br/>
-  <div class="tab">
-    <button class="tablinks" onclick="openSimulationTab(event, 'LTC')">Long Term Contract</button>
-    <button class="tablinks" onclick="openSimulationTab(event, 'Spot')">Spot</button>
-  </div>
-  <br/>
-
-  <!--LTC HTML starts here-->
-  <div id="LTC" class="tabcontent">
-	<h4 class="center"> Please enter the following information and start the Simulation</h4>
-	<br/>
-	<div class="center">
-		<label for="ltc_wsp">Enter Wholesale Price:</label>
-		<input type="text" id="ltc_wsp" align="left"/>
-	</div>
-	<br/>
-	<div class="center">
-		<label for="ltc_rp">Enter Retail Price:</label>
-		<input type="text" id="ltc_rp" align="left"/>
-	</div>
-	<br/>
-	<div class="center">
-		<label for="ltc_salp"> Enter Salvage Price:</label>
-		<input type="text" id="ltc_salp" align="left"/>
-	</div>
-	<br/>
-	<div class="center">
-		<label for="ltc_mean">Enter Mean quantity:</label>
-		<input type="text" id="ltc_mean" align="left"/>
-	</div>
-	<br/>
-	<div class="center">
-		<label for="ltc_sd">  Enter Standard Deviation:</label>
-		<input type="text" id="ltc_sd" align="left"/>
-	</div>
-	<br/>
-	<div class="center">
-		<label for="ltc_orderQty">Enter Order Quantity:</label>
-		<input type="text" id="ltc_orderQty" align="left"/>
-	</div>
-	<br/>
-	<div class="center">
-		<label for="ltc_numIt"> Enter Number of Iterations to be performed:</label>
-		<input type="text" id="ltc_numIt" align="left"/>
-	</div>
-	<br/>
-	<input type="button" value='Run Simulation' onClick="handle_LTC_Simulation()"/>
-	<br/>
-	<div id="ltc_resultBody" hidden class="center">
-		<h4>Result of the Simulation<h4>
-				<br/>
-        <a href="#" onclick="download_table_as_csv('LTC_Result_Table');">Download as CSV</a>
-				<div id="ltc_result" class="center">
-</div>
-
-  <div id="ltc_chartContent">
-  <canvas id="LTC_Result_Quantity_Chart" style="width:100%"></canvas>
-  <canvas id="LTC_Result_Monies_Chart" style="width:100%"></canvas>
-  </div>
-
-</div>
-</div>
-<!--LTC HTML ends here-->
-
-<!--Spot HTML starts here-->
-
-<div id="Spot" class="tabcontent">
-	<h4 class="center"> Please enter the following information and start the Simulation</h4>
-	<br/>
-	<div class="center">
-		<label for="spot_rp">Enter Retail Price:</label>
-		<input type="text" id="spot_rp" align="left"/>
-    <input type="button" value='View Historical Spot Prices' onClick="handle_His_Spot_Prices()"/>
-    <div id="spot_history_result_modal" class="modal">
-      <div class="spot-history-modal-content">
-        <span class="close">&times;</span>
-        <div id="spot_history_result">
+  <div class="center">
+    <h1 class="center"> Contracts Simulation </h1>
+    <br />
+    <div class="tab">
+      <button class="tablinks" onclick="openSimulationTab(event, 'LTC')">Long Term Contract</button>
+      <button class="tablinks" onclick="openSimulationTab(event, 'Spot')">Spot Contract</button>
+      <button class="tablinks" onclick="openSimulationTab(event, 'LTC-Spot')">Long Term with Spot Contract</button>
+    </div>
+    <br />
+    <!--LTC HTML starts here-->
+    <div id="LTC" class="tabcontent">
+      <h4 class="center"> Please enter the following information and start the Simulation</h4>
+      <br />
+      <div class="center">
+        <label for="ltc_wsp">Enter Wholesale Price:</label>
+        <input type="text" id="ltc_wsp" align="left" />
       </div>
+      <br />
+      <div class="center">
+        <label for="ltc_rp">Enter Retail Price:</label>
+        <input type="text" id="ltc_rp" align="left" />
       </div>
-	</div>
-	<br/>
-	<div class="center">
-		<label for="spot_mean">Enter Mean quantity:</label>
-		<input type="text" id="spot_mean" align="left"/>
-	</div>
-	<br/>
-	<div class="center">
-		<label for="spot_sd">Enter Standard Deviation:</label>
-		<input type="text" id="spot_sd" align="left"/>
-	</div>
-	<br/>
-	<div class="center">
-		<label for="spot_numIt"> Enter Number of Iterations to be performed:</label>
-		<input type="text" id="spot_numIt" align="left"/>
-	</div>
-	<br/>
-	<input type="button" value='Run Simulation' onClick="handle_spot_Simulation()"/>
-	<br/>
-	<div id="spot_resultBody" hidden class="center">
-		<h4>Result of the Simulation<h4>
-				<br/>
-        <a href="#" onclick="download_table_as_csv('Spot_Result_Table');">Download as CSV</a>
-				<div id="spot_result" class="center">
-</div>
-
-  <div id="spot_chartContent">
-  <canvas id="Spot_Result_Quantity_Chart" style="width:100%"></canvas>
-  <canvas id="Spot_Result_Monies_Chart" style="width:100%"></canvas>
+      <br />
+      <div class="center">
+        <label for="ltc_salp"> Enter Salvage Price:</label>
+        <input type="text" id="ltc_salp" align="left" />
+      </div>
+      <br />
+      <div class="center">
+        <label for="ltc_mean">Enter Mean quantity:</label>
+        <input type="text" id="ltc_mean" align="left" />
+      </div>
+      <br />
+      <div class="center">
+        <label for="ltc_sd"> Enter Standard Deviation:</label>
+        <input type="text" id="ltc_sd" align="left" />
+      </div>
+      <br />
+      <div class="center">
+        <label for="ltc_orderQty">Enter Order Quantity:</label>
+        <input type="text" id="ltc_orderQty" align="left" />
+      </div>
+      <br />
+      <div class="center">
+        <label for="ltc_numIt"> Enter Number of Iterations to be performed:</label>
+        <input type="text" id="ltc_numIt" align="left" />
+      </div>
+      <br />
+      <input type="button" value='Run Simulation' onClick="handle_LTC_Simulation()" />
+      <br />
+      <div id="ltc_resultBody" hidden class="center">
+        <h4>Result of the Simulation<h4>
+            <br />
+            <a href="#" onclick="download_table_as_csv('LTC_Result_Table');">Download as CSV</a>
+            <div id="ltc_result" class="center"></div>
+            <div id="ltc_chartContent">
+              <canvas id="LTC_Result_Quantity_Chart" style="width:100%" />
+              <canvas id="LTC_Result_Monies_Chart" style="width:100%" />
+            </div>
+      </div>
+    </div>
+    <!--LTC HTML ends here-->
+    <!--Spot HTML starts here-->
+    <div id="Spot" class="tabcontent">
+      <h4 class="center"> Please enter the following information and start the Simulation</h4>
+      <br />
+      <div class="center">
+        <label for="spot_rp">Enter Retail Price:</label>
+        <input type="text" id="spot_rp" align="left" />
+        <input type="button" value='View Historical Spot Prices' onClick="handle_His_Spot_Prices()" />
+        <div id="spot_history_result_modal" class="modal">
+          <div class="spot-history-modal-content">
+            <span class="close" id="spot_close">&times;</span>
+            <div id="spot_history_result" />
+          </div>
+        </div>
+        <br />
+        <div class="center">
+          <label for="spot_mean">Enter Mean quantity:</label>
+          <input type="text" id="spot_mean" align="left" />
+        </div>
+        <br />
+        <div class="center">
+          <label for="spot_sd">Enter Standard Deviation:</label>
+          <input type="text" id="spot_sd" align="left" />
+        </div>
+        <br />
+        <div class="center">
+          <label for="spot_numIt"> Enter Number of Iterations to be performed:</label>
+          <input type="text" id="spot_numIt" align="left" />
+        </div>
+        <br />
+        <input type="button" value='Run Simulation' onClick="handle_spot_Simulation()" />
+        <br />
+        <div id="spot_resultBody" hidden class="center">
+          <h4>Result of the Simulation<h4>
+              <br />
+              <a href="#" onclick="download_table_as_csv('Spot_Result_Table');">Download as CSV</a>
+              <div id="spot_result" class="center"></div>
+              <div id="spot_chartContent">
+                <canvas id="Spot_Result_Quantity_Chart" style="width:100%" />
+                <canvas id="Spot_Result_Monies_Chart" style="width:100%" />
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Spot HTML ends here-->
+  <!--Long Term with Spot HTML starts here-->
+  <div id="LTC-Spot" class="tabcontent">
+    <h4 class="center"> Please enter the following information and start the Simulation</h4>
+    <br />
+    <div class="center">
+      <label for="ltc_spot_wsp">Enter Wholesale Price:</label>
+      <input type="text" id="ltc_spot_wsp" align="left" />
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_spot_rp">Enter Retail Price:</label>
+      <input type="text" id="ltc_spot_rp" align="left" />
+      <input type="button" value='View Historical Spot Prices' onClick="handle_His_ltc_Spot_Prices()" />
+      <div id="ltc_spot_history_result_modal" class="modal">
+        <div class="ltc_spot-history-modal-content">
+          <span class="close" id="ltc_spot_close">&times;</span>
+          <div id="ltc_spot_history_result" />
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_spot_salp"> Enter Salvage Price:</label>
+      <input type="text" id="ltc_spot_salp" align="left" />
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_spot_mean">Enter Mean quantity:</label>
+      <input type="text" id="ltc_spot_mean" align="left" />
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_spot_sd"> Enter Standard Deviation:</label>
+      <input type="text" id="ltc_spot_sd" align="left" />
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_spot_orderQty">Enter Order Quantity:</label>
+      <input type="text" id="ltc_spot_orderQty" align="left" />
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_spot_numIt"> Enter Number of Iterations to be performed:</label>
+      <input type="text" id="ltc_spot_numIt" align="left" />
+    </div>
+    <br />
+    <input type="button" value='Run Simulation' onClick="handle_LTC_Spot_Simulation()" />
+    <br />
+    <div id="ltc_spot_resultBody" hidden class="center">
+      <h4>Result of the Simulation<h4>
+          <br />
+          <a href="#" onclick="download_table_as_csv('LTC_Spot_Result_Table');">Download as CSV</a>
+          <div id="ltc_spot_result" class="center"></div>
+          <div id="ltc_spot_chartContent">
+            <canvas id="LTC_Spot_Result_Quantity_Chart" style="width:100%" />
+            <canvas id="LTC_Spot_Result_Monies_Chart" style="width:100%" />
+          </div>
+    </div>
   </div>
 
-</div>
-</div>
-<!--Spot HTML ends here-->
-
-		</div>
+  <!-- Long Term with Spot HTML ends here-->
+  </div>
 </body>
+
 </html>
