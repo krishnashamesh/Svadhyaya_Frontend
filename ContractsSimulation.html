@@ -978,7 +978,7 @@
       var cumCost = 0;
       var cumProLoss = 0;
       var cumFulQty = 0;
-      var cumLostSales = 0
+      var cumLostSales = 0;
       var cumExpiredOptions = 0;
       //var cumExpiredOptionsCost = 0;
 
@@ -1191,7 +1191,309 @@
 
 
     };
-//Options Contract Simulation Specific Functions ends here
+    //Options Contract Simulation Specific Functions ends here
+
+    //LTC with Options Contract Simulation Specific Functions starts here
+    function handle_LTC_Options_Simulation() {
+      var wsp = document.getElementById("ltc_options_wsp").value;
+      var uop = document.getElementById("ltc_options_uop").value;
+      var uep = document.getElementById("ltc_options_uep").value;
+      var rp = document.getElementById("ltc_options_rp").value;
+      var salPrice = document.getElementById("ltc_options_salp").value;
+      var mean = document.getElementById("ltc_options_mean").value;
+      var sd = document.getElementById("ltc_options_sd").value;
+      var numIt = document.getElementById("ltc_options_numIt").value;
+      var orderQty = document.getElementById("ltc_options_orderQty").value;
+      var procurementOrderQty = document.getElementById("ltc_options_procurementOrderQty").value;
+
+      if (uop.length < 1 || uep.length < 1 || wsp.length < 1 || rp.length < 1 || salPrice.length < 1 || mean.length < 1 || sd.length < 1 || numIt.length < 1 || orderQty.length < 1 || procurementOrderQty.length < 1) {
+        alert("One of the parameters is missing");
+        return;
+      }
+
+      var rowData = [];
+      var itrArr = [];
+      var actualDemandArr = [];
+      var fulOrderQtyByLTCArr = [];
+      var fulOrderQtyByOptionsArr = [];
+      var lostSalesArr = [];
+      var expiredOptionsArr = [];
+      var excessInvArr = [];
+      var salesRevenueArr = [];
+      var costArr = [];
+      var profitOrLossArr = [];
+      var salRevenueArr = [];
+
+      var cumDemand = 0;
+      var cumRevenue = 0;
+      var cumCost = 0;
+      var cumProLoss = 0;
+      var cumFulQtyByLTC = 0;
+      var cumFulQtyByOptions = 0;
+      var cumLostSales = 0
+      var cumExpiredOptions = 0;
+      var cumExcessInv = 0;
+      var cumSalRevenue = 0;
+
+      orderQty = parseFloat(orderQty);
+      procurementOrderQty = parseFloat(procurementOrderQty);
+
+      rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order Quantity By Long Term Contract", "Fulfiled Order Quantity By Options Contract", "Lost Sales", "Excess Inventory", "Expired Options", "Sales Revenue", "Salvage Revenue", "Cost", "Profit/Loss"];
+      for (let i = 1; i <= numIt; i++) {
+
+        var demand = Math.max((parseInt((parseFloat(mean) + parseFloat(random_sample_std_normal_dist() * sd)), 10)), 0);
+
+        var fulQtyByLTC = Math.min(parseFloat(demand), parseFloat(orderQty));
+        var fulQtyByOptions = 0;
+        var excessInv = 0;
+
+        if (demand > orderQty) {
+          fulQtyByOptions = Math.min(parseFloat(demand) - parseFloat(orderQty), parseFloat(procurementOrderQty));
+        }
+
+        fulOrderQtyByLTCArr[i] = fulQtyByLTC;
+        fulOrderQtyByOptionsArr[i] = fulQtyByOptions;
+
+        var lostSales = 0;
+        var expiredOptions = 0;
+        // var expiredOptionsCost = 0;
+        if ((fulQtyByLTC + fulQtyByOptions) < demand) {
+          lostSales = demand - fulQtyByLTC - fulQtyByOptions;
+        }
+
+        if ((orderQty + procurementOrderQty) > demand) {
+          if (orderQty > demand) {
+            excessInv = orderQty - demand;
+            expiredOptions = parseFloat(procurementOrderQty);
+          }
+          else {
+            excessInv = 0;
+            expiredOptions = parseFloat(orderQty) + parseFloat(procurementOrderQty) - parseFloat(demand);
+          }
+        }
+
+        var revenue = parseFloat((rp * (fulQtyByLTC + fulQtyByOptions)));
+        var salRevenue = parseFloat(salPrice * excessInv);
+        var cost = parseFloat((procurementOrderQty * uop) + (fulQtyByOptions * uep) + (orderQty * wsp));
+        var proLoss = parseFloat(revenue) + parseFloat(salRevenue) - parseFloat(cost);
+        rowData[i] = [i, demand, fulQtyByLTC, fulQtyByOptions, lostSales, excessInv, expiredOptions, revenue, salRevenue, cost, proLoss];
+
+        cumDemand = cumDemand + demand;
+        cumCost = cumCost + cost;
+        cumRevenue = cumRevenue + revenue;
+        cumSalRevenue = cumSalRevenue + salRevenue;
+        cumProLoss = cumProLoss + proLoss;
+        cumFulQtyByLTC = cumFulQtyByLTC + fulQtyByLTC;
+        cumFulQtyByOptions = cumFulQtyByOptions + fulQtyByOptions;
+        cumLostSales = cumLostSales + lostSales;
+        cumExcessInv = cumExcessInv + excessInv;
+        cumExpiredOptions = cumExpiredOptions + expiredOptions;
+
+        itrArr[i] = i;
+        actualDemandArr[i] = demand;
+        lostSalesArr[i] = lostSales;
+        expiredOptionsArr[i] = expiredOptions;
+        fulOrderQtyByLTCArr[i] = fulQtyByLTC;
+        fulOrderQtyByOptionsArr[i] = fulQtyByOptions;
+        salesRevenueArr[i] = revenue;
+        salRevenueArr[i] = salRevenue;
+        excessInvArr[i] = excessInv;
+        costArr[i] = cost;
+        profitOrLossArr[i] = proLoss;
+      }
+      rowData[numIt + 1] = ["Total", (Math.round((cumDemand + Number.EPSILON) * 100) / 100), (Math.round((cumFulQtyByLTC + Number.EPSILON) * 100) / 100), (Math.round((cumFulQtyByOptions + Number.EPSILON) * 100) / 100), (Math.round((cumLostSales + Number.EPSILON) * 100) / 100), (Math.round((cumExcessInv + Number.EPSILON) * 100) / 100), (Math.round((cumExpiredOptions + Number.EPSILON) * 100) / 100), (Math.round((cumRevenue + Number.EPSILON) * 100) / 100), (Math.round((cumSalRevenue + Number.EPSILON) * 100) / 100), (Math.round((cumCost + Number.EPSILON) * 100) / 100), (Math.round((cumProLoss + Number.EPSILON) * 100) / 100)];
+
+      rowData[numIt + 2] = ["Average", (Math.round((cumDemand / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumFulQtyByLTC / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumFulQtyByOptions / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumLostSales / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumExcessInv / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumExpiredOptions / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumRevenue / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumSalRevenue / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumCost / numIt + Number.EPSILON) * 100) / 100), (Math.round((cumProLoss / numIt + Number.EPSILON) * 100) / 100)];
+
+      //Remove the first undefined 
+      itrArr.shift();
+      actualDemandArr.shift();
+      fulOrderQtyByLTCArr.shift();
+      fulOrderQtyByOptionsArr.shift();
+      lostSalesArr.shift();
+      excessInvArr.shift();
+      expiredOptionsArr.shift();
+      salesRevenueArr.shift();
+      salRevenueArr.shift();
+      costArr.shift();
+      profitOrLossArr.shift();
+
+      createTable(rowData, document.getElementById("ltc_options_result"), 'LTC_Options_Result_Table');
+      document.getElementById("ltc_options_resultBody").style.display = 'block';
+
+
+      resetCanvas('LTC_Options_Result_Quantity_Chart', 'ltc_options_chartContent');
+      resetCanvas('LTC_Options_Result_Monies_Chart', 'ltc_options_chartContent');
+
+      new Chart("LTC_Options_Result_Quantity_Chart", {
+        backgroundColor: "transparent",
+        type: 'line',
+        options: {
+          responsive: true,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          stacked: false,
+
+          title: {
+            display: true,
+            text: 'Quantity Chart for Long Term with Options Contract'
+          },
+
+          scales: {
+            xAxes: [{
+              offset: false,
+              scaleLabel: {
+                display: true,
+                labelString: 'Iterations'
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Quantity'
+              },
+              id: 'y',
+              type: 'linear',
+              position: 'left',
+              display: true,
+              title: 'Quantity',
+              beginAtZero: false,
+              grid: {
+                drawOnChartArea: false, // only want the grid lines for one axis to show up
+              }
+            }]
+          }
+        },
+        data: {
+          labels: itrArr,
+          datasets: [
+            {
+              label: 'Actual Demand',
+              data: actualDemandArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(255, 99, 132)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Fulfilled Order Quantity By Long Term Contract',
+              data: fulOrderQtyByLTCArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(0, 162, 235)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Fulfilled Order Quantity By Options Contract',
+              data: fulOrderQtyByOptionsArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 162, 235)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Lost Sales',
+              data: lostSalesArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(255, 130, 99)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Excess Inventory',
+              data: lostSalesArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(255, 0, 99)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Expired Options',
+              data: expiredOptionsArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 235, 162)',
+              yAxisID: 'y',
+            }
+          ]
+        },
+      });
+
+      new Chart("LTC_Options_Result_Monies_Chart", {
+        backgroundColor: "transparent",
+        type: 'line',
+        options: {
+          responsive: true,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          stacked: false,
+
+          title: {
+            display: true,
+            text: 'Monies Chart for Long Term Contract'
+          },
+
+          scales: {
+            xAxes: [{
+              offset: false,
+              scaleLabel: {
+                display: true,
+                labelString: 'Iterations'
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'in Rupees'
+              },
+              id: 'y',
+              type: 'linear',
+              position: 'left',
+              display: true,
+              title: 'in Rupees',
+              beginAtZero: false,
+              grid: {
+                drawOnChartArea: false, // only want the grid lines for one axis to show up
+              }
+            }]
+          }
+        },
+        data: {
+          labels: itrArr,
+          datasets: [
+            {
+              label: 'Cost',
+              data: costArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(255, 99, 132)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Profit or Loss',
+              data: profitOrLossArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 235, 162)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Salvage Revenue',
+              data: salRevenueArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 0, 235)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Sales Revenue',
+              data: salesRevenueArr,
+              backgroundColor: "rgba(0,0,0,0.0)",
+              borderColor: 'rgb(54, 162, 235)',
+              yAxisID: 'y',
+            }
+          ]
+        },
+      });
+
+
+    };
+//LTC with Options Contract Simulation Specific Functions ends here
 
   </script>
 
@@ -1363,6 +1665,11 @@
         Contract</button>
     </div>
     <br />
+    <!--Instructions HTML starts here-->
+    <div id="Instructions" class="tabcontent">
+      <h1>Instructions</h1>
+    </div>
+    <!-- Instructions HTML ends here -->
     <!--LTC HTML starts here-->
     <div id="LTC" class="tabcontent">
       <h4 class="center"> Please enter the following information and start the Simulation</h4>
@@ -1579,6 +1886,76 @@
     </div>
   </div>
   <!-- Options Contract ends here -->
+  <!--LTC with Options HTML starts here-->
+  <div id="LTC-Options" class="tabcontent">
+    <h4 class="center"> Please enter the following information and start the Simulation</h4>
+    <br />
+    <div class="center">
+      <label for="ltc_options_wsp">Enter Wholesale Price:</label>
+      <input type="text" id="ltc_options_wsp" align="left" />
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_options_uop">Enter Unit Options Price:</label>
+      <input type="text" id="ltc_options_uop" align="left" />
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_options_uep">Enter Unit Exercise Price:</label>
+      <input type="text" id="ltc_options_uep" align="left" />
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_options_rp">Enter Retail Price:</label>
+      <input type="text" id="ltc_options_rp" align="left" />
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_options_salp"> Enter Salvage Price:</label>
+      <input type="text" id="ltc_options_salp" align="left" />
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_options_mean">Enter Mean quantity:</label>
+      <input type="text" id="ltc_options_mean" align="left" />
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_options_sd"> Enter Standard Deviation:</label>
+      <input type="text" id="ltc_options_sd" align="left" />
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_options_orderQty">Enter Order Quantity for Long Term Contract:</label>
+      <input type="text" id="ltc_options_orderQty" align="left" />
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_options_procurementOrderQty">Enter Order Quantity for Options Procurement:</label>
+      <input type="text" id="ltc_options_procurementOrderQty" align="left" />
+    </div>
+    <br />
+    <div class="center">
+      <label for="ltc_options_numIt"> Enter Number of Iterations to be performed:</label>
+      <input type="text" id="ltc_options_numIt" align="left" />
+    </div>
+    <br />
+    <input type="button" value='Run Simulation' onClick="handle_LTC_Options_Simulation()" />
+    <br />
+    <div id="ltc_options_resultBody" hidden class="center">
+      <h4>Result of the Simulation<h4>
+          <br />
+          <a href="#" onclick="download_table_as_csv('LTC_Options_Result_Table');">Download as CSV</a>
+          <div id="ltc_options_result" class="center"></div>
+          <div id="ltc_options_chartContent">
+            <canvas id="LTC_Options_Result_Quantity_Chart" style="width:100%" />
+            <canvas id="LTC_Options_Result_Monies_Chart" style="width:100%" />
+          </div>
+    </div>
+  </div>
+  </div>
+  <!--LTC with Options HTML ends here-->
+
   </div>
 </body>
 
