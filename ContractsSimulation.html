@@ -126,7 +126,7 @@
       var orderQty = document.getElementById("ltc_orderQty").value;
 
       if (wsp.length < 1 || rp.length < 1 || salp.length < 1 || mean.length < 1 || sd.length < 1 || numIt.length < 1) {
-        alert("One of the parameters is missing");
+       // alert("One of the parameters is missing");
         return;
       }
 
@@ -1501,6 +1501,7 @@
 
 
 
+
 </script>
 
 <style>
@@ -1655,11 +1656,45 @@
       text-decoration: none;
       cursor: pointer;
     }
+.slidecontainer {
+  width: 50%; /* Width of the outside container */
+  float: right;
+}
 
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
 
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
 
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #04AA6D; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
 
-
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #04AA6D; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
 
 </style>
 
@@ -1738,6 +1773,10 @@
         <div class="center">
             <label for="ltc_sd"> Enter Standard Deviation:</label>
             <input align="left" id="ltc_sd" type="text"/>
+            <div class="slidecontainer">
+                <input type="range" min="0" max="9999" value="0" class="slider"
+                       id="ltc_sd_slider">
+            </div>
         </div>
         <br/>
         <div class="center">
@@ -1844,7 +1883,8 @@
             <input align="left" id="ltc_spot_rp" type="text"/>
             <input onClick="handle_His_ltc_Spot_Prices()" type="button"
                    value='View Historical Spot Prices'/>
-            <div class="modal" id="ltc_spot_history_result_modal" ltc_spot-history-modal-content style="width:100%>
+            <div class="modal" id="ltc_spot_history_result_modal"
+                 ltc_spot-history-modal-content style="width:100%>
         <div class="
             ">
             <span class="close" id="ltc_spot_close">&times;</span>
@@ -2052,5 +2092,20 @@
 
 </div>
 </body>
+
+<script>
+       var ltc_sd_slider = document.getElementById("ltc_sd_slider");
+    var ltc_sd=document.getElementById("ltc_sd");
+
+    ltc_sd_slider.oninput = function() {
+  ltc_sd.value = this.value;
+  handle_LTC_Simulation();
+}
+ltc_sd.oninput = function() {
+  ltc_sd_slider.value = this.value;
+
+}
+
+</script>
 
 </html>
