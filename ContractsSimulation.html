@@ -2,15 +2,15 @@
 <html>
 
 <head>
-  <title>Newsvendor Simulation</title>
+    <title>Newsvendor Simulation</title>
 </head>
 
 <body>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
-  </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
 
-  <script>
+<script>
     // Utility Functions starts here
     function random_sample_std_normal_dist() {
       let u = 0, v = 0;
@@ -1495,9 +1495,15 @@
     };
 //LTC with Options Contract Simulation Specific Functions ends here
 
-  </script>
 
-  <style>
+
+
+
+
+
+</script>
+
+<style>
     table,
     th,
     td {
@@ -1649,318 +1655,402 @@
       text-decoration: none;
       cursor: pointer;
     }
-  </style>
 
-  <div class="center">
+
+
+
+
+
+</style>
+
+<div class="center">
     <h1 class="center"> Contracts Simulation </h1>
-    <br />
+    <br/>
     <div class="tab">
-      <button class="tablinks" onclick="openSimulationTab(event, 'Instructions')">Instructions</button>
-      <button class="tablinks" onclick="openSimulationTab(event, 'LTC')">Long Term Contract</button>
-      <button class="tablinks" onclick="openSimulationTab(event, 'Spot')">Spot Contract</button>
-      <button class="tablinks" onclick="openSimulationTab(event, 'LTC-Spot')">Long Term with Spot Contract</button>
-      <button class="tablinks" onclick="openSimulationTab(event, 'Options')">Options Contract</button>
-      <button class="tablinks" onclick="openSimulationTab(event, 'LTC-Options')">Long Term with Options
-        Contract</button>
-      <button class="tablinks" onclick="openSimulationTab(event, 'LTC-Options-Spot')">Long Term with Options and Spot
-        Contract</button>
-      <button class="tablinks" onclick="openSimulationTab(event, 'RS')">Revenue Sharing Contract</button>
-      <button class="tablinks" onclick="openSimulationTab(event, 'LTC-RS')">Long Term with Revenue Sharing
-        Contract</button>
+        <button class="tablinks"
+                onclick="openSimulationTab(event, 'Instructions')">
+            Instructions
+        </button>
+        <button class="tablinks" onclick="openSimulationTab(event, 'LTC')">
+            Long Term Contract
+        </button>
+        <button class="tablinks"
+                onclick="openSimulationTab(event, 'Spot')">Spot Contract
+        </button>
+        <button class="tablinks"
+                onclick="openSimulationTab(event, 'LTC-Spot')">Long Term
+            with Spot Contract
+        </button>
+        <button class="tablinks"
+                onclick="openSimulationTab(event, 'Options')">Options
+            Contract
+        </button>
+        <button class="tablinks"
+                onclick="openSimulationTab(event, 'LTC-Options')">Long Term
+            with Options
+            Contract
+        </button>
+        <button class="tablinks"
+                onclick="openSimulationTab(event, 'LTC-Options-Spot')">Long
+            Term with Options and Spot
+            Contract
+        </button>
+        <button class="tablinks" onclick="openSimulationTab(event, 'RS')">
+            Revenue Sharing Contract
+        </button>
+        <button class="tablinks"
+                onclick="openSimulationTab(event, 'LTC-RS')">Long Term with
+            Revenue Sharing
+            Contract
+        </button>
     </div>
-    <br />
+    <br/>
     <!--Instructions HTML starts here-->
-    <div id="Instructions" class="tabcontent">
-      <h1>Instructions</h1>
+    <div class="tabcontent" id="Instructions">
+        <h1>Instructions</h1>
     </div>
     <!-- Instructions HTML ends here -->
     <!--LTC HTML starts here-->
-    <div id="LTC" class="tabcontent">
-      <h4 class="center"> Please enter the following information and start the Simulation</h4>
-      <br />
-      <div class="center">
-        <label for="ltc_wsp">Enter Wholesale Price:</label>
-        <input type="text" id="ltc_wsp" align="left" />
-      </div>
-      <br />
-      <div class="center">
-        <label for="ltc_rp">Enter Retail Price:</label>
-        <input type="text" id="ltc_rp" align="left" />
-      </div>
-      <br />
-      <div class="center">
-        <label for="ltc_salp"> Enter Salvage Price:</label>
-        <input type="text" id="ltc_salp" align="left" />
-      </div>
-      <br />
-      <div class="center">
-        <label for="ltc_mean">Enter Mean quantity:</label>
-        <input type="text" id="ltc_mean" align="left" />
-      </div>
-      <br />
-      <div class="center">
-        <label for="ltc_sd"> Enter Standard Deviation:</label>
-        <input type="text" id="ltc_sd" align="left" />
-      </div>
-      <br />
-      <div class="center">
-        <label for="ltc_orderQty">Enter Order Quantity:</label>
-        <input type="text" id="ltc_orderQty" align="left" />
-      </div>
-      <br />
-      <div class="center">
-        <label for="ltc_numIt"> Enter Number of Iterations to be performed:</label>
-        <input type="text" id="ltc_numIt" align="left" />
-      </div>
-      <br />
-      <input type="button" value='Run Simulation' onClick="handle_LTC_Simulation()" />
-      <br />
-      <div id="ltc_resultBody" hidden class="center">
-        <h4>Result of the Simulation<h4>
-            <br />
-            <a href="#" onclick="download_table_as_csv('LTC_Result_Table');">Download as CSV</a>
-            <div id="ltc_result" class="center"></div>
-            <div id="ltc_chartContent">
-              <canvas id="LTC_Result_Quantity_Chart" style="width:100%" />
-              <canvas id="LTC_Result_Monies_Chart" style="width:100%" />
-            </div>
-      </div>
+    <div class="tabcontent" id="LTC">
+        <h4 class="center"> Please enter the following information and
+            start the Simulation</h4>
+        <br/>
+        <div class="center">
+            <label for="ltc_wsp">Enter Wholesale Price:</label>
+            <input align="left" id="ltc_wsp" type="text"/>
+        </div>
+        <br/>
+        <div class="center">
+            <label for="ltc_rp">Enter Retail Price:</label>
+            <input align="left" id="ltc_rp" type="text"/>
+        </div>
+        <br/>
+        <div class="center">
+            <label for="ltc_salp"> Enter Salvage Price:</label>
+            <input align="left" id="ltc_salp" type="text"/>
+        </div>
+        <br/>
+        <div class="center">
+            <label for="ltc_mean">Enter Mean quantity:</label>
+            <input align="left" id="ltc_mean" type="text"/>
+        </div>
+        <br/>
+        <div class="center">
+            <label for="ltc_sd"> Enter Standard Deviation:</label>
+            <input align="left" id="ltc_sd" type="text"/>
+        </div>
+        <br/>
+        <div class="center">
+            <label for="ltc_orderQty">Enter Order Quantity:</label>
+            <input align="left" id="ltc_orderQty" type="text"/>
+        </div>
+        <br/>
+        <div class="center">
+            <label for="ltc_numIt"> Enter Number of Iterations to be
+                performed:</label>
+            <input align="left" id="ltc_numIt" type="text"/>
+        </div>
+        <br/>
+        <input onClick="handle_LTC_Simulation()" type="button"
+               value='Run Simulation'/>
+        <br/>
+        <div class="center" hidden id="ltc_resultBody">
+            <h4>Result of the Simulation
+                <h4>
+                    <br/>
+                    <a href="#"
+                       onclick="download_table_as_csv('LTC_Result_Table');">Download
+                        as CSV</a>
+                    <div class="center" id="ltc_result"></div>
+                    <div id="ltc_chartContent">
+                        <canvas id="LTC_Result_Quantity_Chart"
+                                style="width:100%"/>
+                        <canvas id="LTC_Result_Monies_Chart"
+                                style="width:100%"/>
+                    </div>
+        </div>
     </div>
     <!--LTC HTML ends here-->
     <!--Spot HTML starts here-->
-    <div id="Spot" class="tabcontent">
-      <h4 class="center"> Please enter the following information and start the Simulation</h4>
-      <br />
-      <div class="center">
-        <label for="spot_rp">Enter Retail Price:</label>
-        <input type="text" id="spot_rp" align="left" />
-        <input type="button" value='View Historical Spot Prices' onClick="handle_His_Spot_Prices()" />
-        <div id="spot_history_result_modal" class="modal" style="width:100%">
-          <div class="spot-history-modal-content">
-            <span class="close" id="spot_close">&times;</span>
-            <div id="spot_history_result" />
-          </div>
-        </div>
-        <br />
+    <div class="tabcontent" id="Spot">
+        <h4 class="center"> Please enter the following information and
+            start the Simulation</h4>
+        <br/>
         <div class="center">
-          <label for="spot_mean">Enter Mean quantity:</label>
-          <input type="text" id="spot_mean" align="left" />
+            <label for="spot_rp">Enter Retail Price:</label>
+            <input align="left" id="spot_rp" type="text"/>
+            <input onClick="handle_His_Spot_Prices()" type="button"
+                   value='View Historical Spot Prices'/>
         </div>
-        <br />
+        <div class="modal" id="spot_history_result_modal"
+             style="width:100%">
+            <div class="spot-history-modal-content">
+                <span class="close" id="spot_close">&times;</span>
+                <div id="spot_history_result">
+                </div>
+            </div>
+        </div>
+        <br/>
         <div class="center">
-          <label for="spot_sd">Enter Standard Deviation:</label>
-          <input type="text" id="spot_sd" align="left" />
+            <label for="spot_mean">Enter Mean quantity:</label>
+            <input align="left" id="spot_mean" type="text"/>
         </div>
-        <br />
+        <br/>
         <div class="center">
-          <label for="spot_numIt"> Enter Number of Iterations to be performed:</label>
-          <input type="text" id="spot_numIt" align="left" />
+            <label for="spot_sd">Enter Standard Deviation:</label>
+            <input align="left" id="spot_sd" type="text"/>
         </div>
-        <br />
-        <input type="button" value='Run Simulation' onClick="handle_spot_Simulation()" />
-        <br />
-        <div id="spot_resultBody" hidden class="center">
-          <h4>Result of the Simulation<h4>
-              <br />
-              <a href="#" onclick="download_table_as_csv('Spot_Result_Table');">Download as CSV</a>
-              <div id="spot_result" class="center"></div>
-              <div id="spot_chartContent">
-                <canvas id="Spot_Result_Quantity_Chart" style="width:100%" />
-                <canvas id="Spot_Result_Monies_Chart" style="width:100%" />
-              </div>
+        <br/>
+        <div class="center">
+            <label for="spot_numIt"> Enter Number of Iterations to be
+                performed:</label>
+            <input align="left" id="spot_numIt" type="text"/>
         </div>
-      </div>
-    </div>
-  </div>
-  <!--Spot HTML ends here-->
-  <!--Long Term with Spot HTML starts here-->
-  <div id="LTC-Spot" class="tabcontent">
-    <h4 class="center"> Please enter the following information and start the Simulation</h4>
-    <br />
-    <div class="center">
-      <label for="ltc_spot_wsp">Enter Wholesale Price:</label>
-      <input type="text" id="ltc_spot_wsp" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="ltc_spot_rp">Enter Retail Price:</label>
-      <input type="text" id="ltc_spot_rp" align="left" />
-      <input type="button" value='View Historical Spot Prices' onClick="handle_His_ltc_Spot_Prices()" />
-      <div id="ltc_spot_history_result_modal" class="modal" style="width:100%>
-        <div class="ltc_spot-history-modal-content">
-          <span class="close" id="ltc_spot_close">&times;</span>
-          <div id="ltc_spot_history_result" />
+        <br/>
+        <input onClick="handle_spot_Simulation()" type="button"
+               value='Run Simulation'/>
+        <br/>
+        <div class="center" hidden id="spot_resultBody">
+            <h4>Result of the Simulation
+                <h4>
+                    <br/>
+                    <a href="#"
+                       onclick="download_table_as_csv('Spot_Result_Table');">Download
+                        as CSV</a>
+                    <div class="center" id="spot_result"></div>
+                    <div id="spot_chartContent">
+                        <canvas id="Spot_Result_Quantity_Chart"
+                                style="width:100%"/>
+                        <canvas id="Spot_Result_Monies_Chart"
+                                style="width:100%"/>
+                    </div>
         </div>
-      </div>
     </div>
-    <br />
-    <div class="center">
-      <label for="ltc_spot_salp"> Enter Salvage Price:</label>
-      <input type="text" id="ltc_spot_salp" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="ltc_spot_mean">Enter Mean quantity:</label>
-      <input type="text" id="ltc_spot_mean" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="ltc_spot_sd"> Enter Standard Deviation:</label>
-      <input type="text" id="ltc_spot_sd" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="ltc_spot_orderQty">Enter Order Quantity:</label>
-      <input type="text" id="ltc_spot_orderQty" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="ltc_spot_numIt"> Enter Number of Iterations to be performed:</label>
-      <input type="text" id="ltc_spot_numIt" align="left" />
-    </div>
-    <br />
-    <input type="button" value='Run Simulation' onClick="handle_LTC_Spot_Simulation()" />
-    <br />
-    <div id="ltc_spot_resultBody" hidden class="center">
-      <h4>Result of the Simulation<h4>
-          <br />
-          <a href="#" onclick="download_table_as_csv('LTC_Spot_Result_Table');">Download as CSV</a>
-          <div id="ltc_spot_result" class="center"></div>
-          <div id="ltc_spot_chartContent">
-            <canvas id="LTC_Spot_Result_Quantity_Chart" style="width:100%" />
-            <canvas id="LTC_Spot_Result_Monies_Chart" style="width:100%" />
-          </div>
-    </div>
-  </div>
-  </div>
-  <!-- Long Term with Spot HTML ends here-->
 
-  <!-- Options Contract starts here -->
+    <!--Spot HTML ends here-->
+    <!--Long Term with Spot HTML starts here-->
+    <div class="tabcontent" id="LTC-Spot">
+        <h4 class="center"> Please enter the following information and
+            start
+            the Simulation</h4>
+        <br/>
+        <div class="center">
+            <label for="ltc_spot_wsp">Enter Wholesale Price:</label>
+            <input align="left" id="ltc_spot_wsp" type="text"/>
+        </div>
+        <br/>
+        <div class="center">
+            <label for="ltc_spot_rp">Enter Retail Price:</label>
+            <input align="left" id="ltc_spot_rp" type="text"/>
+            <input onClick="handle_His_ltc_Spot_Prices()" type="button"
+                   value='View Historical Spot Prices'/>
+            <div class="modal" id="ltc_spot_history_result_modal" ltc_spot-history-modal-content style="width:100%>
+        <div class="
+            ">
+            <span class="close" id="ltc_spot_close">&times;</span>
+            <div id="ltc_spot_history_result"/>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="center">
+    <label for="ltc_spot_salp"> Enter Salvage Price:</label>
+    <input align="left" id="ltc_spot_salp" type="text"/>
+</div>
+<br/>
+<div class="center">
+    <label for="ltc_spot_mean">Enter Mean quantity:</label>
+    <input align="left" id="ltc_spot_mean" type="text"/>
+</div>
+<br/>
+<div class="center">
+    <label for="ltc_spot_sd"> Enter Standard Deviation:</label>
+    <input align="left" id="ltc_spot_sd" type="text"/>
+</div>
+<br/>
+<div class="center">
+    <label for="ltc_spot_orderQty">Enter Order Quantity:</label>
+    <input align="left" id="ltc_spot_orderQty" type="text"/>
+</div>
+<br/>
+<div class="center">
+    <label for="ltc_spot_numIt"> Enter Number of Iterations to be
+        performed:</label>
+    <input align="left" id="ltc_spot_numIt" type="text"/>
+</div>
+<br/>
+<input onClick="handle_LTC_Spot_Simulation()" type="button"
+       value='Run Simulation'/>
+<br/>
+<div class="center" hidden id="ltc_spot_resultBody">
+    <h4>Result of the Simulation
+        <h4>
+            <br/>
+            <a href="#"
+               onclick="download_table_as_csv('LTC_Spot_Result_Table');">Download
+                as CSV</a>
+            <div class="center" id="ltc_spot_result"></div>
+            <div id="ltc_spot_chartContent">
+                <canvas id="LTC_Spot_Result_Quantity_Chart"
+                        style="width:100%"/>
+                <canvas id="LTC_Spot_Result_Monies_Chart"
+                        style="width:100%"/>
+            </div>
+</div>
+</div>
+</div>
+<!-- Long Term with Spot HTML ends here-->
 
-  <div id="Options" class="tabcontent">
-    <h4 class="center"> Please enter the following information and start the Simulation</h4>
-    <br />
-    <div class="center">
-      <label for="options_uop">Enter Unit Options Price:</label>
-      <input type="text" id="options_uop" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="options_uep">Enter Unit Exercise Price:</label>
-      <input type="text" id="options_uep" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="options_rp">Enter Retail Price:</label>
-      <input type="text" id="options_rp" align="left" />
-    </div>
-    <br />
-    <br />
-    <div class="center">
-      <label for="options_mean">Enter Mean quantity:</label>
-      <input type="text" id="options_mean" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="options_sd"> Enter Standard Deviation:</label>
-      <input type="text" id="options_sd" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="options_orderQty">Enter Order Quantity for Options Procurement:</label>
-      <input type="text" id="options_orderQty" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="options_numIt"> Enter Number of Iterations to be performed:</label>
-      <input type="text" id="options_numIt" align="left" />
-    </div>
-    <br />
-    <input type="button" value='Run Simulation' onClick="handle_Options_Simulation()" />
-    <br />
-    <div id="options_resultBody" hidden class="center">
-      <h4>Result of the Simulation<h4>
-          <br />
-          <a href="#" onclick="download_table_as_csv('Options_Result_Table');">Download as CSV</a>
-          <div id="options_result" class="center"></div>
-          <div id="options_chartContent">
-            <canvas id="Options_Result_Quantity_Chart" style="width:100%" />
-            <canvas id="Options_Result_Monies_Chart" style="width:100%" />
-          </div>
-    </div>
-  </div>
-  <!-- Options Contract ends here -->
-  <!--LTC with Options HTML starts here-->
-  <div id="LTC-Options" class="tabcontent">
-    <h4 class="center"> Please enter the following information and start the Simulation</h4>
-    <br />
-    <div class="center">
-      <label for="ltc_options_wsp">Enter Wholesale Price:</label>
-      <input type="text" id="ltc_options_wsp" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="ltc_options_uop">Enter Unit Options Price:</label>
-      <input type="text" id="ltc_options_uop" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="ltc_options_uep">Enter Unit Exercise Price:</label>
-      <input type="text" id="ltc_options_uep" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="ltc_options_rp">Enter Retail Price:</label>
-      <input type="text" id="ltc_options_rp" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="ltc_options_salp"> Enter Salvage Price:</label>
-      <input type="text" id="ltc_options_salp" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="ltc_options_mean">Enter Mean quantity:</label>
-      <input type="text" id="ltc_options_mean" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="ltc_options_sd"> Enter Standard Deviation:</label>
-      <input type="text" id="ltc_options_sd" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="ltc_options_orderQty">Enter Order Quantity for Long Term Contract:</label>
-      <input type="text" id="ltc_options_orderQty" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="ltc_options_procurementOrderQty">Enter Order Quantity for Options Procurement:</label>
-      <input type="text" id="ltc_options_procurementOrderQty" align="left" />
-    </div>
-    <br />
-    <div class="center">
-      <label for="ltc_options_numIt"> Enter Number of Iterations to be performed:</label>
-      <input type="text" id="ltc_options_numIt" align="left" />
-    </div>
-    <br />
-    <input type="button" value='Run Simulation' onClick="handle_LTC_Options_Simulation()" />
-    <br />
-    <div id="ltc_options_resultBody" hidden class="center">
-      <h4>Result of the Simulation<h4>
-          <br />
-          <a href="#" onclick="download_table_as_csv('LTC_Options_Result_Table');">Download as CSV</a>
-          <div id="ltc_options_result" class="center"></div>
-          <div id="ltc_options_chartContent">
-            <canvas id="LTC_Options_Result_Quantity_Chart" style="width:100%" />
-            <canvas id="LTC_Options_Result_Monies_Chart" style="width:100%" />
-          </div>
-    </div>
-  </div>
-  </div>
-  <!--LTC with Options HTML ends here-->
+<!-- Options Contract starts here -->
 
-  </div>
+<div class="tabcontent" id="Options">
+    <h4 class="center"> Please enter the following information and start
+        the Simulation</h4>
+    <br/>
+    <div class="center">
+        <label for="options_uop">Enter Unit Options Price:</label>
+        <input align="left" id="options_uop" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="options_uep">Enter Unit Exercise Price:</label>
+        <input align="left" id="options_uep" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="options_rp">Enter Retail Price:</label>
+        <input align="left" id="options_rp" type="text"/>
+    </div>
+    <br/>
+    <br/>
+    <div class="center">
+        <label for="options_mean">Enter Mean quantity:</label>
+        <input align="left" id="options_mean" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="options_sd"> Enter Standard Deviation:</label>
+        <input align="left" id="options_sd" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="options_orderQty">Enter Order Quantity for Options
+            Procurement:</label>
+        <input align="left" id="options_orderQty" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="options_numIt"> Enter Number of Iterations to be
+            performed:</label>
+        <input align="left" id="options_numIt" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <input onClick="handle_Options_Simulation()" type="button"
+               value='Run Simulation'/>
+    </div>
+    <br/>
+    <div class="center" hidden id="options_resultBody">
+        <h4>Result of the Simulation
+            <h4>
+                <br/>
+                <a href="#"
+                   onclick="download_table_as_csv('Options_Result_Table');">Download
+                    as CSV</a>
+                <div class="center" id="options_result"></div>
+                <div id="options_chartContent">
+                    <canvas id="Options_Result_Quantity_Chart"
+                            style="width:100%"/>
+                    <canvas id="Options_Result_Monies_Chart"
+                            style="width:100%"/>
+                </div>
+    </div>
+</div>
+<!-- Options Contract ends here -->
+<!--LTC with Options HTML starts here-->
+<div class="tabcontent" id="LTC-Options">
+    <h4 class="center"> Please enter the following information and start
+        the Simulation</h4>
+    <br/>
+    <div class="center">
+        <label for="ltc_options_wsp">Enter Wholesale Price:</label>
+        <input align="left" id="ltc_options_wsp" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="ltc_options_uop">Enter Unit Options Price:</label>
+        <input align="left" id="ltc_options_uop" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="ltc_options_uep">Enter Unit Exercise Price:</label>
+        <input align="left" id="ltc_options_uep" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="ltc_options_rp">Enter Retail Price:</label>
+        <input align="left" id="ltc_options_rp" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="ltc_options_salp"> Enter Salvage Price:</label>
+        <input align="left" id="ltc_options_salp" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="ltc_options_mean">Enter Mean quantity:</label>
+        <input align="left" id="ltc_options_mean" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="ltc_options_sd"> Enter Standard Deviation:</label>
+        <input align="left" id="ltc_options_sd" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="ltc_options_orderQty">Enter Order Quantity for Long
+            Term Contract:</label>
+        <input align="left" id="ltc_options_orderQty" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="ltc_options_procurementOrderQty">Enter Order Quantity
+            for Options Procurement:</label>
+        <input align="left" id="ltc_options_procurementOrderQty"
+               type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="ltc_options_numIt"> Enter Number of Iterations to be
+            performed:</label>
+        <input align="left" id="ltc_options_numIt" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <input onClick="handle_LTC_Options_Simulation()" type="button"
+               value='Run Simulation'/>
+    </div>
+    <br/>
+    <div class="center" hidden id="ltc_options_resultBody">
+        <h4>Result of the Simulation
+            <h4>
+                <br/>
+                <a href="#"
+                   onclick="download_table_as_csv('LTC_Options_Result_Table');">Download
+                    as CSV</a>
+                <div class="center" id="ltc_options_result"></div>
+                <div id="ltc_options_chartContent">
+                    <canvas id="LTC_Options_Result_Quantity_Chart"
+                            style="width:100%"/>
+                    <canvas id="LTC_Options_Result_Monies_Chart"
+                            style="width:100%"/>
+                </div>
+    </div>
+</div>
+</div>
+<!--LTC with Options HTML ends here-->
+
+</div>
 </body>
 
 </html>
