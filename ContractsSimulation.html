@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Newsvendor Simulation</title>
+    <title>Contracts Simulation</title>
 </head>
 
 <body>
@@ -1502,6 +1502,8 @@
 
 
 
+
+
 </script>
 
 <style>
@@ -1518,6 +1520,11 @@
       text-align: center;
     }
 
+    .left {
+      margin: auto;
+      text-align: left;
+    }
+
     fieldset {
       background-color: #f1f1f1;
       border: none;
@@ -1530,9 +1537,9 @@
     label {
       cursor: pointer;
       display: inline-block;
-      padding: 3px 6px;
-      text-align: right;
-      width: 300px;
+      /*padding: 3px 6px; */
+      text-align: left;
+      /*width: 300px;*/
       vertical-align: top;
     }
 
@@ -1572,7 +1579,6 @@
     .tabcontent {
       display: none;
       padding: 6px 12px;
-      border: 1px solid #ccc;
       border-top: none;
       animation: fadeEffect 1s;
     }
@@ -1666,7 +1672,7 @@
   -webkit-appearance: none;  /* Override default CSS styles */
   appearance: none;
   width: 100%; /* Full-width */
-  height: 25px; /* Specified height */
+  height: 10px; /* Specified height */
   background: #d3d3d3; /* Grey background */
   outline: none; /* Remove outline */
   opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
@@ -1685,16 +1691,18 @@
   appearance: none;
   width: 25px; /* Set a specific slider handle width */
   height: 25px; /* Slider handle height */
-  background: #04AA6D; /* Green background */
+  background: #0000ff; /* Green background */
   cursor: pointer; /* Cursor on hover */
 }
 
 .slider::-moz-range-thumb {
   width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
+  height: 10px; /* Slider handle height */
   background: #04AA6D; /* Green background */
   cursor: pointer; /* Cursor on hover */
 }
+
+
 
 </style>
 
@@ -1747,150 +1755,171 @@
     <!-- Instructions HTML ends here -->
     <!--LTC HTML starts here-->
     <div class="tabcontent" id="LTC">
-        <h4 class="center"> Please enter the following information and
-            start the Simulation</h4>
-        <br/>
-        <div class="center">
-            <label for="ltc_wsp">Enter Wholesale Price:</label>
-            <input align="left" id="ltc_wsp" type="text"/>
-        </div>
-        <br/>
-        <div class="center">
-            <label for="ltc_rp">Enter Retail Price:</label>
-            <input align="left" id="ltc_rp" type="text"/>
-        </div>
-        <br/>
-        <div class="center">
-            <label for="ltc_salp"> Enter Salvage Price:</label>
-            <input align="left" id="ltc_salp" type="text"/>
-        </div>
-        <br/>
-        <div class="center">
-            <label for="ltc_mean">Enter Mean quantity:</label>
-            <input align="left" id="ltc_mean" type="text"/>
-        </div>
-        <br/>
-        <div class="center">
-            <label for="ltc_sd"> Enter Standard Deviation:</label>
-            <input align="left" id="ltc_sd" type="text"/>
-            <div class="slidecontainer">
-                <input type="range" min="0" max="9999" value="0" class="slider"
-                       id="ltc_sd_slider">
+        <div id="ltc_left" style="float:left; width:40%;">
+            <h4 class="left"> Please enter the following information and
+                start the Simulation</h4>
+            <br/>
+            <div class="center">
+                <label for="ltc_wsp">Enter Wholesale Price:</label>
+                <input align="left" id="ltc_wsp" style="width: 50px;"
+                       type="text"/>
             </div>
-        </div>
-        <br/>
-        <div class="center">
-            <label for="ltc_orderQty">Enter Order Quantity:</label>
-            <input align="left" id="ltc_orderQty" type="text"/>
-        </div>
-        <br/>
-        <div class="center">
-            <label for="ltc_numIt"> Enter Number of Iterations to be
-                performed:</label>
-            <input align="left" id="ltc_numIt" type="text"/>
-        </div>
-        <br/>
-        <input onClick="handle_LTC_Simulation()" type="button"
-               value='Run Simulation'/>
-        <br/>
-        <div class="center" hidden id="ltc_resultBody">
-            <h4>Result of the Simulation
-                <h4>
-                    <br/>
-                    <a href="#"
-                       onclick="download_table_as_csv('LTC_Result_Table');">Download
-                        as CSV</a>
-                    <div class="center" id="ltc_result"></div>
-                    <div id="ltc_chartContent">
-                        <canvas id="LTC_Result_Quantity_Chart"
-                                style="width:100%"/>
-                        <canvas id="LTC_Result_Monies_Chart"
-                                style="width:100%"/>
-                    </div>
-        </div>
-    </div>
-    <!--LTC HTML ends here-->
-    <!--Spot HTML starts here-->
-    <div class="tabcontent" id="Spot">
-        <h4 class="center"> Please enter the following information and
-            start the Simulation</h4>
-        <br/>
-        <div class="center">
-            <label for="spot_rp">Enter Retail Price:</label>
-            <input align="left" id="spot_rp" type="text"/>
-            <input onClick="handle_His_Spot_Prices()" type="button"
-                   value='View Historical Spot Prices'/>
-        </div>
-        <div class="modal" id="spot_history_result_modal"
-             style="width:100%">
-            <div class="spot-history-modal-content">
-                <span class="close" id="spot_close">&times;</span>
-                <div id="spot_history_result">
+            <br/>
+            <div class="center">
+                <label for="ltc_rp">Enter Retail Price:</label>
+                <input align="left" id="ltc_rp" style="width: 50px;"
+                       type="text"/>
+            </div>
+            <br/>
+            <div class="center">
+                <label for="ltc_salp"> Enter Salvage Price:</label>
+                <input align="left" id="ltc_salp" style="width: 50px;"
+                       type="text"/>
+            </div>
+            <br/>
+            <div class="center">
+                <label for="ltc_mean">Enter Mean quantity:</label>
+                <input align="left" id="ltc_mean" style="width: 50px;"
+                       type="text"/>
+            </div>
+            <br/>
+            <div class="center">
+                <label for="ltc_sd"> Standard Deviation (Enter or Select
+                    from the Range)
+                    :</label>
+                <input align="left" id="ltc_sd" style="width: 40px;"
+                       type="text"/>
+                <br/>
+                <div>
+                    <input id="ltc_sd_slider_min" style="width: 50px;"
+                           type="text" value="0"/>
+                    <input class="slider" id="ltc_sd_slider" max="999"
+                           min="0"
+                           style="width: 200px;"
+                           type="range" value="0">
+                    <input id="ltc_sd_slider_max" style="width: 50px;"
+                           type="text"/>
                 </div>
             </div>
+            <br/>
+            <div class="center">
+                <label for="ltc_orderQty">Enter Order Quantity:</label>
+                <input align="left" id="ltc_orderQty" style="width:50px;"
+                       type="text"/>
+            </div>
+            <br/>
+            <div class="center">
+                <label for="ltc_numIt"> Enter Number of Iterations to be
+                    performed:</label>
+                <input align="left" id="ltc_numIt" style="width: 50px;"
+                       type="text"/>
+            </div>
+            <br/>
+            <div class="center">
+                <input onClick="handle_LTC_Simulation()" type="button"
+                       value='Run Simulation'/>
+            </div>
         </div>
-        <br/>
-        <div class="center">
-            <label for="spot_mean">Enter Mean quantity:</label>
-            <input align="left" id="spot_mean" type="text"/>
-        </div>
-        <br/>
-        <div class="center">
-            <label for="spot_sd">Enter Standard Deviation:</label>
-            <input align="left" id="spot_sd" type="text"/>
-        </div>
-        <br/>
-        <div class="center">
-            <label for="spot_numIt"> Enter Number of Iterations to be
-                performed:</label>
-            <input align="left" id="spot_numIt" type="text"/>
-        </div>
-        <br/>
-        <input onClick="handle_spot_Simulation()" type="button"
-               value='Run Simulation'/>
-        <br/>
-        <div class="center" hidden id="spot_resultBody">
-            <h4>Result of the Simulation
-                <h4>
-                    <br/>
-                    <a href="#"
-                       onclick="download_table_as_csv('Spot_Result_Table');">Download
-                        as CSV</a>
-                    <div class="center" id="spot_result"></div>
-                    <div id="spot_chartContent">
-                        <canvas id="Spot_Result_Quantity_Chart"
-                                style="width:100%"/>
-                        <canvas id="Spot_Result_Monies_Chart"
-                                style="width:100%"/>
-                    </div>
+        <div id="ltc_right" style="float:right; width:60%;">
+            <div class="center" hidden id="ltc_resultBody">
+            <span><b>Result of the Simulation
+            </b></span>
+                <div id="ltc_chartContent">
+                    <canvas id="LTC_Result_Quantity_Chart"
+                            style="width:100%"/>
+                    <canvas id="LTC_Result_Monies_Chart"
+                            style="width:100%"/>
+                </div>
+                <a href="#"
+                   onclick="download_table_as_csv('LTC_Result_Table');">Download
+                    as CSV</a>
+                <div class="left" id="ltc_result"></div>
+            </div>
         </div>
     </div>
+</div>
+<!--LTC HTML ends here-->
+<!--Spot HTML starts here-->
+<div class="tabcontent" id="Spot">
+    <h4 class="center"> Please enter the following information and
+        start the Simulation</h4>
+    <br/>
+    <div class="center">
+        <label for="spot_rp">Enter Retail Price:</label>
+        <input align="left" id="spot_rp" type="text"/>
+        <input onClick="handle_His_Spot_Prices()" type="button"
+               value='View Historical Spot Prices'/>
+    </div>
+    <div class="modal" id="spot_history_result_modal"
+         style="width:100%">
+        <div class="spot-history-modal-content">
+            <span class="close" id="spot_close">&times;</span>
+            <div id="spot_history_result">
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="spot_mean">Enter Mean quantity:</label>
+        <input align="left" id="spot_mean" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="spot_sd">Enter Standard Deviation:</label>
+        <input align="left" id="spot_sd" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="spot_numIt"> Enter Number of Iterations to be
+            performed:</label>
+        <input align="left" id="spot_numIt" type="text"/>
+    </div>
+    <br/>
+    <input onClick="handle_spot_Simulation()" type="button"
+           value='Run Simulation'/>
+    <br/>
+    <div class="center" hidden id="spot_resultBody">
+        <h4>Result of the Simulation
+            <h4>
+                <br/>
+                <a href="#"
+                   onclick="download_table_as_csv('Spot_Result_Table');">Download
+                    as CSV</a>
+                <div class="center" id="spot_result"></div>
+                <div id="spot_chartContent">
+                    <canvas id="Spot_Result_Quantity_Chart"
+                            style="width:100%"/>
+                    <canvas id="Spot_Result_Monies_Chart"
+                            style="width:100%"/>
+                </div>
+    </div>
+</div>
 
-    <!--Spot HTML ends here-->
-    <!--Long Term with Spot HTML starts here-->
-    <div class="tabcontent" id="LTC-Spot">
-        <h4 class="center"> Please enter the following information and
-            start
-            the Simulation</h4>
-        <br/>
-        <div class="center">
-            <label for="ltc_spot_wsp">Enter Wholesale Price:</label>
-            <input align="left" id="ltc_spot_wsp" type="text"/>
-        </div>
-        <br/>
-        <div class="center">
-            <label for="ltc_spot_rp">Enter Retail Price:</label>
-            <input align="left" id="ltc_spot_rp" type="text"/>
-            <input onClick="handle_His_ltc_Spot_Prices()" type="button"
-                   value='View Historical Spot Prices'/>
-            <div class="modal" id="ltc_spot_history_result_modal"
-                 ltc_spot-history-modal-content style="width:100%>
-        <div class="
-            ">
-            <span class="close" id="ltc_spot_close">&times;</span>
-            <div id="ltc_spot_history_result"/>
-        </div>
+<!--Spot HTML ends here-->
+<!--Long Term with Spot HTML starts here-->
+<div class="tabcontent" id="LTC-Spot">
+    <h4 class="center"> Please enter the following information and
+        start
+        the Simulation</h4>
+    <br/>
+    <div class="center">
+        <label for="ltc_spot_wsp">Enter Wholesale Price:</label>
+        <input align="left" id="ltc_spot_wsp" type="text"/>
     </div>
+    <br/>
+    <div class="center">
+        <label for="ltc_spot_rp">Enter Retail Price:</label>
+        <input align="left" id="ltc_spot_rp" type="text"/>
+        <input onClick="handle_His_ltc_Spot_Prices()" type="button"
+               value='View Historical Spot Prices'/>
+        <div class="modal" id="ltc_spot_history_result_modal"
+             ltc_spot-history-modal-content style="width:100%>
+        <div class="
+        ">
+        <span class="close" id="ltc_spot_close">&times;</span>
+        <div id="ltc_spot_history_result"/>
+    </div>
+</div>
 </div>
 <br/>
 <div class="center">
@@ -2096,6 +2125,9 @@
 <script>
        var ltc_sd_slider = document.getElementById("ltc_sd_slider");
     var ltc_sd=document.getElementById("ltc_sd");
+    var ltc_sd_slider_max=document.getElementById("ltc_sd_slider_max");
+
+    ltc_sd_slider_max.value = ltc_sd_slider.max;
 
     ltc_sd_slider.oninput = function() {
   ltc_sd.value = this.value;
@@ -2103,8 +2135,16 @@
 }
 ltc_sd.oninput = function() {
   ltc_sd_slider.value = this.value;
-
 }
+ltc_sd_slider_max.oninput = function(){
+
+ltc_sd_slider.max = ltc_sd_slider_max.value;
+}
+ltc_sd_slider_min.oninput = function(){
+
+ltc_sd_slider.min = ltc_sd_slider_min.value;
+}
+
 
 </script>
 
