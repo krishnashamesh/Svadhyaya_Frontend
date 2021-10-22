@@ -1495,6 +1495,57 @@
     };
 //LTC with Options Contract Simulation Specific Functions ends here
 
+//LTC with Options and Spot Contract Simulation Specific Functions
+//starts here
+function handle_His_ltc_Options_Spot_Prices(retailPrice) {
+
+      var rp = document.getElementById("ltc_options_spot_rp").value;
+
+      if (rp.length < 1) {
+        alert("Retail Price required for calculating historical prices");
+        return;
+      }
+
+      var rowData = [];
+      var sd = Math.floor((Math.random() * 7 + 1) * 10);
+      var cumHisSpotPrice = 0;
+      var numIt = 52;
+      for (let i = 1; i <= numIt; i++) {
+
+        rowData[0] = ["Week", "Historical Spot Prices"];
+
+        var hisSpotPrice = Math.max((parseInt((parseFloat(rp) - parseFloat(random_sample_std_normal_dist_postive() * sd)), 10)), 0);
+        cumHisSpotPrice = cumHisSpotPrice + hisSpotPrice;
+        rowData[i] = [i, hisSpotPrice];
+      }
+      rowData[numIt + 1] = ["Total", (Math.round((cumHisSpotPrice + Number.EPSILON) * 100) / 100)];
+
+      rowData[numIt + 2] = ["Average", (Math.round((cumHisSpotPrice / numIt + Number.EPSILON) * 100) / 100)];
+
+      createTable(rowData, document.getElementById
+      ("ltc_options_spot_history_result"),
+      'LTC_Options_Spot_Historical_Result_Table');
+
+      var modal = document.getElementById
+      ("ltc_options_spot_history_result_modal");
+      modal.style.display = "block";
+
+      var span = document.getElementById("ltc_options_spot_close");
+      span.onclick = function () {
+        modal.style.display = "none";
+      }
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    };
+
+
+
+
+//LTC with Options and Spot Contract Simulation Specific Functions ends
+//here
 
 
 
@@ -1701,6 +1752,7 @@
   background: #04AA6D; /* Green background */
   cursor: pointer; /* Cursor on hover */
 }
+
 
 
 
@@ -2119,6 +2171,103 @@
 </div>
 <!--LTC with Options HTML ends here-->
 
+<!--LTC with Options and Spot HTML starts here-->
+<div class="tabcontent" id="LTC-Options-Spot">
+    <h4 class="center"> Please enter the following information and start
+        the Simulation</h4>
+    <br/>
+    <div class="center">
+        <label for="ltc_options_spot_wsp">Enter Wholesale Price:</label>
+        <input align="left" id="ltc_options_spot_wsp" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="ltc_options_spot_uop">Enter Unit Options Price:</label>
+        <input align="left" id="ltc_options_spot_uop" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="ltc_options_spot_uep">Enter Unit Exercise
+            Price:</label>
+        <input align="left" id="ltc_options_spot_uep" type="text"/>
+    </div>
+    <br/>
+    <div class="center">
+        <label for="ltc_options_spot_rp">Enter Retail Price:</label>
+        <input align="left" id="ltc_options_spot_rp" type="text"/>
+        <input onClick="handle_His_ltc_Options_Spot_Prices()" type="button"
+               value='View Historical Spot Prices'/>
+        <div class="modal" id="ltc_options_spot_history_result_modal"
+             ltc_options_spot-history-modal-content style="width:100%>
+        <div class="
+        ">
+        <span class="close" id="ltc_options_spot_close">&times;</span>
+        <div id="ltc_options_spot_history_result"/>
+    </div>
+</div>
+<br/>
+
+<div class="center">
+    <label for="ltc_options_spot_salp"> Enter Salvage Price:</label>
+    <input align="left" id="ltc_options_spot_salp" type="text"/>
+</div>
+<br/>
+<div class="center">
+    <label for="ltc_options_spot_mean">Enter Mean quantity:</label>
+    <input align="left" id="ltc_options_spot_mean" type="text"/>
+</div>
+<br/>
+<div class="center">
+    <label for="ltc_options_spot_sd"> Enter Standard Deviation:</label>
+    <input align="left" id="ltc_options_spot_sd" type="text"/>
+</div>
+<br/>
+<div class="center">
+    <label for="ltc_options_spot_orderQty">Enter Order Quantity for
+        Long
+        Term Contract:</label>
+    <input align="left" id="ltc_options_spot_orderQty" type="text"/>
+</div>
+<br/>
+<div class="center">
+    <label for="ltc_options_spot_procurementOrderQty">Enter Order
+        Quantity
+        for Options Procurement:</label>
+    <input align="left" id="ltc_options_spot_procurementOrderQty"
+           type="text"/>
+</div>
+<br/>
+<div class="center">
+    <label for="ltc_options_spot_numIt"> Enter Number of Iterations
+        to be
+        performed:</label>
+    <input align="left" id="ltc_options_spot_numIt" type="text"/>
+</div>
+<br/>
+<div class="center">
+    <input onClick="handle_LTC_Options_Spot_Simulation()" type="button"
+           value='Run Simulation'/>
+</div>
+<br/>
+<div class="center" hidden id="ltc_options_spot_resultBody">
+    <h4>Result of the Simulation
+        <h4>
+            <br/>
+            <a href="#"
+               onclick="download_table_as_csv('LTC_Options_Spot_Result_Table');">Download
+                as CSV</a>
+            <div class="center" id="ltc_options_spot_result"></div>
+            <div id="ltc_options_spot_chartContent">
+                <canvas id="LTC_Options_Spot_Result_Quantity_Chart"
+                        style="width:100%"/>
+                <canvas id="LTC_Options_Spot_Result_Monies_Chart"
+                        style="width:100%"/>
+            </div>
+</div>
+</div>
+</div>
+<!--LTC with Options and Spot HTML ends here-->
+
 </div>
 </body>
 
@@ -2144,6 +2293,7 @@ ltc_sd_slider_min.oninput = function(){
 
 ltc_sd_slider.min = ltc_sd_slider_min.value;
 }
+
 
 
 </script>
