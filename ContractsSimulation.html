@@ -2237,6 +2237,11 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
       margin: auto;
       text-align: left;
     }
+	
+	.right {
+      margin: auto;
+      text-align: right;
+    }
 
     fieldset {
       background-color: #f1f1f1;
@@ -2269,13 +2274,14 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 
     /* Style the buttons that are used to open the tab content */
     .tab button {
-      background-color: inherit;
-      float: left;
-      border: 1 px;
-      outline: none;
-      cursor: pointer;
-      padding: 14px 16px;
-      transition: 0.3s;
+	  background-color: inherit;
+	  float: left;
+	  border: none;
+	  outline: none;
+	  cursor: pointer;
+	  padding: 14px 16px;
+	  transition: 0.3s;
+	  font-size: 17px;
     }
 
     /* Change background color of buttons on hover */
@@ -2290,10 +2296,32 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 
     /* Style the tab content */
     .tabcontent {
+	  position: fixed;
       display: none;
       padding: 6px 12px;
       border-top: none;
-      animation: fadeEffect 1s;
+      animation: fadeEffect 1s;	  
+ 	  overflow-y: auto;
+    }
+	
+		.ltc_left {
+	  position: fixed;
+	  padding: 6px 12px;
+	  top: 130px;
+	  left: 10px;
+	  bottom: 10px;
+	  width: 350px;
+	  background-color: #eee;
+	  overflow-y: auto;
+	  float:left;
+	  border: double;
+    }
+	
+	.ltc_right {
+	  height: auto;float:right;
+	  height: 430px;
+	  overflow-y: auto;
+	  margin-left: 380px;
     }
 
     @keyframes fadeEffect {
@@ -2429,32 +2457,28 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
             Instructions
         </button>
         <button class="tablinks" onclick="openSimulationTab(event, 'LTC')">
-            Long Term Contract
+            Long Term
         </button>
         <button class="tablinks"
-                onclick="openSimulationTab(event, 'Spot')">Spot Contract
+                onclick="openSimulationTab(event, 'Spot')">Spot
         </button>
         <button class="tablinks"
                 onclick="openSimulationTab(event, 'LTC-Spot')">Long Term
-            with Spot Contract
+            with Spot
         </button>
         <button class="tablinks"
                 onclick="openSimulationTab(event, 'Options')">Options
-            Contract
         </button>
         <button class="tablinks"
                 onclick="openSimulationTab(event, 'LTC-Options')">Long Term
-            with Options
-            Contract
+            with Options            
         </button>
         <button class="tablinks"
                 onclick="openSimulationTab(event, 'LTC-Options-Spot')">Long
-            Term with Options and Spot
-            Contract
+            Term with Options and Spot            
         </button>
         <button class="tablinks" onclick="openSimulationTab(event, 'RS')">
-            Revenue Sharing Contract
-        </button>
+            Revenue Sharing        </button>
     </div>
     <br/>
     <!--Instructions HTML starts here-->
@@ -2464,62 +2488,59 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
     <!-- Instructions HTML ends here -->
     <!--LTC HTML starts here-->
     <div class="tabcontent" id="LTC">
-        <div id="ltc_left" style="float:left; width:40%;">
+        <div class="ltc_left" id="ltc_left" >
             <h4 class="left"> Please enter the following information and
                 start the Simulation</h4>
             <br/>
-            <div class="center">
-                <label for="ltc_wsp">Enter Wholesale Price:</label>
-                <input align="left" id="ltc_wsp" style="width: 50px;"
-                       type="text"/>
+            <div class="right">
+                <label for="ltc_wsp">Wholesale Price</label>
+                <input align="right" id="ltc_wsp" style="width: 50px;"type="text"/>
             </div>
             <br/>
-            <div class="center">
-                <label for="ltc_rp">Enter Retail Price:</label>
+            <div class="right">
+                <label for="ltc_rp">Retail Price</label>
                 <input align="left" id="ltc_rp" style="width: 50px;"
                        type="text"/>
             </div>
             <br/>
-            <div class="center">
-                <label for="ltc_salp"> Enter Salvage Price:</label>
+            <div class="right">
+                <label for="ltc_salp">Salvage Price</label>
                 <input align="left" id="ltc_salp" style="width: 50px;"
                        type="text"/>
             </div>
             <br/>
-            <div class="center">
-                <label for="ltc_mean">Enter Mean quantity:</label>
+            <div class="right">
+                <label for="ltc_mean">Mean quantity</label>
                 <input align="left" id="ltc_mean" style="width: 50px;"
                        type="text"/>
             </div>
             <br/>
-            <div class="center">
-                <label for="ltc_sd"> Standard Deviation (Enter or Select
-                    from the Range)
-                    :</label>
-                <input align="left" id="ltc_sd" style="width: 40px;"
+            <div class="right">
+                <label for="ltc_sd"> Standard Deviation [Enter or Use Slider]</label>
+                <input align="left" id="ltc_sd" style="width: 50px;"
                        type="text"/>
                 <br/>
-                <div>
-                    <input id="ltc_sd_slider_min" style="width: 50px;"
+                <div class="slider-style">
+                    <input id="ltc_sd_slider_min" style="width: 50px;" 
                            type="text" value="0"/>
                     <input class="slider" id="ltc_sd_slider" max="999"
                            min="0"
-                           style="width: 200px;"
+                           style="width: 200px; "
                            type="range" value="0">
-                    <input id="ltc_sd_slider_max" style="width: 50px;"
+                    <input id="ltc_sd_slider_max" style="width: 50px;   margin-top: 15px;"
                            type="text"/>
                 </div>
             </div>
             <br/>
-            <div class="center">
-                <label for="ltc_orderQty">Enter Order Quantity:</label>
+            <div class="right">
+                <label for="ltc_orderQty">Order Quantity</label>
                 <input align="left" id="ltc_orderQty" style="width:50px;"
                        type="text"/>
             </div>
             <br/>
-            <div class="center">
-                <label for="ltc_numIt"> Enter Number of Iterations to be
-                    performed:</label>
+            <div class="right">
+                <label for="ltc_numIt"> Number of Iterations to be
+                    performed</label>
                 <input align="left" id="ltc_numIt" style="width: 50px;"
                        type="text"/>
             </div>
@@ -2529,7 +2550,7 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
                        value='Run Simulation'/>
             </div>
         </div>
-        <div id="ltc_right" style="float:right; width:60%;">
+        <div class="ltc_right" id="ltc_right" >
             <div class="center" hidden id="ltc_resultBody">
             <span><b>Result of the Simulation
             </b></span>
