@@ -6,7 +6,7 @@
 </head>
 
 <body>
-
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 </script>
 
@@ -105,11 +105,11 @@
 
       tablinks = document.getElementsByClassName("tablinks");
       for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+        tablinks[i].className = tablinks[i].className.replace(" w3-blue-grey", "");
       }
 
       document.getElementById(simulationName).style.display = "block";
-      evt.currentTarget.className += " active";
+      evt.currentTarget.className += " w3-blue-grey";
     };
 
     // Utility Functions ends here
@@ -2306,11 +2306,11 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 	
 		.ltc_left {
 	  position: fixed;
-	  padding: 6px 12px;
-	  top: 130px;
-	  left: 10px;
-	  bottom: 10px;
-	  width: 350px;
+	  padding: 0px 12px;
+	  top: 92px;
+	  left: 0px;
+	  bottom: 0px;
+	  width: 400px;
 	  background-color: #eee;
 	  overflow-y: auto;
 	  float:left;
@@ -2443,110 +2443,166 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
   cursor: pointer; /* Cursor on hover */
 }
 
+.glossy-button {
+  display: inline-block;
+  position: relative;
+  background-color: #AAA;
+  background-image: linear-gradient( /* chrome */
+    hsla(0, 0%, 100%, 0.6), hsla(0, 0%, 100%, 0) 50%,
+    hsla(0, 0%, 0%, 0.3) 50%, hsla(0, 0%, 100%, 0.2)
+  );
+  font-size: 18px;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: white;
+  padding: 8px 30px;
+  text-shadow:
+    0 0 15px hsla(0, 0%, 100%, 1), /* bloom */
+    0 2px 4px hsla(0, 0%, 0%, 0.7); /* drop shadow */
+  border: none;
+  border-radius: 50px;
+  margin: 10px;
+  box-shadow:
+    inset 0 -5px 20px hsla(0, 0%, 0%, 0.4), /* top light */
+    inset 0 5px 20px hsla(0, 0%, 100%, 0.4), /* bottom shadow */
+    /* multiple light sources yall */
+    -8px 8px 5px hsla(0, 0%, 0%, 0.15), /* drop shadow 1 */
+    5px 18px 10px hsla(0, 0%, 0%, 0.2); /* drop shadow 2 */
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
 
+/* highlight */
+.glossy-button:before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 5px;
+  height: 10px;
+  border-radius: 10px;
+  background: linear-gradient(
+    hsla(0, 0%, 100%, 0.8), hsla(0, 0%, 100%, 0) );
+}
+
+.glossy-button--blue { background-color: #19F; }
+.glossy-button--gold { background-color: #EA0; }
+.glossy-button--green { background-color: #6C6; }
+.glossy-button--red { background-color: #E21; }
+
+.glossy-button:hover {
+  transform: scale(1.05);
+  box-shadow:
+    inset 0 -5px 20px hsla(0, 0%, 0%, 0.4), /* top light */
+    inset 0 5px 20px hsla(0, 0%, 100%, 0.4), /* bottom shadow */
+    /* multiple light sources yall */
+    -12px 12px 5px hsla(0, 0%, 0%, 0.15), /* drop shadow 1 */
+    10px 25px 10px hsla(0, 0%, 0%, 0.2); /* drop shadow 2 */
+}
 
 
 </style>
 
-<div class="center">
+<div class="center" class="w3-container">
     <h1 class="center"> Contracts Simulation </h1>
-    <br/>
-    <div class="tab">
-        <button class="tablinks"
+
+    <div class="w3-bar w3-black">
+        <button class="w3-bar-item w3-button tablinks w3-blue-grey"
                 onclick="openSimulationTab(event, 'Instructions')">
             Instructions
         </button>
-        <button class="tablinks" onclick="openSimulationTab(event, 'LTC')">
+        <button  class="w3-bar-item w3-button tablinks " onclick="openSimulationTab(event, 'LTC')">
             Long Term
         </button>
-        <button class="tablinks"
+        <button class="w3-bar-item w3-button tablinks"
                 onclick="openSimulationTab(event, 'Spot')">Spot
         </button>
-        <button class="tablinks"
+        <button class="w3-bar-item w3-button tablinks"
                 onclick="openSimulationTab(event, 'LTC-Spot')">Long Term
             with Spot
         </button>
-        <button class="tablinks"
+        <button class="w3-bar-item w3-button tablinks"
                 onclick="openSimulationTab(event, 'Options')">Options
         </button>
-        <button class="tablinks"
+        <button class="w3-bar-item w3-button tablinks"
                 onclick="openSimulationTab(event, 'LTC-Options')">Long Term
             with Options            
         </button>
-        <button class="tablinks"
+        <button class="w3-bar-item w3-button tablinks"
                 onclick="openSimulationTab(event, 'LTC-Options-Spot')">Long
             Term with Options and Spot            
         </button>
-        <button class="tablinks" onclick="openSimulationTab(event, 'RS')">
+        <button class="w3-bar-item w3-button tablinks" onclick="openSimulationTab(event, 'RS')">
             Revenue Sharing        </button>
     </div>
     <br/>
     <!--Instructions HTML starts here-->
-    <div class="tabcontent" id="Instructions">
+    <div class="w3-container tabcontent">
         <h1>Instructions</h1>
     </div>
     <!-- Instructions HTML ends here -->
     <!--LTC HTML starts here-->
-    <div class="tabcontent" id="LTC">
-        <div class="ltc_left" id="ltc_left" >
-            <h4 class="left"> Please enter the following information and
+    <div class="w3-container tabcontent" id="LTC">
+        <div class="ltc_left w3-blue-grey" id="ltc_left" >
+            <h5 class="left"> Please enter the following information and
                 start the Simulation</h4>
             <br/>
             <div class="right">
-                <label for="ltc_wsp">Wholesale Price</label>
-                <input align="right" id="ltc_wsp" style="width: 50px;"type="text"/>
+                <label for="ltc_wsp" style="font-size:0.925em" >Wholesale Price</label>
+                <input align="right" id="ltc_wsp" style="width: 60px;"type="text"/>
             </div>
             <br/>
             <div class="right">
-                <label for="ltc_rp">Retail Price</label>
-                <input align="left" id="ltc_rp" style="width: 50px;"
+                <label for="ltc_rp" style="font-size:0.925em">Retail Price</label>
+                <input align="left" id="ltc_rp" style="width: 60px;"
                        type="text"/>
             </div>
             <br/>
             <div class="right">
-                <label for="ltc_salp">Salvage Price</label>
-                <input align="left" id="ltc_salp" style="width: 50px;"
+                <label for="ltc_salp" style="font-size:0.925em">Salvage Price</label>
+                <input align="left" id="ltc_salp" style="width: 60px;"
                        type="text"/>
             </div>
             <br/>
             <div class="right">
-                <label for="ltc_mean">Mean quantity</label>
-                <input align="left" id="ltc_mean" style="width: 50px;"
+                <label for="ltc_mean" style="font-size:0.925em">Mean quantity</label>
+                <input align="left" id="ltc_mean" style="width: 60px;"
                        type="text"/>
             </div>
             <br/>
             <div class="right">
-                <label for="ltc_sd"> Standard Deviation [Enter or Use Slider]</label>
-                <input align="left" id="ltc_sd" style="width: 50px;"
+                <label for="ltc_sd" style="font-size:0.925em"> Standard Deviation [Enter or Use Slider]</label>
+                <input align="left" id="ltc_sd" style="width: 60px;"
                        type="text"/>
                 <br/>
                 <div class="slider-style">
-                    <input id="ltc_sd_slider_min" style="width: 50px;" 
-                           type="text" value="0"/>
+                    <input id="ltc_sd_slider_min" style="width: 60px;" 
+                           type="text" value="0" readonly />
                     <input class="slider" id="ltc_sd_slider" max="999"
                            min="0"
                            style="width: 200px; "
                            type="range" value="0">
-                    <input id="ltc_sd_slider_max" style="width: 50px;   margin-top: 15px;"
-                           type="text"/>
+                    <input id="ltc_sd_slider_max" style="width: 60px;   margin-top: 15px;"
+                           type="text" readonly />
                 </div>
             </div>
             <br/>
             <div class="right">
-                <label for="ltc_orderQty">Order Quantity</label>
-                <input align="left" id="ltc_orderQty" style="width:50px;"
+                <label for="ltc_orderQty" style="font-size:0.925em">Order Quantity</label>
+                <input align="left" id="ltc_orderQty" style="width:60px;"
                        type="text"/>
             </div>
             <br/>
             <div class="right">
-                <label for="ltc_numIt"> Number of Iterations to be
+                <label for="ltc_numIt" style="font-size:0.925em"> Number of Iterations to be
                     performed</label>
-                <input align="left" id="ltc_numIt" style="width: 50px;"
+                <input align="left" id="ltc_numIt" style="width: 60px;"
                        type="text"/>
             </div>
             <br/>
             <div class="center">
-                <input onClick="handle_LTC_Simulation()" type="button"
+                <input class="glossy-button" onClick="handle_LTC_Simulation()" type="button"
                        value='Run Simulation'/>
             </div>
         </div>
@@ -2572,16 +2628,16 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 </div>
 <!--LTC HTML ends here-->
 <!--Spot HTML starts here-->
-<div class="tabcontent" id="Spot">
-	<div class="ltc_left" id="ltc_left" >
-		<h4 class="left"> Please enter the following information and
+<div class="w3-container tabcontent" id="Spot">
+	<div class="ltc_left w3-blue-grey" id="ltc_left" >
+		<h5 class="left"> Please enter the following information and
 			start the Simulation</h4>
 		<br/>
 		<div class="right">
-			<label for="spot_rp">Retail Price</label>
-			<input align="left" id="spot_rp" style="width: 50px;"type="text"/>
+			<label for="spot_rp" style="font-size:0.925em" >Retail Price</label>
+			<input align="left" id="spot_rp" style="width: 60px;"type="text"/>
 			<div class="center">
-			<input onClick="handle_His_Spot_Prices()" style="margin-top: 15px;"type="button"
+			<input  class="glossy-button" onClick="handle_His_Spot_Prices()" style="margin-top: 15px;"type="button"
 				   value='View Historical Spot Prices'/>
 			</div>	   
 		</div>
@@ -2595,23 +2651,23 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 		</div>
 		<br/>
 		<div class="right">
-			<label for="spot_mean">Mean quantity</label>
-			<input align="left" id="spot_mean" style="width: 50px;"type="text"/>
+			<label for="spot_mean" style="font-size:0.925em" >Mean quantity</label>
+			<input align="left" id="spot_mean" style="width: 60px;"type="text"/>
 		</div>
 		<br/>
 		<div class="right">
-			<label for="spot_sd">Standard Deviation</label>
-			<input align="left" id="spot_sd" style="width: 50px;" type="text"/>
+			<label for="spot_sd" style="font-size:0.925em" >Standard Deviation</label>
+			<input align="left" id="spot_sd" style="width: 60px;" type="text"/>
 		</div>
 		<br/>
 		<div class="right">
-			<label for="spot_numIt"> Number of Iterations to be
+			<label for="spot_numIt" style="font-size:0.925em" > Number of Iterations to be
 				performed</label>
-			<input align="right" id="spot_numIt" style="width: 50px;"type="text"/>
+			<input align="right" id="spot_numIt" style="width: 60px;"type="text"/>
 		</div>
 		<br/>
 		<div class="center">
-		<input onClick="handle_spot_Simulation()" align="center" type="button"
+		<input class="glossy-button" onClick="handle_spot_Simulation()" align="center" type="button"
 			   value='Run Simulation'/>
 		</div>
 		</div>
@@ -2639,23 +2695,23 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 
 <!--Spot HTML ends here-->
 <!--Long Term with Spot HTML starts here-->
-<div class="tabcontent" id="LTC-Spot">
+<div class="w3-container tabcontent" id="LTC-Spot">
 
-	<div class="ltc_left" id="ltc_left" >
-	    <h4 class="left"> Please enter the following information and
+	<div class="ltc_left w3-blue-grey" id="ltc_left" >
+	    <h5 class="left"> Please enter the following information and
         start
         the Simulation</h4>
     <br/>
     <div class="right">
-        <label for="ltc_spot_wsp">Wholesale Price</label>
-        <input align="left" id="ltc_spot_wsp" style="width: 50px;" type="text"/>
+        <label for="ltc_spot_wsp" style="font-size:0.925em" >Wholesale Price</label>
+        <input align="left" id="ltc_spot_wsp" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="ltc_spot_rp">Retail Price</label>
-        <input align="left" id="ltc_spot_rp" style="width: 50px;" type="text"/>
+        <label for="ltc_spot_rp" style="font-size:0.925em" >Retail Price</label>
+        <input align="left" id="ltc_spot_rp" style="width: 60px;" type="text"/>
 		<div class="center">
-			<input onClick="handle_His_ltc_Spot_Prices()" style="margin-top: 15px;" type="button"
+			<input  class="glossy-button" onClick="handle_His_ltc_Spot_Prices()" style="margin-top: 15px;" type="button"
                value='View Historical Spot Prices'/>
 		</div>
         <div class="modal" id="ltc_spot_history_result_modal"
@@ -2669,33 +2725,33 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 </div>
 <br/>
 <div class="right">
-    <label for="ltc_spot_salp"> Salvage Price</label>
-    <input align="left" id="ltc_spot_salp" style="width: 50px;" type="text"/>
+    <label for="ltc_spot_salp" style="font-size:0.925em" > Salvage Price</label>
+    <input align="left" id="ltc_spot_salp" style="width: 60px;" type="text"/>
 </div>
 <br/>
 <div class="right">
-    <label for="ltc_spot_mean">Mean quantity</label>
-    <input align="left" id="ltc_spot_mean" style="width: 50px;" type="text"/>
+    <label for="ltc_spot_mean" style="font-size:0.925em" >Mean quantity</label>
+    <input align="left" id="ltc_spot_mean" style="width: 60px;" type="text"/>
 </div>
 <br/>
 <div class="right">
-    <label for="ltc_spot_sd"> Standard Deviation</label>
-    <input align="left" id="ltc_spot_sd" style="width: 50px;" type="text"/>
+    <label for="ltc_spot_sd" style="font-size:0.925em" > Standard Deviation</label>
+    <input align="left" id="ltc_spot_sd" style="width: 60px;" type="text"/>
 </div>
 <br/>
 <div class="right">
-    <label for="ltc_spot_orderQty">Order Quantity</label>
-    <input align="left" id="ltc_spot_orderQty" style="width: 50px;" type="text"/>
+    <label for="ltc_spot_orderQty" style="font-size:0.925em" >Order Quantity</label>
+    <input align="left" id="ltc_spot_orderQty" style="width: 60px;" type="text"/>
 </div>
 <br/>
 <div class="right">
-    <label for="ltc_spot_numIt"> Number of Iterations to be
+    <label for="ltc_spot_numIt" style="font-size:0.925em" > Number of Iterations to be
         performed</label>
-    <input align="left" id="ltc_spot_numIt" style="width: 50px;" type="text"/>
+    <input align="left" id="ltc_spot_numIt" style="width: 60px;" type="text"/>
 </div>
 <br/>
 <div class="center">
-	<input onClick="handle_LTC_Spot_Simulation()" type="button"
+	<input class="glossy-button"  onClick="handle_LTC_Spot_Simulation()" type="button"
        value='Run Simulation'/>
 </div>
 </div>
@@ -2725,50 +2781,50 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 
 <!-- Options Contract starts here -->
 
-<div class="tabcontent" id="Options">
-<div class="ltc_left" id="ltc_left" >
-    <h4 class="left"> Please enter the following information and start
+<div class="w3-container tabcontent" id="Options">
+<div class="ltc_left w3-blue-grey" id="ltc_left" >
+    <h5 class="left"> Please enter the following information and start
         the Simulation</h4>
     <br/>
     <div class="right">
-        <label for="options_uop">Unit Options Price</label>
-        <input align="left" id="options_uop" style="width: 50px;" type="text"/>
+        <label for="options_uop" style="font-size:0.925em" >Unit Options Price</label>
+        <input align="left" id="options_uop" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="options_uep">Unit Exercise Price</label>
-        <input align="left" id="options_uep" style="width: 50px;" type="text"/>
+        <label for="options_uep" style="font-size:0.925em" >Unit Exercise Price</label>
+        <input align="left" id="options_uep" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="options_rp">Retail Price</label>
-        <input align="left" id="options_rp" style="width: 50px;" type="text"/>
+        <label for="options_rp" style="font-size:0.925em" >Retail Price</label>
+        <input align="left" id="options_rp" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="options_mean">Mean quantity</label>
-        <input align="left" id="options_mean" style="width: 50px;" type="text"/>
+        <label for="options_mean" style="font-size:0.925em" >Mean quantity</label>
+        <input align="left" id="options_mean" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="options_sd"> Standard Deviation</label>
-        <input align="left" id="options_sd" style="width: 50px;" type="text"/>
+        <label for="options_sd" style="font-size:0.925em" > Standard Deviation</label>
+        <input align="left" id="options_sd" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="options_orderQty">Order Quantity for Options
+        <label for="options_orderQty" style="font-size:0.925em" >Order Quantity for Options
             Procurement</label>
-        <input align="left" id="options_orderQty" style="width: 50px;" type="text"/>
+        <input align="left" id="options_orderQty" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="options_numIt"> Number of Iterations to be
+        <label for="options_numIt" style="font-size:0.925em" > Number of Iterations to be
             performed</label>
-        <input align="left" id="options_numIt" style="width: 50px;" type="text"/>
+        <input align="left" id="options_numIt" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="center">
-        <input onClick="handle_Options_Simulation()" type="button"
+        <input  class="glossy-button" onClick="handle_Options_Simulation()" type="button"
                value='Run Simulation'/>
     </div>
 	</div>
@@ -2794,67 +2850,67 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 </div>
 <!-- Options Contract ends here -->
 <!--LTC with Options HTML starts here-->
-<div class="tabcontent" id="LTC-Options">
-<div class="ltc_left" id="ltc_left" >
-    <h4 class="left"> Please enter the following information and start
+<div class="w3-container tabcontent" id="LTC-Options">
+<div class="ltc_left w3-blue-grey" id="ltc_left" >
+    <h5 class="left"> Please enter the following information and start
         the Simulation</h4>
     <br/>
     <div class="right">
-        <label for="ltc_options_wsp">Wholesale Price</label>
-        <input align="left" id="ltc_options_wsp" style="width: 50px;" type="text"/>
+        <label for="ltc_options_wsp" style="font-size:0.925em" >Wholesale Price</label>
+        <input align="left" id="ltc_options_wsp" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="ltc_options_uop">Unit Options Price</label>
-        <input align="left" id="ltc_options_uop" style="width: 50px;" type="text"/>
+        <label for="ltc_options_uop" style="font-size:0.925em" >Unit Options Price</label>
+        <input align="left" id="ltc_options_uop" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="ltc_options_uep">Unit Exercise Price</label>
-        <input align="left" id="ltc_options_uep" style="width: 50px;" type="text"/>
+        <label for="ltc_options_uep" style="font-size:0.925em" >Unit Exercise Price</label>
+        <input align="left" id="ltc_options_uep" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="ltc_options_rp">Retail Price</label>
-        <input align="left" id="ltc_options_rp" style="width: 50px;" type="text"/>
+        <label for="ltc_options_rp" style="font-size:0.925em" >Retail Price</label>
+        <input align="left" id="ltc_options_rp" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="ltc_options_salp">Salvage Price</label>
-        <input align="left" id="ltc_options_salp" style="width: 50px;" type="text"/>
+        <label for="ltc_options_salp" style="font-size:0.925em" >Salvage Price</label>
+        <input align="left" id="ltc_options_salp" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="ltc_options_mean">Mean quantity</label>
-        <input align="left" id="ltc_options_mean" style="width: 50px;" type="text"/>
+        <label for="ltc_options_mean" style="font-size:0.925em" >Mean quantity</label>
+        <input align="left" id="ltc_options_mean" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="ltc_options_sd">Standard Deviation</label>
-        <input align="left" id="ltc_options_sd" style="width: 50px;" type="text"/>
+        <label for="ltc_options_sd" style="font-size:0.925em" >Standard Deviation</label>
+        <input align="left" id="ltc_options_sd" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="ltc_options_orderQty">Order Quantity for Long
+        <label for="ltc_options_orderQty" style="font-size:0.925em" >Order Quantity for Long
             Term Contract</label>
-        <input align="left" id="ltc_options_orderQty" style="width: 50px;" type="text"/>
+        <input align="left" id="ltc_options_orderQty" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="ltc_options_procurementOrderQty">Order Quantity
+        <label for="ltc_options_procurementOrderQty" style="font-size:0.925em" >Order Quantity
             for Options Procurement</label>
         <input align="left" id="ltc_options_procurementOrderQty"
-               style="width: 50px;"  type="text"/>
+               style="width: 60px;"  type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="ltc_options_numIt"> Number of Iterations to be
+        <label for="ltc_options_numIt" style="font-size:0.925em" > Number of Iterations to be
             performed</label>
-        <input align="left" id="ltc_options_numIt" style="width: 50px;" type="text"/>
+        <input align="left" id="ltc_options_numIt" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="center">
-        <input onClick="handle_LTC_Options_Simulation()" type="button"
+        <input class="glossy-button"  onClick="handle_LTC_Options_Simulation()" type="button"
                value='Run Simulation'/>
     </div>
 	</div>
@@ -2883,32 +2939,32 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 <!--LTC with Options HTML ends here-->
 
 <!--LTC with Options and Spot HTML starts here-->
-<div class="tabcontent" id="LTC-Options-Spot">
-<div class="ltc_left" id="ltc_left" >
-    <h4 class="left"> Please enter the following information and start
+<div class="w3-container tabcontent" id="LTC-Options-Spot">
+<div class="ltc_left w3-blue-grey" id="ltc_left" >
+    <h5 class="left"> Please enter the following information and start
         the Simulation</h4>
     <br/>
     <div class="right">
-        <label for="ltc_options_spot_wsp">Wholesale Price</label>
-        <input align="left" id="ltc_options_spot_wsp" style="width: 50px;" type="text"/>
+        <label for="ltc_options_spot_wsp" style="font-size:0.925em" >Wholesale Price</label>
+        <input align="left" id="ltc_options_spot_wsp" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="ltc_options_spot_uop"> Unit Options Price</label>
-        <input align="left" id="ltc_options_spot_uop" style="width: 50px;" type="text"/>
+        <label for="ltc_options_spot_uop" style="font-size:0.925em" > Unit Options Price</label>
+        <input align="left" id="ltc_options_spot_uop" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="ltc_options_spot_uep">Unit Exercise
+        <label for="ltc_options_spot_uep" style="font-size:0.925em" >Unit Exercise
             Price</label>
-        <input align="left" id="ltc_options_spot_uep" style="width: 50px;" type="text"/>
+        <input align="left" id="ltc_options_spot_uep" style="width: 60px;" type="text"/>
     </div>
     <br/>
     <div class="right">
-        <label for="ltc_options_spot_rp"> Retail Price</label>
-        <input align="left" id="ltc_options_spot_rp" style="width: 50px;" type="text"/>
+        <label for="ltc_options_spot_rp" style="font-size:0.925em" > Retail Price</label>
+        <input align="left" id="ltc_options_spot_rp" style="width: 60px;" type="text"/>
 		<div class="center">
-        <input onClick="handle_His_ltc_Options_Spot_Prices()" style="margin-top: 15px;" type="button"
+        <input  class="glossy-button" onClick="handle_His_ltc_Options_Spot_Prices()" style="margin-top: 15px;" type="button"
                value='View Historical Spot Prices'/>
 		</div>
         <div class="modal" id="ltc_options_spot_history_result_modal"
@@ -2922,50 +2978,50 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 <br/>
 
 <div class="right">
-    <label for="ltc_options_spot_salp"> Salvage Price</label>
-    <input align="left" id="ltc_options_spot_salp" style="width: 50px;" type="text"/>
+    <label for="ltc_options_spot_salp" style="font-size:0.925em" > Salvage Price</label>
+    <input align="left" id="ltc_options_spot_salp" style="width: 60px;" type="text"/>
 </div>
 <br/>
 <div class="right">
-    <label for="ltc_options_spot_mean"> Mean quantity</label>
-    <input align="left" id="ltc_options_spot_mean" style="width: 50px;" type="text"/>
+    <label for="ltc_options_spot_mean" style="font-size:0.925em" > Mean quantity</label>
+    <input align="left" id="ltc_options_spot_mean" style="width: 60px;" type="text"/>
 </div>
 <br/>
 <div class="right">
-    <label for="ltc_options_spot_sd">  Standard Deviation</label>
-    <input align="left" id="ltc_options_spot_sd" style="width: 50px;" type="text"/>
+    <label for="ltc_options_spot_sd" style="font-size:0.925em" >  Standard Deviation</label>
+    <input align="left" id="ltc_options_spot_sd" style="width: 60px;" type="text"/>
 </div>
 <br/>
 <div class="right">
-    <label for="ltc_options_spot_orderQty">Order Quantity for
+    <label for="ltc_options_spot_orderQty" style="font-size:0.925em" >Order Quantity for
         Long
         Term Contract</label>
-    <input align="left" id="ltc_options_spot_orderQty" style="width: 50px;" type="text"/>
+    <input align="left" id="ltc_options_spot_orderQty" style="width: 60px;" type="text"/>
 </div>
 <br/>
 <div class="right">
-    <label for="ltc_options_spot_procurementOrderQty"> Order
+    <label for="ltc_options_spot_procurementOrderQty" style="font-size:0.925em" > Order
         Quantity
         for Options Procurement</label>
     <input align="left" id="ltc_options_spot_procurementOrderQty"
-           style="width: 50px;" type="text"/>
+           style="width: 60px;" type="text"/>
 </div>
 <br/>
 <div class="right">
-    <label for="ltc_options_spot_numIt"> Number of Iterations
+    <label for="ltc_options_spot_numIt" style="font-size:0.925em" > Number of Iterations
         to be
         performed</label>
-    <input align="left" id="ltc_options_spot_numIt" style="width: 50px;" type="text"/>
+    <input align="left" id="ltc_options_spot_numIt" style="width: 60px;" type="text"/>
 </div>
 <br/>
 <div class="center">
-    <input onClick="handle_LTC_Options_Spot_Simulation()" type="button"
+    <input  class="glossy-button" onClick="handle_LTC_Options_Spot_Simulation()" type="button"
            value='Run Simulation'/>
 </div>
 </div>
 </div>
 <br/>
-<div class="ltc_right" id="ltc_right" >
+<div class="w3-container tabcontent" id="ltc_right" >
 <div class="center" hidden id="ltc_options_spot_resultBody">
     <h4>Result of the Simulation
         <h4>
@@ -2989,93 +3045,93 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 <!--LTC with Options and Spot HTML ends here-->
 
 <!--RS HTML starts here-->
-<div class="tabcontent" id="RS">
-<div class="ltc_left" id="ltc_left" >
+<div class="w3-container tabcontent" id="RS">
+<div class="ltc_left w3-blue-grey" id="ltc_left" >
     <div id="rs_left" >
-        <h4 class="left"> Please enter the following information and
+        <h5 class="left"> Please enter the following information and
             start the Simulation</h4>
         <br/>
         <div class="right">
-            <label for="rs_cp">Cost Price for the supplier</label>
-            <input align="left" id="rs_cp" style="width: 50px;"
+            <label for="rs_cp" style="font-size:0.925em" >Cost Price for the supplier</label>
+            <input align="left" id="rs_cp" style="width: 60px;"
                    type="text"/>
         </div>
 		<br/>
         <div class="right">
-            <label for="rs_wsp">Wholesale Price</label>
-            <input align="left" id="rs_wsp" style="width: 50px;"
+            <label for="rs_wsp" style="font-size:0.925em" >Wholesale Price</label>
+            <input align="left" id="rs_wsp" style="width: 60px;"
                    type="text"/>
         </div>
         <br/>
         <div class="right">
-            <label for="rs_rp">Retail Price</label>
-            <input align="left" id="rs_rp" style="width: 50px;"
+            <label for="rs_rp" style="font-size:0.925em" >Retail Price</label>
+            <input align="left" id="rs_rp" style="width: 60px;"
                    type="text"/>
         </div>
         <br/>
         <div class="right">
-            <label for="rs_salp"> Salvage Price</label>
-            <input align="left" id="rs_salp" style="width: 50px;"
+            <label for="rs_salp" style="font-size:0.925em" > Salvage Price</label>
+            <input align="left" id="rs_salp" style="width: 60px;"
                    type="text"/>
         </div>
         <br/>
         <div class="right">
-            <label for="rs_rev_percent"> Percentage of Revenue
+            <label for="rs_rev_percent" style="font-size:0.925em" > Percentage of Revenue
                 retained by the retailer </label>
-            <input align="left" id="rs_rev_percent" style="width: 50px;"
+            <input align="left" id="rs_rev_percent" style="width: 60px;"
                    type="text"/>
             <br/>
             <div>
-                <input id="rs_rev_percent_slider_min" style="width: 50px;"
-                       type="text" value="0"/>
+                <input id="rs_rev_percent_slider_min" style="width: 60px;"
+                       type="text" value="0" readonly />
                 <input class="slider" id="rs_rev_percent_slider" max="100"
                        min="0"
                        style="width: 200px;"
                        type="range" value="0">
-                <input id="rs_rev_percent_slider_max" style="width: 50px; margin-top: 15px"
-                       type="text"/>
+                <input id="rs_rev_percent_slider_max" style="width: 60px; margin-top: 15px"
+                       type="text" readonly />
             </div>
         </div>
         <br/>
         <div class="right">
-            <label for="rs_mean">Mean quantity</label>
-            <input align="left" id="rs_mean" style="width: 50px;"
+            <label for="rs_mean" style="font-size:0.925em" >Mean quantity</label>
+            <input align="left" id="rs_mean" style="width: 60px;"
                    type="text"/>
         </div>
         <br/>
         <div class="right">
-            <label for="rs_sd"> Standard Deviation (Enter or Use Slider)
+            <label for="rs_sd" style="font-size:0.925em" > Standard Deviation (Enter or Use Slider)
                 </label>
-            <input align="left" id="rs_sd" style="width: 40px;"
+            <input align="left" id="rs_sd" style="width: 60px;"
                    type="text"/>
             <br/>
             <div>
-                <input id="rs_sd_slider_min" style="width: 50px;"
-                       type="text" value="0"/>
+                <input id="rs_sd_slider_min" style="width: 60px;"
+                       type="text" value="0" readonly />
                 <input class="slider" id="rs_sd_slider" max="999"
                        min="0"
                        style="width: 200px;"
                        type="range" value="0">
-                <input id="rs_sd_slider_max" style="width: 50px; margin-top: 15px"
-                       type="text"/>
+                <input id="rs_sd_slider_max" style="width: 60px; margin-top: 15px"
+                       type="text" readonly />
             </div>
         </div>
         <br/>
         <div class="right">
-            <label for="rs_orderQty">Order Quantity</label>
-            <input align="left" id="rs_orderQty" style="width:50px;"
+            <label for="rs_orderQty" style="font-size:0.925em" >Order Quantity</label>
+            <input align="left" id="rs_orderQty" style="width:60px;"
                    type="text"/>
         </div>
         <br/>
         <div class="right">
-            <label for="rs_numIt"> Number of Iterations to be
+            <label for="rs_numIt" style="font-size:0.925em" > Number of Iterations to be
                 performed</label>
-            <input align="left" id="rs_numIt" style="width: 50px;"
+            <input align="left" id="rs_numIt" style="width: 60px;"
                    type="text"/>
         </div>
         <br/>
         <div class="center">
-            <input onClick="handle_RS_Simulation()" type="button"
+            <input  class="glossy-button" onClick="handle_RS_Simulation()" type="button"
                    value='Run Simulation'/>
         </div>
 	</div>	
