@@ -423,7 +423,7 @@
       var numIt = document.getElementById("spot_numIt").value;
 
       if (rp.length < 1 || mean.length < 1 || sd.length < 1 || numIt.length < 1) {
-        alert("One of the parameters is missing");
+    //    alert("One of the parameters is missing");
         return;
       }
 
@@ -680,7 +680,7 @@
       var orderQty = document.getElementById("ltc_spot_orderQty").value;
 
       if (wsp.length < 1 || rp.length < 1 || salp.length < 1 || mean.length < 1 || sd.length < 1 || numIt.length < 1) {
-        alert("One of the parameters is missing");
+       // alert("One of the parameters is missing");
         return;
       }
 
@@ -958,7 +958,7 @@
       var orderQty = document.getElementById("options_orderQty").value;
 
       if (uop.length < 1 || uep.length < 1 || rp.length < 1 || mean.length < 1 || sd.length < 1 || numIt.length < 1) {
-        alert("One of the parameters is missing");
+       // alert("One of the parameters is missing");
         return;
       }
 
@@ -1207,7 +1207,7 @@
       var procurementOrderQty = document.getElementById("ltc_options_procurementOrderQty").value;
 
       if (uop.length < 1 || uep.length < 1 || wsp.length < 1 || rp.length < 1 || salPrice.length < 1 || mean.length < 1 || sd.length < 1 || numIt.length < 1 || orderQty.length < 1 || procurementOrderQty.length < 1) {
-        alert("One of the parameters is missing");
+      //  alert("One of the parameters is missing");
         return;
       }
 
@@ -1555,7 +1555,7 @@ function handle_His_ltc_Options_Spot_Prices(retailPrice) {
       var procurementOrderQty = document.getElementById("ltc_options_spot_procurementOrderQty").value;
 
       if (uop.length < 1 || uep.length < 1 || wsp.length < 1 || rp.length < 1 || salPrice.length < 1 || mean.length < 1 || sd.length < 1 || numIt.length < 1 || orderQty.length < 1 || procurementOrderQty.length < 1) {
-        alert("One of the parameters is missing");
+       // alert("One of the parameters is missing");
         return;
       }
 
@@ -2319,7 +2319,7 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 	
 	.ltc_right {
 	  height: auto;float:right;
-	  max-height: 600px;
+	  max-height: 430px;
 	  overflow-y: auto;
 	  margin-left: 380px;
     }
@@ -2655,10 +2655,22 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 			<input align="left" id="spot_mean" style="width: 60px;"type="text"/>
 		</div>
 		<br/>
-		<div class="right">
-			<label for="spot_sd" style="font-size:0.925em" >Standard Deviation</label>
-			<input align="left" id="spot_sd" style="width: 60px;" type="text"/>
-		</div>
+            <div class="right">
+                <label for="spot_sd" style="font-size:0.925em"> Standard Deviation [Enter or Use Slider]</label>
+                <input align="left" id="spot_sd" style="width: 60px;"
+                       type="text"/>
+                <br/>
+                <div class="slider-style">
+                    <input id="spot_sd_slider_min" style="width: 60px;"
+                           type="text" value="0" readonly />
+                    <input class="slider" id="spot_sd_slider" max="999"
+                           min="0"
+                           style="width: 200px; "
+                           type="range" value="0">
+                    <input id="spot_sd_slider_max" style="width: 60px;   margin-top: 15px;"
+                           type="text" readonly />
+                </div>
+            </div>
 		<br/>
 		<div class="right">
 			<label for="spot_numIt" style="font-size:0.925em" > Number of Iterations to be
@@ -2735,8 +2747,20 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 </div>
 <br/>
 <div class="right">
-    <label for="ltc_spot_sd" style="font-size:0.925em" > Standard Deviation</label>
-    <input align="left" id="ltc_spot_sd" style="width: 60px;" type="text"/>
+    <label for="ltc_spot_sd" style="font-size:0.925em"> Standard Deviation [Enter or Use Slider]</label>
+    <input align="left" id="ltc_spot_sd" style="width: 60px;"
+           type="text"/>
+    <br/>
+    <div class="slider-style">
+        <input id="ltc_spot_sd_slider_min" style="width: 60px;"
+               type="text" value="0" readonly />
+        <input class="slider" id="ltc_spot_sd_slider" max="999"
+               min="0"
+               style="width: 200px; "
+               type="range" value="0">
+        <input id="ltc_spot_sd_slider_max" style="width: 60px;   margin-top: 15px;"
+               type="text" readonly />
+    </div>
 </div>
 <br/>
 <div class="right">
@@ -2806,10 +2830,22 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
         <input align="left" id="options_mean" style="width: 60px;" type="text"/>
     </div>
     <br/>
-    <div class="right">
-        <label for="options_sd" style="font-size:0.925em" > Standard Deviation</label>
-        <input align="left" id="options_sd" style="width: 60px;" type="text"/>
-    </div>
+        <div class="right">
+            <label for="options_sd" style="font-size:0.925em"> Standard Deviation [Enter or Use Slider]</label>
+            <input align="left" id="options_sd" style="width: 60px;"
+                   type="text"/>
+            <br/>
+            <div class="slider-style">
+                <input id="options_sd_slider_min" style="width: 60px;"
+                       type="text" value="0" readonly />
+                <input class="slider" id="options_sd_slider" max="999"
+                       min="0"
+                       style="width: 200px; "
+                       type="range" value="0">
+                <input id="options_sd_slider_max" style="width: 60px;   margin-top: 15px;"
+                       type="text" readonly />
+            </div>
+        </div>
     <br/>
     <div class="right">
         <label for="options_orderQty" style="font-size:0.925em" >Order Quantity for Options
@@ -2885,10 +2921,22 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
         <input align="left" id="ltc_options_mean" style="width: 60px;" type="text"/>
     </div>
     <br/>
-    <div class="right">
-        <label for="ltc_options_sd" style="font-size:0.925em" >Standard Deviation</label>
-        <input align="left" id="ltc_options_sd" style="width: 60px;" type="text"/>
-    </div>
+        <div class="right">
+            <label for="ltc_options_sd" style="font-size:0.925em"> Standard Deviation [Enter or Use Slider]</label>
+            <input align="left" id="ltc_options_sd" style="width: 60px;"
+                   type="text"/>
+            <br/>
+            <div class="slider-style">
+                <input id="ltc_options_sd_slider_min" style="width: 60px;"
+                       type="text" value="0" readonly />
+                <input class="slider" id="ltc_options_sd_slider" max="999"
+                       min="0"
+                       style="width: 200px; "
+                       type="range" value="0">
+                <input id="ltc_options_sd_slider_max" style="width: 60px;   margin-top: 15px;"
+                       type="text" readonly />
+            </div>
+        </div>
     <br/>
     <div class="right">
         <label for="ltc_options_orderQty" style="font-size:0.925em" >Order Quantity for Long
@@ -2941,7 +2989,7 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 <!--LTC with Options and Spot HTML starts here-->
 <div class="w3-container tabcontent" id="LTC-Options-Spot">
 <div class="ltc_left w3-blue-grey" id="ltc_left" >
-    <h5 class="left"> Please enter the following information and start
+    <h4 class="left"> Please enter the following information and start
         the Simulation</h4>
     <br/>
     <div class="right">
@@ -2987,10 +3035,22 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
     <input align="left" id="ltc_options_spot_mean" style="width: 60px;" type="text"/>
 </div>
 <br/>
-<div class="right">
-    <label for="ltc_options_spot_sd" style="font-size:0.925em" >  Standard Deviation</label>
-    <input align="left" id="ltc_options_spot_sd" style="width: 60px;" type="text"/>
-</div>
+    <div class="right">
+        <label for="ltc_options_spot_sd" style="font-size:0.925em"> Standard Deviation [Enter or Use Slider]</label>
+        <input align="left" id="ltc_options_spot_sd" style="width: 60px;"
+               type="text"/>
+        <br/>
+        <div class="slider-style">
+            <input id="ltc_options_spot_sd_slider_min" style="width: 60px;"
+                   type="text" value="0" readonly />
+            <input class="slider" id="ltc_options_spot_sd_slider" max="999"
+                   min="0"
+                   style="width: 200px; "
+                   type="range" value="0">
+            <input id="ltc_options_spot_sd_slider_max" style="width: 60px;   margin-top: 15px;"
+                   type="text" readonly />
+        </div>
+    </div>
 <br/>
 <div class="right">
     <label for="ltc_options_spot_orderQty" style="font-size:0.925em" >Order Quantity for
@@ -3021,7 +3081,7 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 </div>
 </div>
 <br/>
-<div class="w3-container tabcontent" id="ltc_right" >
+<div class="ltc_right" id="ltc_right" >
 <div class="center" hidden id="ltc_options_spot_resultBody">
     <h4>Result of the Simulation
         <h4>
@@ -3186,6 +3246,134 @@ ltc_sd_slider.min = ltc_sd_slider_min.value;
 }
 
 //For LTC End
+
+//For Spot Start
+    var spot_sd_slider = document.getElementById("spot_sd_slider");
+    var spot_sd=document.getElementById("spot_sd");
+    var spot_sd_slider_max=document.getElementById("spot_sd_slider_max");
+
+    spot_sd_slider_max.value = spot_sd_slider.max;
+
+    spot_sd_slider.oninput = function() {
+        spot_sd.value = this.value;
+        handle_spot_Simulation();
+    }
+spot_sd.oninput = function() {
+  spot_sd_slider.value = this.value;
+}
+spot_sd_slider_max.oninput = function(){
+
+spot_sd_slider.max = spot_sd_slider_max.value;
+}
+spot_sd_slider_min.oninput = function(){
+
+spot_sd_slider.min = spot_sd_slider_min.value;
+}
+
+//For Spot End
+
+
+//For LTC + Spot Start
+    var ltc_spot_sd_slider = document.getElementById("ltc_spot_sd_slider");
+    var ltc_spot_sd=document.getElementById("ltc_spot_sd");
+    var ltc_spot_sd_slider_max=document.getElementById("ltc_spot_sd_slider_max");
+
+    ltc_spot_sd_slider_max.value = ltc_spot_sd_slider.max;
+
+    ltc_spot_sd_slider.oninput = function() {
+        ltc_spot_sd.value = this.value;
+        handle_LTC_Spot_Simulation();
+    }
+ltc_spot_sd.oninput = function() {
+  ltc_spot_sd_slider.value = this.value;
+}
+ltc_spot_sd_slider_max.oninput = function(){
+
+ltc_spot_sd_slider.max = ltc_spot_sd_slider_max.value;
+}
+ltc_spot_sd_slider_min.oninput = function(){
+
+ltc_spot_sd_slider.min = ltc_spot_sd_slider_min.value;
+}
+
+//For LTC + Spot End
+
+//For Options Start
+    var options_sd_slider = document.getElementById("options_sd_slider");
+    var options_sd=document.getElementById("options_sd");
+    var options_sd_slider_max=document.getElementById("options_sd_slider_max");
+
+    options_sd_slider_max.value = options_sd_slider.max;
+
+    options_sd_slider.oninput = function() {
+        options_sd.value = this.value;
+        handle_Options_Simulation();
+    }
+options_sd.oninput = function() {
+  options_sd_slider.value = this.value;
+}
+options_sd_slider_max.oninput = function(){
+
+options_sd_slider.max = options_sd_slider_max.value;
+}
+options_sd_slider_min.oninput = function(){
+
+options_sd_slider.min = options_sd_slider_min.value;
+}
+
+//For Options End
+
+
+//For LTC+Options Start
+    var ltc_options_sd_slider = document.getElementById("ltc_options_sd_slider");
+    var ltc_options_sd=document.getElementById("ltc_options_sd");
+    var ltc_options_sd_slider_max=document.getElementById("ltc_options_sd_slider_max");
+
+    ltc_options_sd_slider_max.value = ltc_options_sd_slider.max;
+
+    ltc_options_sd_slider.oninput = function() {
+        ltc_options_sd.value = this.value;
+        handle_LTC_Options_Simulation();
+    }
+ltc_options_sd.oninput = function() {
+  ltc_options_sd_slider.value = this.value;
+}
+ltc_options_sd_slider_max.oninput = function(){
+
+ltc_options_sd_slider.max = ltc_options_sd_slider_max.value;
+}
+ltc_options_sd_slider_min.oninput = function(){
+
+ltc_options_sd_slider.min = ltc_options_sd_slider_min.value;
+}
+
+//For LTC+Options End
+
+//For LTC+Options+Spot Start
+    var ltc_options_spot_sd_slider = document.getElementById("ltc_options_spot_sd_slider");
+    var ltc_options_spot_sd=document.getElementById("ltc_options_spot_sd");
+    var ltc_options_spot_sd_slider_max=document.getElementById("ltc_options_spot_sd_slider_max");
+
+    ltc_options_spot_sd_slider_max.value = ltc_options_spot_sd_slider.max;
+
+    ltc_options_spot_sd_slider.oninput = function() {
+        ltc_options_spot_sd.value = this.value;
+        handle_LTC_Options_Spot_Simulation();
+    }
+ltc_options_spot_sd.oninput = function() {
+  ltc_options_spot_sd_slider.value = this.value;
+}
+ltc_options_spot_sd_slider_max.oninput = function(){
+
+ltc_options_spot_sd_slider.max = ltc_options_spot_sd_slider_max.value;
+}
+ltc_options_spot_sd_slider_min.oninput = function(){
+
+ltc_options_spot_sd_slider.min = ltc_options_spot_sd_slider_min.value;
+}
+
+//For LTC+Options+Spot End
+
 
 //For RS Start
     var rs_sd_slider = document.getElementById("rs_sd_slider");
