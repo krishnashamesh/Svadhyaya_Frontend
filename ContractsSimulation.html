@@ -2321,7 +2321,8 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 	  height: auto;float:right;
 	  max-height: 430px;
 	  overflow-y: auto;
-	  margin-left: 380px;
+	  margin-left: 390px;
+	  width: 885px;
     }
 
     @keyframes fadeEffect {
@@ -2685,26 +2686,26 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 			   value='Run Simulation'/>
 		</div>
 		</div>
- 
-	<div class="ltc_right" id="ltc_right" >
-		<div class="center" hidden id="spot_resultBody">
-			<h4>Result of the Simulation
-				<h4>
+	
+	        <div class="ltc_right" id="ltc_right" >
+            <div class="center" hidden id="spot_resultBody">
+            <span><b>Result of the Simulation
+			<br/>
+            </b></span>
+                <div id="spot_chartContent">
+                    <canvas id="Spot_Result_Quantity_Chart"
+                            style="width:100%"/>
+                    <canvas id="Spot_Result_Monies_Chart"
+                            style="width:100%"/>
+                </div>
 				<br/>
-					<div id="spot_chartContent">
-						<canvas id="Spot_Result_Quantity_Chart"
-								style="width:100%"/>
-						<canvas id="Spot_Result_Monies_Chart"
-								style="width:100%"/>
-					</div>
-					<br/>
-					<a href="#"
-					   onclick="download_table_as_csv('Spot_Result_Table');">Download
-						as CSV</a>
-					<div class="center" id="spot_result"></div>
-
-		</div>
-	</div>
+                <a href="#"
+                   onclick="download_table_as_csv('Spot_Result_Table');">Download
+                    as CSV</a>
+                <div class="left" id="spot_result"></div>
+            </div>
+        </div>
+		
 </div>
 
 <!--Spot HTML ends here-->
@@ -2781,26 +2782,25 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
        value='Run Simulation'/>
 </div>
 </div>
-<br/>
-<div class="ltc_right" id="ltc_right" >
-<div class="center" hidden id="ltc_spot_resultBody">
-    <h4>Result of the Simulation
-        <h4>
-		<br/>
-            <div id="ltc_spot_chartContent">
-                <canvas id="LTC_Spot_Result_Quantity_Chart"
-                        style="width:100%"/>
-                <canvas id="LTC_Spot_Result_Monies_Chart"
-                        style="width:100%"/>
+        <div class="ltc_right" id="ltc_right" >
+            <div class="center" hidden id="ltc_spot_resultBody">
+            <span><b>Result of the Simulation
+			<br/>
+            </b></span>
+                <div id="ltc_spot_chartContent">
+                    <canvas id="LTC_Spot_Result_Quantity_Chart"
+                            style="width:100%"/>
+                    <canvas id="LTC_Spot_Result_Monies_Chart"
+                            style="width:100%"/>
+                </div>
+				<br/>
+                <a href="#"
+                   onclick="download_table_as_csv('LTC_Spot_Result_Table');">Download
+                    as CSV</a>
+                <div class="left" id="ltc_spot_result"></div>
             </div>
-            <br/>
-            <a href="#"
-               onclick="download_table_as_csv('LTC_Spot_Result_Table');">Download
-                as CSV</a>
-            <div class="center" id="ltc_spot_result"></div>
-
-</div>
-</div>
+        </div>
+		
 </div>
 </div>
 <!-- Long Term with Spot HTML ends here-->
@@ -2865,26 +2865,26 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
         <input  class="glossy-button" onClick="handle_Options_Simulation()" type="button"
                value='Run Simulation'/>
     </div>
-	</div>
-    <br/>
-	<div class="ltc_right" id="ltc_right" >
-    <div class="center" hidden id="options_resultBody">
-        <h4>Result of the Simulation
-            <h4>
+	</div>	
+        <div class="ltc_right" id="ltc_right" >
+            <div class="center" hidden id="options_resultBody">
+            <span><b>Result of the Simulation
 			<br/>
+            </b></span>
                 <div id="options_chartContent">
                     <canvas id="Options_Result_Quantity_Chart"
                             style="width:100%"/>
                     <canvas id="Options_Result_Monies_Chart"
                             style="width:100%"/>
-                </div>			
-                <br/>
+                </div>
+				<br/>
                 <a href="#"
                    onclick="download_table_as_csv('Options_Result_Table');">Download
                     as CSV</a>
-                <div class="center" id="options_result"></div>
-	</div>
-    </div>
+                <div class="left" id="options_result"></div>
+            </div>
+        </div>	
+	
 </div>
 <!-- Options Contract ends here -->
 <!--LTC with Options HTML starts here-->
@@ -2964,26 +2964,27 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
                value='Run Simulation'/>
     </div>
 	</div>
-    <br/>
-	<div class="ltc_right" id="ltc_right" >
-    <div class="center" hidden id="ltc_options_resultBody">
-        <h4>Result of the Simulation
-            <h4>
+
+        <div class="ltc_right" id="ltc_right" >
+            <div class="center" hidden id="ltc_options_resultBody">
+            <span><b>Result of the Simulation
 			<br/>
+            </b></span>
                 <div id="ltc_options_chartContent">
                     <canvas id="LTC_Options_Result_Quantity_Chart"
                             style="width:100%"/>
                     <canvas id="LTC_Options_Result_Monies_Chart"
                             style="width:100%"/>
                 </div>
-                <br/>
+				<br/>
                 <a href="#"
                    onclick="download_table_as_csv('LTC_Options_Result_Table');">Download
                     as CSV</a>
-                <div class="center" id="ltc_options_result"></div>
-
-	</div>
-    </div>
+                <div class="left" id="ltc_options_result"></div>
+            </div>
+        </div>	
+	
+	
 </div>
 </div>
 <!--LTC with Options HTML ends here-->
@@ -3082,34 +3083,33 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 </div>
 </div>
 </div>
-<br/>
-<div class="ltc_right" id="ltc_right" >
-<div class="center" hidden id="ltc_options_spot_resultBody">
-    <h4>Result of the Simulation
-        <h4>
-		<br/>
-		    <div id="ltc_options_spot_chartContent">
-                <canvas id="LTC_Options_Spot_Result_Quantity_Chart"
-                        style="width:100%"/>
-                <canvas id="LTC_Options_Spot_Result_Monies_Chart"
-                        style="width:100%"/>
+        <div class="ltc_right" id="ltc_right" >
+            <div class="center" hidden id="ltc_options_spot_resultBody">
+            <span><b>Result of the Simulation
+			<br/>
+            </b></span>
+                <div id="ltc_options_spot_chartContent">
+                    <canvas id="LTC_Options_Spot_Result_Quantity_Chart"
+                            style="width:100%"/>
+                    <canvas id="LTC_Options_Spot_Result_Monies_Chart"
+                            style="width:100%"/>
+                </div>
+				<br/>
+                <a href="#"
+                   onclick="download_table_as_csv('LTC_Options_Spot_Result_Table');">Download
+                    as CSV</a>
+                <div class="left" id="ltc_options_spot_result"></div>
             </div>
-            <br/>
-            <a href="#"
-               onclick="download_table_as_csv('LTC_Options_Spot_Result_Table');">Download
-                as CSV</a>
-            <div class="center" id="ltc_options_spot_result"></div>
+        </div>
 
-</div>
-</div>
+
 </div>
 </div>
 <!--LTC with Options and Spot HTML ends here-->
 
 <!--RS HTML starts here-->
 <div class="w3-container tabcontent" id="RS">
-<div class="ltc_left w3-blue-grey" id="ltc_left" >
-    <div id="rs_left" >
+	<div class="ltc_left w3-blue-grey" id="ltc_left" >
         <h5 class="left"> Please enter the following information and
             start the Simulation</h4>
         <br/>
@@ -3196,27 +3196,25 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
             <input  class="glossy-button" onClick="handle_RS_Simulation()" type="button"
                    value='Run Simulation'/>
         </div>
-	</div>	
     </div>
-<div class="ltc_right" id="ltc_right" >	
-	<div class="center" hidden id="rs_resultBody">
-    <h4>Result of the Simulation
-        <h4>
-            <br/>
-			<div id="rs_chartContent">
-                <canvas id="RS_Result_Quantity_Chart"
-                        style="width:100%"/>
-                <canvas id="RS_Result_Monies_Chart"
-                        style="width:100%"/>
-            </div>
+        <div class="ltc_right" id="ltc_right" >
+            <div class="center" hidden id="rs_resultBody">
+            <span><b>Result of the Simulation
 			<br/>
-            <a href="#"
-               onclick="download_table_as_csv('RS_Result_Table');">Download
-                as CSV</a>
-            <div class="center" id="rs_result"></div>
-            
-	</div>
-	</div>
+            </b></span>
+                <div id="rs_chartContent">
+                    <canvas id="RS_Result_Quantity_Chart"
+                            style="width:100%"/>
+                    <canvas id="RS_Result_Monies_Chart"
+                            style="width:100%"/>
+                </div>
+				<br/>
+                <a href="#"
+                   onclick="download_table_as_csv('RS_Result_Table');">Download
+                    as CSV</a>
+                <div class="left" id="rs_result"></div>
+            </div>
+        </div>
 </div>
 </div>
 <!--RS HTML ends here-->
