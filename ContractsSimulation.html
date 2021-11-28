@@ -2321,7 +2321,8 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 	  height: auto;float:right;
 	  max-height: 430px;
 	  overflow-y: auto;
-	  margin-left: 380px;
+	  margin-left: 390px;
+	  width: 885px;
     }
 
     @keyframes fadeEffect {
@@ -2568,55 +2569,55 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
             <br/>
             <div class="right">
                 <label for="ltc_wsp" style="font-size:0.925em" >Wholesale Price</label>
-                <input align="right" id="ltc_wsp" style="width: 60px;"type="text"/>
+                <input align="right" id="ltc_wsp" style="width: 60px;"type="number"/>
             </div>
             <br/>
             <div class="right">
                 <label for="ltc_rp" style="font-size:0.925em">Retail Price</label>
                 <input align="left" id="ltc_rp" style="width: 60px;"
-                       type="text"/>
+                       type="number"/>
             </div>
             <br/>
             <div class="right">
                 <label for="ltc_salp" style="font-size:0.925em">Salvage Price</label>
                 <input align="left" id="ltc_salp" style="width: 60px;"
-                       type="text"/>
+                       type="number"/>
             </div>
             <br/>
             <div class="right">
                 <label for="ltc_mean" style="font-size:0.925em">Mean quantity</label>
                 <input align="left" id="ltc_mean" style="width: 60px;"
-                       type="text"/>
+                       type="number"/>
             </div>
             <br/>
             <div class="right">
                 <label for="ltc_sd" style="font-size:0.925em"> Standard Deviation [Enter or Use Slider]</label>
                 <input align="left" id="ltc_sd" style="width: 60px;"
-                       type="text"/>
+                       type="number"/>
                 <br/>
                 <div class="slider-style">
                     <input id="ltc_sd_slider_min" style="width: 60px;" 
-                           type="text" value="0" readonly />
+                           type="number" value="0"  min="0" max="999" maxlength = "3" readonly />
                     <input class="slider" id="ltc_sd_slider" max="999"
                            min="0"
                            style="width: 200px; "
                            type="range" value="0">
                     <input id="ltc_sd_slider_max" style="width: 60px;   margin-top: 15px;"
-                           type="text" readonly />
+                           type="number" readonly />
                 </div>
             </div>
             <br/>
             <div class="right">
                 <label for="ltc_orderQty" style="font-size:0.925em">Order Quantity</label>
                 <input align="left" id="ltc_orderQty" style="width:60px;"
-                       type="text"/>
+                       type="number"/>
             </div>
             <br/>
             <div class="right">
                 <label for="ltc_numIt" style="font-size:0.925em"> Number of Iterations to be
                     performed</label>
                 <input align="left" id="ltc_numIt" style="width: 60px;"
-                       type="text"/>
+                       type="number"/>
             </div>
             <br/>
             <div class="center">
@@ -2653,47 +2654,49 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 		<br/>
 		<div class="right">
 			<label for="spot_rp" style="font-size:0.925em" >Retail Price</label>
-			<input align="left" id="spot_rp" style="width: 60px;"type="text"/>
+			<input align="left" id="spot_rp" style="width: 60px;"type="number"/>
 			<div class="center">
 			<input  class="glossy-button" onClick="handle_His_Spot_Prices()" style="margin-top: 15px;"type="button"
 				   value='View Historical Spot Prices'/>
 			</div>	   
 		</div>
-		<div class="modal" id="spot_history_result_modal"
+
+		<div class="w3-modal" id="spot_history_result_modal"
 			 style="width:100%">
 			<div class="spot-history-modal-content">
 				<span class="close" id="spot_close">&times;</span>
 				<div id="spot_history_result">
 				</div>
 			</div>
-		</div>
+		</div>		
+
 		<br/>
 		<div class="right">
 			<label for="spot_mean" style="font-size:0.925em" >Mean quantity</label>
-			<input align="left" id="spot_mean" style="width: 60px;"type="text"/>
+			<input align="left" id="spot_mean" style="width: 60px;"type="number"/>
 		</div>
 		<br/>
             <div class="right">
                 <label for="spot_sd" style="font-size:0.925em"> Standard Deviation [Enter or Use Slider]</label>
                 <input align="left" id="spot_sd" style="width: 60px;"
-                       type="text"/>
+                       type="number"/>
                 <br/>
                 <div class="slider-style">
                     <input id="spot_sd_slider_min" style="width: 60px;"
-                           type="text" value="0" readonly />
+                           type="number" value="0"   min="0" max="999"  readonly />
                     <input class="slider" id="spot_sd_slider" max="999"
                            min="0"
                            style="width: 200px; "
                            type="range" value="0">
                     <input id="spot_sd_slider_max" style="width: 60px;   margin-top: 15px;"
-                           type="text" readonly />
+                           type="number" readonly />
                 </div>
             </div>
 		<br/>
 		<div class="right">
 			<label for="spot_numIt" style="font-size:0.925em" > Number of Iterations to be
 				performed</label>
-			<input align="right" id="spot_numIt" style="width: 60px;"type="text"/>
+			<input align="right" id="spot_numIt" style="width: 60px;"type="number"/>
 		</div>
 		<br/>
 		<div class="center">
@@ -2701,26 +2704,26 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 			   value='Run Simulation'/>
 		</div>
 		</div>
- 
-	<div class="ltc_right" id="ltc_right" >
-		<div class="center" hidden id="spot_resultBody">
-			<h4>Result of the Simulation
-				<h4>
+	
+	        <div class="ltc_right" id="ltc_right" >
+            <div class="center" hidden id="spot_resultBody">
+            <span><b>Result of the Simulation
+			<br/>
+            </b></span>
+                <div id="spot_chartContent">
+                    <canvas id="Spot_Result_Quantity_Chart"
+                            style="width:100%"/>
+                    <canvas id="Spot_Result_Monies_Chart"
+                            style="width:100%"/>
+                </div>
 				<br/>
-					<div id="spot_chartContent">
-						<canvas id="Spot_Result_Quantity_Chart"
-								style="width:100%"/>
-						<canvas id="Spot_Result_Monies_Chart"
-								style="width:100%"/>
-					</div>
-					<br/>
-					<a href="#"
-					   onclick="download_table_as_csv('Spot_Result_Table');">Download
-						as CSV</a>
-					<div class="center" id="spot_result"></div>
-
-		</div>
-	</div>
+                <a href="#"
+                   onclick="download_table_as_csv('Spot_Result_Table');">Download
+                    as CSV</a>
+                <div class="left" id="spot_result"></div>
+            </div>
+        </div>
+		
 </div>
 
 <!--Spot HTML ends here-->
@@ -2734,17 +2737,17 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
     <br/>
     <div class="right">
         <label for="ltc_spot_wsp" style="font-size:0.925em" >Wholesale Price</label>
-        <input align="left" id="ltc_spot_wsp" style="width: 60px;" type="text"/>
+        <input align="left" id="ltc_spot_wsp" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="ltc_spot_rp" style="font-size:0.925em" >Retail Price</label>
-        <input align="left" id="ltc_spot_rp" style="width: 60px;" type="text"/>
+        <input align="left" id="ltc_spot_rp" style="width: 60px;" type="number"/>
 		<div class="center">
 			<input  class="glossy-button" onClick="handle_His_ltc_Spot_Prices()" style="margin-top: 15px;" type="button"
                value='View Historical Spot Prices'/>
 		</div>
-        <div class="modal" id="ltc_spot_history_result_modal"
+        <div class="w3-modal" id="ltc_spot_history_result_modal"
              ltc_spot-history-modal-content style="width:100%>
         <div class="
         ">
@@ -2756,40 +2759,40 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 <br/>
 <div class="right">
     <label for="ltc_spot_salp" style="font-size:0.925em" > Salvage Price</label>
-    <input align="left" id="ltc_spot_salp" style="width: 60px;" type="text"/>
+    <input align="left" id="ltc_spot_salp" style="width: 60px;" type="number"/>
 </div>
 <br/>
 <div class="right">
     <label for="ltc_spot_mean" style="font-size:0.925em" >Mean quantity</label>
-    <input align="left" id="ltc_spot_mean" style="width: 60px;" type="text"/>
+    <input align="left" id="ltc_spot_mean" style="width: 60px;" type="number"/>
 </div>
 <br/>
 <div class="right">
     <label for="ltc_spot_sd" style="font-size:0.925em"> Standard Deviation [Enter or Use Slider]</label>
     <input align="left" id="ltc_spot_sd" style="width: 60px;"
-           type="text"/>
+           type="number"/>
     <br/>
     <div class="slider-style">
         <input id="ltc_spot_sd_slider_min" style="width: 60px;"
-               type="text" value="0" readonly />
+               type="number" value="0"  min="0" max="999" readonly />
         <input class="slider" id="ltc_spot_sd_slider" max="999"
                min="0"
                style="width: 200px; "
                type="range" value="0">
         <input id="ltc_spot_sd_slider_max" style="width: 60px;   margin-top: 15px;"
-               type="text" readonly />
+               type="number" readonly />
     </div>
 </div>
 <br/>
 <div class="right">
     <label for="ltc_spot_orderQty" style="font-size:0.925em" >Order Quantity</label>
-    <input align="left" id="ltc_spot_orderQty" style="width: 60px;" type="text"/>
+    <input align="left" id="ltc_spot_orderQty" style="width: 60px;" type="number"/>
 </div>
 <br/>
 <div class="right">
     <label for="ltc_spot_numIt" style="font-size:0.925em" > Number of Iterations to be
         performed</label>
-    <input align="left" id="ltc_spot_numIt" style="width: 60px;" type="text"/>
+    <input align="left" id="ltc_spot_numIt" style="width: 60px;" type="number"/>
 </div>
 <br/>
 <div class="center">
@@ -2797,26 +2800,25 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
        value='Run Simulation'/>
 </div>
 </div>
-<br/>
-<div class="ltc_right" id="ltc_right" >
-<div class="center" hidden id="ltc_spot_resultBody">
-    <h4>Result of the Simulation
-        <h4>
-		<br/>
-            <div id="ltc_spot_chartContent">
-                <canvas id="LTC_Spot_Result_Quantity_Chart"
-                        style="width:100%"/>
-                <canvas id="LTC_Spot_Result_Monies_Chart"
-                        style="width:100%"/>
+        <div class="ltc_right" id="ltc_right" >
+            <div class="center" hidden id="ltc_spot_resultBody">
+            <span><b>Result of the Simulation
+			<br/>
+            </b></span>
+                <div id="ltc_spot_chartContent">
+                    <canvas id="LTC_Spot_Result_Quantity_Chart"
+                            style="width:100%"/>
+                    <canvas id="LTC_Spot_Result_Monies_Chart"
+                            style="width:100%"/>
+                </div>
+				<br/>
+                <a href="#"
+                   onclick="download_table_as_csv('LTC_Spot_Result_Table');">Download
+                    as CSV</a>
+                <div class="left" id="ltc_spot_result"></div>
             </div>
-            <br/>
-            <a href="#"
-               onclick="download_table_as_csv('LTC_Spot_Result_Table');">Download
-                as CSV</a>
-            <div class="center" id="ltc_spot_result"></div>
-
-</div>
-</div>
+        </div>
+		
 </div>
 </div>
 <!-- Long Term with Spot HTML ends here-->
@@ -2830,77 +2832,77 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
     <br/>
     <div class="right">
         <label for="options_uop" style="font-size:0.925em" >Unit Options Price</label>
-        <input align="left" id="options_uop" style="width: 60px;" type="text"/>
+        <input align="left" id="options_uop" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="options_uep" style="font-size:0.925em" >Unit Exercise Price</label>
-        <input align="left" id="options_uep" style="width: 60px;" type="text"/>
+        <input align="left" id="options_uep" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="options_rp" style="font-size:0.925em" >Retail Price</label>
-        <input align="left" id="options_rp" style="width: 60px;" type="text"/>
+        <input align="left" id="options_rp" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="options_mean" style="font-size:0.925em" >Mean quantity</label>
-        <input align="left" id="options_mean" style="width: 60px;" type="text"/>
+        <input align="left" id="options_mean" style="width: 60px;" type="number"/>
     </div>
     <br/>
         <div class="right">
             <label for="options_sd" style="font-size:0.925em"> Standard Deviation [Enter or Use Slider]</label>
             <input align="left" id="options_sd" style="width: 60px;"
-                   type="text"/>
+                   type="number"/>
             <br/>
             <div class="slider-style">
                 <input id="options_sd_slider_min" style="width: 60px;"
-                       type="text" value="0" readonly />
+                       type="number" value="0"   min="0" max="999"  readonly />
                 <input class="slider" id="options_sd_slider" max="999"
                        min="0"
                        style="width: 200px; "
                        type="range" value="0">
                 <input id="options_sd_slider_max" style="width: 60px;   margin-top: 15px;"
-                       type="text" readonly />
+                       type="number" readonly />
             </div>
         </div>
     <br/>
     <div class="right">
         <label for="options_orderQty" style="font-size:0.925em" >Order Quantity for Options
             Procurement</label>
-        <input align="left" id="options_orderQty" style="width: 60px;" type="text"/>
+        <input align="left" id="options_orderQty" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="options_numIt" style="font-size:0.925em" > Number of Iterations to be
             performed</label>
-        <input align="left" id="options_numIt" style="width: 60px;" type="text"/>
+        <input align="left" id="options_numIt" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="center">
         <input  class="glossy-button" onClick="handle_Options_Simulation()" type="button"
                value='Run Simulation'/>
     </div>
-	</div>
-    <br/>
-	<div class="ltc_right" id="ltc_right" >
-    <div class="center" hidden id="options_resultBody">
-        <h4>Result of the Simulation
-            <h4>
+	</div>	
+        <div class="ltc_right" id="ltc_right" >
+            <div class="center" hidden id="options_resultBody">
+            <span><b>Result of the Simulation
 			<br/>
+            </b></span>
                 <div id="options_chartContent">
                     <canvas id="Options_Result_Quantity_Chart"
                             style="width:100%"/>
                     <canvas id="Options_Result_Monies_Chart"
                             style="width:100%"/>
-                </div>			
-                <br/>
+                </div>
+				<br/>
                 <a href="#"
                    onclick="download_table_as_csv('Options_Result_Table');">Download
                     as CSV</a>
-                <div class="center" id="options_result"></div>
-	</div>
-    </div>
+                <div class="left" id="options_result"></div>
+            </div>
+        </div>	
+	
 </div>
 <!-- Options Contract ends here -->
 <!--LTC with Options HTML starts here-->
@@ -2911,68 +2913,68 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
     <br/>
     <div class="right">
         <label for="ltc_options_wsp" style="font-size:0.925em" >Wholesale Price</label>
-        <input align="left" id="ltc_options_wsp" style="width: 60px;" type="text"/>
+        <input align="left" id="ltc_options_wsp" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="ltc_options_uop" style="font-size:0.925em" >Unit Options Price</label>
-        <input align="left" id="ltc_options_uop" style="width: 60px;" type="text"/>
+        <input align="left" id="ltc_options_uop" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="ltc_options_uep" style="font-size:0.925em" >Unit Exercise Price</label>
-        <input align="left" id="ltc_options_uep" style="width: 60px;" type="text"/>
+        <input align="left" id="ltc_options_uep" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="ltc_options_rp" style="font-size:0.925em" >Retail Price</label>
-        <input align="left" id="ltc_options_rp" style="width: 60px;" type="text"/>
+        <input align="left" id="ltc_options_rp" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="ltc_options_salp" style="font-size:0.925em" >Salvage Price</label>
-        <input align="left" id="ltc_options_salp" style="width: 60px;" type="text"/>
+        <input align="left" id="ltc_options_salp" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="ltc_options_mean" style="font-size:0.925em" >Mean quantity</label>
-        <input align="left" id="ltc_options_mean" style="width: 60px;" type="text"/>
+        <input align="left" id="ltc_options_mean" style="width: 60px;" type="number"/>
     </div>
     <br/>
         <div class="right">
             <label for="ltc_options_sd" style="font-size:0.925em"> Standard Deviation [Enter or Use Slider]</label>
             <input align="left" id="ltc_options_sd" style="width: 60px;"
-                   type="text"/>
+                   type="number"/>
             <br/>
             <div class="slider-style">
                 <input id="ltc_options_sd_slider_min" style="width: 60px;"
-                       type="text" value="0" readonly />
+                       type="number" value="0"   min="0" max="999"  readonly />
                 <input class="slider" id="ltc_options_sd_slider" max="999"
                        min="0"
                        style="width: 200px; "
                        type="range" value="0">
                 <input id="ltc_options_sd_slider_max" style="width: 60px;   margin-top: 15px;"
-                       type="text" readonly />
+                       type="number" readonly />
             </div>
         </div>
     <br/>
     <div class="right">
         <label for="ltc_options_orderQty" style="font-size:0.925em" >Order Quantity for Long
             Term Contract</label>
-        <input align="left" id="ltc_options_orderQty" style="width: 60px;" type="text"/>
+        <input align="left" id="ltc_options_orderQty" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="ltc_options_procurementOrderQty" style="font-size:0.925em" >Order Quantity
             for Options Procurement</label>
         <input align="left" id="ltc_options_procurementOrderQty"
-               style="width: 60px;"  type="text"/>
+               style="width: 60px;"  type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="ltc_options_numIt" style="font-size:0.925em" > Number of Iterations to be
             performed</label>
-        <input align="left" id="ltc_options_numIt" style="width: 60px;" type="text"/>
+        <input align="left" id="ltc_options_numIt" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="center">
@@ -2980,26 +2982,27 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
                value='Run Simulation'/>
     </div>
 	</div>
-    <br/>
-	<div class="ltc_right" id="ltc_right" >
-    <div class="center" hidden id="ltc_options_resultBody">
-        <h4>Result of the Simulation
-            <h4>
+
+        <div class="ltc_right" id="ltc_right" >
+            <div class="center" hidden id="ltc_options_resultBody">
+            <span><b>Result of the Simulation
 			<br/>
+            </b></span>
                 <div id="ltc_options_chartContent">
                     <canvas id="LTC_Options_Result_Quantity_Chart"
                             style="width:100%"/>
                     <canvas id="LTC_Options_Result_Monies_Chart"
                             style="width:100%"/>
                 </div>
-                <br/>
+				<br/>
                 <a href="#"
                    onclick="download_table_as_csv('LTC_Options_Result_Table');">Download
                     as CSV</a>
-                <div class="center" id="ltc_options_result"></div>
-
-	</div>
-    </div>
+                <div class="left" id="ltc_options_result"></div>
+            </div>
+        </div>	
+	
+	
 </div>
 </div>
 <!--LTC with Options HTML ends here-->
@@ -3012,28 +3015,28 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
     <br/>
     <div class="right">
         <label for="ltc_options_spot_wsp" style="font-size:0.925em" >Wholesale Price</label>
-        <input align="left" id="ltc_options_spot_wsp" style="width: 60px;" type="text"/>
+        <input align="left" id="ltc_options_spot_wsp" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="ltc_options_spot_uop" style="font-size:0.925em" > Unit Options Price</label>
-        <input align="left" id="ltc_options_spot_uop" style="width: 60px;" type="text"/>
+        <input align="left" id="ltc_options_spot_uop" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="ltc_options_spot_uep" style="font-size:0.925em" >Unit Exercise
             Price</label>
-        <input align="left" id="ltc_options_spot_uep" style="width: 60px;" type="text"/>
+        <input align="left" id="ltc_options_spot_uep" style="width: 60px;" type="number"/>
     </div>
     <br/>
     <div class="right">
         <label for="ltc_options_spot_rp" style="font-size:0.925em" > Retail Price</label>
-        <input align="left" id="ltc_options_spot_rp" style="width: 60px;" type="text"/>
+        <input align="left" id="ltc_options_spot_rp" style="width: 60px;" type="number"/>
 		<div class="center">
         <input  class="glossy-button" onClick="handle_His_ltc_Options_Spot_Prices()" style="margin-top: 15px;" type="button"
                value='View Historical Spot Prices'/>
 		</div>
-        <div class="modal" id="ltc_options_spot_history_result_modal"
+        <div class="w3-modal" id="ltc_options_spot_history_result_modal"
              ltc_options_spot-history-modal-content style="width:100%>
         <div class="
         ">
@@ -3045,28 +3048,28 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 
 <div class="right">
     <label for="ltc_options_spot_salp" style="font-size:0.925em" > Salvage Price</label>
-    <input align="left" id="ltc_options_spot_salp" style="width: 60px;" type="text"/>
+    <input align="left" id="ltc_options_spot_salp" style="width: 60px;" type="number"/>
 </div>
 <br/>
 <div class="right">
     <label for="ltc_options_spot_mean" style="font-size:0.925em" > Mean quantity</label>
-    <input align="left" id="ltc_options_spot_mean" style="width: 60px;" type="text"/>
+    <input align="left" id="ltc_options_spot_mean" style="width: 60px;" type="number"/>
 </div>
 <br/>
     <div class="right">
         <label for="ltc_options_spot_sd" style="font-size:0.925em"> Standard Deviation [Enter or Use Slider]</label>
         <input align="left" id="ltc_options_spot_sd" style="width: 60px;"
-               type="text"/>
+               type="number"/>
         <br/>
         <div class="slider-style">
             <input id="ltc_options_spot_sd_slider_min" style="width: 60px;"
-                   type="text" value="0" readonly />
+                   type="number" value="0"   min="0" max="999"  readonly />
             <input class="slider" id="ltc_options_spot_sd_slider" max="999"
                    min="0"
                    style="width: 200px; "
                    type="range" value="0">
             <input id="ltc_options_spot_sd_slider_max" style="width: 60px;   margin-top: 15px;"
-                   type="text" readonly />
+                   type="number" readonly />
         </div>
     </div>
 <br/>
@@ -3074,7 +3077,7 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
     <label for="ltc_options_spot_orderQty" style="font-size:0.925em" >Order Quantity for
         Long
         Term Contract</label>
-    <input align="left" id="ltc_options_spot_orderQty" style="width: 60px;" type="text"/>
+    <input align="left" id="ltc_options_spot_orderQty" style="width: 60px;" type="number"/>
 </div>
 <br/>
 <div class="right">
@@ -3082,14 +3085,14 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
         Quantity
         for Options Procurement</label>
     <input align="left" id="ltc_options_spot_procurementOrderQty"
-           style="width: 60px;" type="text"/>
+           style="width: 60px;" type="number"/>
 </div>
 <br/>
 <div class="right">
     <label for="ltc_options_spot_numIt" style="font-size:0.925em" > Number of Iterations
         to be
         performed</label>
-    <input align="left" id="ltc_options_spot_numIt" style="width: 60px;" type="text"/>
+    <input align="left" id="ltc_options_spot_numIt" style="width: 60px;" type="number"/>
 </div>
 <br/>
 <div class="center">
@@ -3098,141 +3101,138 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 </div>
 </div>
 </div>
-<br/>
-<div class="ltc_right" id="ltc_right" >
-<div class="center" hidden id="ltc_options_spot_resultBody">
-    <h4>Result of the Simulation
-        <h4>
-		<br/>
-		    <div id="ltc_options_spot_chartContent">
-                <canvas id="LTC_Options_Spot_Result_Quantity_Chart"
-                        style="width:100%"/>
-                <canvas id="LTC_Options_Spot_Result_Monies_Chart"
-                        style="width:100%"/>
+        <div class="ltc_right" id="ltc_right" >
+            <div class="center" hidden id="ltc_options_spot_resultBody">
+            <span><b>Result of the Simulation
+			<br/>
+            </b></span>
+                <div id="ltc_options_spot_chartContent">
+                    <canvas id="LTC_Options_Spot_Result_Quantity_Chart"
+                            style="width:100%"/>
+                    <canvas id="LTC_Options_Spot_Result_Monies_Chart"
+                            style="width:100%"/>
+                </div>
+				<br/>
+                <a href="#"
+                   onclick="download_table_as_csv('LTC_Options_Spot_Result_Table');">Download
+                    as CSV</a>
+                <div class="left" id="ltc_options_spot_result"></div>
             </div>
-            <br/>
-            <a href="#"
-               onclick="download_table_as_csv('LTC_Options_Spot_Result_Table');">Download
-                as CSV</a>
-            <div class="center" id="ltc_options_spot_result"></div>
+        </div>
 
-</div>
-</div>
+
 </div>
 </div>
 <!--LTC with Options and Spot HTML ends here-->
 
 <!--RS HTML starts here-->
 <div class="w3-container tabcontent" id="RS">
-<div class="ltc_left w3-blue-grey" id="ltc_left" >
-    <div id="rs_left" >
+	<div class="ltc_left w3-blue-grey" id="ltc_left" >
         <h5 class="left"> Please enter the following information and
             start the Simulation</h4>
         <br/>
         <div class="right">
             <label for="rs_cp" style="font-size:0.925em" >Cost Price for the supplier</label>
             <input align="left" id="rs_cp" style="width: 60px;"
-                   type="text"/>
+                   type="number"/>
         </div>
 		<br/>
         <div class="right">
             <label for="rs_wsp" style="font-size:0.925em" >Wholesale Price</label>
             <input align="left" id="rs_wsp" style="width: 60px;"
-                   type="text"/>
+                   type="number"/>
         </div>
         <br/>
         <div class="right">
             <label for="rs_rp" style="font-size:0.925em" >Retail Price</label>
             <input align="left" id="rs_rp" style="width: 60px;"
-                   type="text"/>
+                   type="number"/>
         </div>
         <br/>
         <div class="right">
             <label for="rs_salp" style="font-size:0.925em" > Salvage Price</label>
             <input align="left" id="rs_salp" style="width: 60px;"
-                   type="text"/>
+                   type="number"/>
         </div>
         <br/>
         <div class="right">
             <label for="rs_rev_percent" style="font-size:0.925em" > Percentage of Revenue
                 retained by the retailer </label>
             <input align="left" id="rs_rev_percent" style="width: 60px;"
-                   type="text"/>
+                   type="number"/>
             <br/>
             <div>
                 <input id="rs_rev_percent_slider_min" style="width: 60px;"
-                       type="text" value="0" readonly />
+                       type="number" value="0"   min="0" max="100"  readonly />
                 <input class="slider" id="rs_rev_percent_slider" max="100"
                        min="0"
                        style="width: 200px;"
                        type="range" value="0">
                 <input id="rs_rev_percent_slider_max" style="width: 60px; margin-top: 15px"
-                       type="text" readonly />
+                       type="number" readonly />
             </div>
         </div>
         <br/>
         <div class="right">
             <label for="rs_mean" style="font-size:0.925em" >Mean quantity</label>
             <input align="left" id="rs_mean" style="width: 60px;"
-                   type="text"/>
+                   type="number"/>
         </div>
         <br/>
         <div class="right">
             <label for="rs_sd" style="font-size:0.925em" > Standard Deviation (Enter or Use Slider)
                 </label>
             <input align="left" id="rs_sd" style="width: 60px;"
-                   type="text"/>
+                   type="number"/>
             <br/>
             <div>
                 <input id="rs_sd_slider_min" style="width: 60px;"
-                       type="text" value="0" readonly />
+                       type="number" value="0"   min="0" max="999"  readonly />
                 <input class="slider" id="rs_sd_slider" max="999"
                        min="0"
                        style="width: 200px;"
                        type="range" value="0">
                 <input id="rs_sd_slider_max" style="width: 60px; margin-top: 15px"
-                       type="text" readonly />
+                       type="number" readonly />
             </div>
         </div>
         <br/>
         <div class="right">
             <label for="rs_orderQty" style="font-size:0.925em" >Order Quantity</label>
             <input align="left" id="rs_orderQty" style="width:60px;"
-                   type="text"/>
+                   type="number"/>
         </div>
         <br/>
         <div class="right">
             <label for="rs_numIt" style="font-size:0.925em" > Number of Iterations to be
                 performed</label>
             <input align="left" id="rs_numIt" style="width: 60px;"
-                   type="text"/>
+                   type="number"/>
         </div>
         <br/>
         <div class="center">
             <input  class="glossy-button" onClick="handle_RS_Simulation()" type="button"
                    value='Run Simulation'/>
         </div>
-	</div>	
     </div>
-<div class="ltc_right" id="ltc_right" >	
-	<div class="center" hidden id="rs_resultBody">
-    <h4>Result of the Simulation
-        <h4>
-            <br/>
-			<div id="rs_chartContent">
-                <canvas id="RS_Result_Quantity_Chart"
-                        style="width:100%"/>
-                <canvas id="RS_Result_Monies_Chart"
-                        style="width:100%"/>
-            </div>
+        <div class="ltc_right" id="ltc_right" >
+            <div class="center" hidden id="rs_resultBody">
+            <span><b>Result of the Simulation
 			<br/>
-            <a href="#"
-               onclick="download_table_as_csv('RS_Result_Table');">Download
-                as CSV</a>
-            <div class="center" id="rs_result"></div>
-            
-	</div>
-	</div>
+            </b></span>
+                <div id="rs_chartContent">
+                    <canvas id="RS_Result_Quantity_Chart"
+                            style="width:100%"/>
+                    <canvas id="RS_Result_Monies_Chart"
+                            style="width:100%"/>
+                </div>
+				<br/>
+                <a href="#"
+                   onclick="download_table_as_csv('RS_Result_Table');">Download
+                    as CSV</a>
+                <div class="left" id="rs_result"></div>
+            </div>
+        </div>
 </div>
 </div>
 <!--RS HTML ends here-->
