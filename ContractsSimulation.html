@@ -2509,7 +2509,7 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 
     <div class="w3-bar w3-black">
         <button class="w3-bar-item w3-button tablinks w3-blue-grey"
-                onclick="openSimulationTab(event, 'Instructions')">
+                onclick="openSimulationTab(event, 'Instructions')" id="instructions-button">
             Instructions
         </button>
         <button  class="w3-bar-item w3-button tablinks " onclick="openSimulationTab(event, 'LTC')">
@@ -2538,9 +2538,27 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
     </div>
     <br/>
     <!--Instructions HTML starts here-->
-    <div class="w3-container tabcontent">
-        <h1>Instructions</h1>
+    <div class="w3-container tabcontent" id="Instructions">
+        <div class="left">
+        <h1>Getting Started</h1>
+        <p>SR Apparel is a Fashion and Lifestyle wholesale retailer procuring materials from various manufacturers. Since it is a very competitive market, there are several competing companies. From past couple of years, SR Apparel has been losing contracts regularly and the contracts gained are not profitable.</p>
+
+        <p>Anantha Hari, the CEO of SR Apparel was worried due to the declining profits. He suspects that there is a element of variability in the demand that is affecting his profits. After last month's discussion with Sam Krish, the technology whiz-kid, he was promised a simulation tool that
+            will help his team visualize the demands. Additionally, his team will be able to compare the effect of combination of contracts. </p>
+
+        <p>
+            Below is the email Sam sent to Anand Seturaman, the procurement lead.
+        </p>
+        <b>Instructions to use the tool</b>
+
+        <ul>
+            <li>Choose the contract type you would like to verify.</li>
+            <li>Enter the values on the left pane.</li>
+            <li>You can vary the standard deviation to see its effect to quantity and monies.</li>
+
+        </ul>
     </div>
+        </div>
     <!-- Instructions HTML ends here -->
     <!--LTC HTML starts here-->
     <div class="w3-container tabcontent" id="LTC">
@@ -3221,6 +3239,7 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
 </body>
 
 <script>
+document.getElementById('instructions-button').click();
 
 //For LTC Start
     var ltc_sd_slider = document.getElementById("ltc_sd_slider");
