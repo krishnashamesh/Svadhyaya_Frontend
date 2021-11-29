@@ -2318,11 +2318,11 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
     }
 	
 	.ltc_right {
-	  height: auto;float:right;
+	  height: auto;
 	  max-height: 430px;
 	  overflow-y: auto;
 	  margin-left: 390px;
-
+      width: 70%;
     }
 
     @keyframes fadeEffect {
@@ -2502,11 +2502,25 @@ rowData[0] = ["Iteration Number", "Actual Demand", "Fulfiled Order        Quanti
     10px 25px 10px hsla(0, 0%, 0%, 0.2); /* drop shadow 2 */
 }
 
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6.5%;
+  background-color: grey;
+  color: white;
+  text-align: center;
+}
+
 
 </style>
 
 <div class="center" class="w3-container">
     <h1 class="center"> Contracts Simulation </h1>
+    <div class="footer">
+        <p><b>Created by Shamesh Krishna and Radhika Praveen</b></p>
+    </div>
 
     <div class="w3-bar w3-black">
         <button class="w3-bar-item w3-button tablinks w3-blue-grey"
